@@ -1,0 +1,46 @@
+:root {
+	--text-color-header:rgb(92, 138, 113);
+	--btn-select-color:rgb(92, 138, 113);
+	--active-btn-select-color:rgb(64, 95, 78);
+	--body-bg:#afabab;
+	--element-bg:#333;
+}
+
+header {
+	height: 80px;
+	background-color: var(--element-bg);
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 100%;
+}
+
+.title {
+	color: var(--text-color-header);
+	text-align: center;
+}
+
+.btn_start, .btn_create {
+	width: 300px;
+	height: 100px;
+	font-size: 25px;
+	background-color: var(--text-color-header);
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+	border-radius: 20px;
+	border: none;
+	cursor: pointer;
+	text-decoration: none;
+	color: black;
+	display: inline-block;
+  line-height: 100px;
+  text-align: center;
+}
+
+main {
+	margin-top: 400px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 20px;
+}
