@@ -182,4 +182,9 @@ header {
 	top: 30px;
 	text-decoration: none;
 	color: black;
+	transition: 0.2s all;
+}
+
+.save:hover, .back:hover {
+	background-color:rgb(60, 92, 74) ;
 }

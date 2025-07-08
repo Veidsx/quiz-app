@@ -34,6 +34,11 @@ header {
 	display: inline-block;
   line-height: 100px;
   text-align: center;
+	transition: 0.2s;
+}
+
+.btn_create:hover, .btn_start:hover {
+	background-color: rgb(66, 102, 82);
 }
 
 main {

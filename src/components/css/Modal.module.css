@@ -34,8 +34,11 @@
 	text-align: center;
 	text-decoration: none;
 	cursor: pointer;
+	transition: 0.2s;
 }
-
+.btn_back:hover, .btn_start:hover {
+	background-color: #252424;
+}
 .input {
 	height: 50px;
 	font-size: 15px;
@@ -61,6 +64,7 @@
 }
 
 .loader {
+	position: absolute;
   width: 50px;
   padding: 8px;
   aspect-ratio: 1;
