@@ -5,16 +5,15 @@ import { Modal } from "./Modal";
 
 export const Layout = () => {
   const [isShowModal, setIsShowModal] = useState(false);
-  const [isGoToCreate, setIsGoToCreate] = useState(false);
+
   const fModal = () => {
     setIsShowModal((isShow) => !isShow);
+    
   };
 
-  sessionStorage.setItem('page-loaded', false)
-  const createNewQuiz = () => {
-    setIsGoToCreate((prev) => !prev);
-  };
-	
+  sessionStorage.setItem("page-loaded", false);
+  const createNewQuiz = () => {};
+
   return (
     <div>
       <header className={styles.header}>

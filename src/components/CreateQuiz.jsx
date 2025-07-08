@@ -1,79 +1,130 @@
 import style from "./css/CreateQuiz.module.css";
 import { Modal } from "./CreateQuestionMenu";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-function Question({ number }) {
+function Question({
+  number,
+  title,
+  variants,
+  setIsShowModal,
+  setIsEdit,
+  setQuestionEdit,
+  setNumberAlt,
+  onDelete,
+}) {
+  const [num, setNum] = useState(number);
+
+  const onEdit = (e) => {
+    setIsShowModal((prev) => !prev);
+    setIsEdit(true);
+    setQuestionEdit({ numberQuestion: number, title, variants: variants });
+    setNumberAlt(e.target.alt);
+  };
+
   return (
     <li className={style.question_li}>
       Запитання {number}
       <div>
         <img
           src="/img/x-circle-svgrepo-com(1).svg"
-          alt=""
+          alt={number}
           className={style.newQuestion}
+          onClick={onDelete}
         />
         <img
           src="/img/edit-svgrepo-com(3).svg"
-          alt=""
+          alt={number}
           className={style.newQuestion}
+          onClick={onEdit}
         />
       </div>
     </li>
   );
 }
 
-export const CreateQuiz = ({ isUpdateUrl }) => {
-  location.reload
-  let result = "";
+export const CreateQuiz = () => {
   function generateCode() {
-    for (let i = 0; i <= 6; i++) {
-      let a = Math.random().toFixed(1) * 10;
-      a !== 10 ? (result += a) : result;
-    }
+    return Math.floor(100000 + Math.random() * 900000).toString();
   }
-
+  
   let [questions, setQuestions] = useState([]);
+  let [numberQuestion, setNumberQuestion] = useState(1);
+  let [numberAlt, setNumberAlt] = useState(0);
+  let onDelete = (e) => {
+    const deleteNumber = +e.target.alt;
 
-  let [numberQuestion, setNumberQuestion] = useState(0);
-  let onChangeQuestions = (question) => {
     setQuestions((prevQuestions) => {
-      const updatedQuestions = [...prevQuestions, question];
-
+      let newQuestions = prevQuestions
+        .filter((q) => q.numberQuestion !== deleteNumber)
+        .map((el) => {
+          return el.numberQuestion > deleteNumber
+            ? { ...el, numberQuestion: el.numberQuestion - 1 }
+            : el;
+        });
       const quiz = {
         code: localStorage.getItem("code-create"),
-        questions: updatedQuestions,
+        questions: newQuestions,
       };
       localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
-      return updatedQuestions;
+      return newQuestions;
     });
-    setNumberQuestion((prev) => prev + 1);
   };
-  useEffect(() => {
-    let saved = localStorage.getItem(
-      `quiz-${localStorage.getItem("code-create")}`
-    );
-    if(saved){
-      if (localStorage.getItem('code-create') === JSON.parse(saved).code ) {
-        try {
-          const parsed = JSON.parse(saved);
-          
-          setQuestions(parsed.questions || []);
-        } catch (e) {
-          throw new Error(e.message);
+
+  let onChangeQuestions = (question, isEditQuestion) => {
+    if (isEditQuestion) {
+      setQuestions((prevQuestions) => {
+        const variants = question.variants;
+        const nextQuestions = [];
+        const previousQuestions = [];
+        prevQuestions.forEach((element) => {
+          if (element.numberQuestion > numberAlt) {
+            nextQuestions.push(element);
+          } else if (element.numberQuestion < numberAlt) {
+            previousQuestions.unshift(element);
+          }
+        });
+
+        const updatedQuestion = [
+          {
+            numberQuestion: +numberAlt,
+            title: question.title,
+            variants: variants,
+          },
+        ];
+        if (previousQuestions[0] !== null) {
+          previousQuestions.forEach((el) => {
+            updatedQuestion.unshift(el);
+          });
         }
-      }
+        if (nextQuestions[0] !== null) {
+          nextQuestions.forEach((el) => {
+            updatedQuestion.push(el);
+          });
+        }
+
+        const quiz = {
+          code: localStorage.getItem("code-create"),
+          questions: updatedQuestion,
+        };
+
+        localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
+        setIsEdit(false);
+        return quiz.questions;
+      });
+    } else {
+      setQuestions((prevQuestions) => {
+        const updatedQuestions = [...prevQuestions, question];
+
+        const quiz = {
+          code: localStorage.getItem("code-create"),
+          questions: updatedQuestions,
+        };
+        localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
+        return updatedQuestions;
+      });
     }
-
-    window.addEventListener("beforeunload", () => {
-      if (!sessionStorage.getItem("page-loaded")) {
-        localStorage.removeItem("code-create");
-      }
-    });
-  }, []);
-
-  generateCode();
-
+  };
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -90,8 +141,9 @@ export const CreateQuiz = ({ isUpdateUrl }) => {
         params.set("code", localStorage.getItem("code-create"));
         sessionStorage.setItem("page-loaded", true);
       } else {
-        localStorage.setItem("code-create", result);
-        params.set("code", result);
+        const newCode = generateCode();
+        localStorage.setItem("code-create", newCode);
+        params.set("code", newCode);
         sessionStorage.setItem("page-loaded", true);
       }
 
@@ -99,24 +151,87 @@ export const CreateQuiz = ({ isUpdateUrl }) => {
     }
     setUrl();
   }, []);
+  useEffect(() => {
+    let saved = localStorage.getItem(
+      `quiz-${localStorage.getItem("code-create")}`
+    );
+    if (saved) {
+      if (localStorage.getItem("code-create") === JSON.parse(saved).code) {
+        try {
+          const parsed = JSON.parse(saved);
 
+          setQuestions(parsed.questions || []);
+        } catch (e) {
+          throw new Error(e.message);
+        }
+      }
+    }
+
+    window.addEventListener("beforeunload", () => {
+      if (!sessionStorage.getItem("page-loaded")) {
+        localStorage.removeItem("code-create");
+      }
+    });
+  }, []);
+
+  generateCode();
+  const [questionEdit, setQuestionEdit] = useState({});
+  const [isEdit, setIsEdit] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
+  const onEdit = (question) => {
+    console.log(question);
+  };
   const addQuestion = () => {
     setIsShowModal((isShow) => !isShow);
   };
+  const url = "https://quiz-server-kkjt.onrender.com/save";
+  
+  const saveQuiz = () => {
 
+    let quiz = JSON.parse(localStorage.getItem(`quiz-${localStorage.getItem("code-create")}`))
+    if (quiz) {
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", 
+        },
+        body: JSON.stringify(quiz), 
+      });
+    }
+    localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`)
+  };
+  const deleteQuiz = () => {
+    localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
+    localStorage.removeItem(`code-create`);
+  };
   return (
     <div className={style.container}>
       <header className={style.header}>
         <h1 className={style.title}>Quiz App</h1>
       </header>
       <div className={style.main}>
+        <div className="c">
+          <NavLink to="/" className={style.save} onClick={saveQuiz}>
+            Зберегти
+          </NavLink>
+          <NavLink to="/" className={style.back} onClick={deleteQuiz}>
+            Назад
+          </NavLink>
+        </div>
         <ul>
           {questions.map((question) => {
             return (
               <Question
                 number={question.numberQuestion}
                 key={question.numberQuestion}
+                title={question.title}
+                variants={question.variants}
+                onEdit={onEdit}
+                setIsEdit={setIsEdit}
+                setIsShowModal={setIsShowModal}
+                setQuestionEdit={setQuestionEdit}
+                setNumberAlt={setNumberAlt}
+                onDelete={onDelete}
               />
             );
           })}
@@ -133,6 +248,9 @@ export const CreateQuiz = ({ isUpdateUrl }) => {
               onClose={() => setIsShowModal(false)}
               onChangeQuestions={onChangeQuestions}
               numberQuestion={numberQuestion}
+              editQuestion={isEdit && questionEdit}
+              plusNumberQuestion={() => setNumberQuestion((prev) => prev + 1)}
+              numberAlt={numberAlt}
             />
           )}
         </ul>

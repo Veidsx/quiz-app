@@ -171,3 +171,15 @@ header {
 		text-align: center;
 	}
 }
+
+.save, .back {
+	padding: 15px;
+	background-color: var(--text-color-header);
+	border: 0;
+	border-radius: 10px;
+	margin-right: 10px;
+	position: relative;
+	top: 30px;
+	text-decoration: none;
+	color: black;
+}

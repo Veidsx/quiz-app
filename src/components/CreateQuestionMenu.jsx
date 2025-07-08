@@ -1,5 +1,5 @@
 import style from "./css/CreateQuiz.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Variant({ index, value, fDel, onChange, isCorrect, changeCorrect }) {
   return (
@@ -38,8 +38,14 @@ function ModalError({ textError }) {
     </div>
   );
 }
-export const Modal = ({ onClose, onChangeQuestions, numberQuestion }) => {
-
+export const Modal = ({
+  onClose,
+  onChangeQuestions,
+  numberQuestion,
+  editQuestion,
+  plusNumberQuestion,
+  numberAlt
+}) => {
   let [variants, updateVariants] = useState([
     { value: "", isCorrect: false },
     { value: "", isCorrect: false },
@@ -66,6 +72,15 @@ export const Modal = ({ onClose, onChangeQuestions, numberQuestion }) => {
       prev.map((v, i) => ({ ...v, isCorrect: i === index }))
     );
   };
+  const [isEditQuestion, setIsEditQuestion] = useState(false);
+
+  useEffect(() => {
+    if (editQuestion) {
+      setValueTextArea(editQuestion.title);
+      updateVariants(editQuestion.variants);     
+      setIsEditQuestion(true);
+    }
+  }, [editQuestion]);
 
   const [value_textarea, setValueTextArea] = useState("");
   const [isShowModalError, setIsShowModalError] = useState(false);
@@ -94,7 +109,7 @@ export const Modal = ({ onClose, onChangeQuestions, numberQuestion }) => {
       showError();
       return false;
     }
-
+    
     return true;
   };
 
@@ -102,18 +117,28 @@ export const Modal = ({ onClose, onChangeQuestions, numberQuestion }) => {
     setIsShowModalError(true);
     setTimeout(() => setIsShowModalError(false), 1000);
   };
-
-  const createQuestion = () => {
+  const updateQuestion = () => {
     if (!catchErrors()) return;
-    numberQuestion++;
+    
     const question = {
       numberQuestion,
       title: value_textarea,
-      question: variants,
+      variants: variants,
     };
-    onChangeQuestions(question)
-    onClose()
-
+    onChangeQuestions(question, true);
+    onClose();
+  };
+  const createQuestion = () => {
+    if (!catchErrors()) return;
+    plusNumberQuestion()
+    console.log(numberQuestion)
+    const question = {
+      numberQuestion,
+      title: value_textarea,
+      variants: variants,
+    };
+    onChangeQuestions(question, false);
+    onClose();
   };
   return (
     <div className={style.modal} style={{ height: `${heigth}` }}>
@@ -149,7 +174,11 @@ export const Modal = ({ onClose, onChangeQuestions, numberQuestion }) => {
       <button onClick={addVariant}>Додати варіант відповіді</button>
       <div className={style.btns}>
         <button onClick={onClose}>Назад</button>
-        <button onClick={createQuestion}>Створити запитання</button>
+        {isEditQuestion ? (
+          <button onClick={updateQuestion}>Оновити запитання</button>
+        ) : (
+          <button onClick={createQuestion}>Створити запитання</button>
+        )}
       </div>
     </div>
   );
