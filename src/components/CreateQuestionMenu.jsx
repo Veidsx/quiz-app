@@ -21,7 +21,7 @@ function Variant({ index, value, fDel, onChange, isCorrect, changeCorrect }) {
       </label>
       {index >= 2 && (
         <img
-          src="/img/x-circle-svgrepo-com(1).svg"
+          src="https://quiz-server-kkjt.onrender.com/icons/delete.svg"
           alt={"delete"}
           className={style.del_variant}
           onClick={() => fDel(index)}
