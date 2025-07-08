@@ -27,11 +27,14 @@ export const Modal = ({ onClose }) => {
     console.log(data);
     return data;
   };
+  let [isShowLoader, setIsShowLoader] = useState(false)
   const catchErrors = async () => {
     try {
       let codes = await fetchCodes(urlGet);
-
+      setIsShowLoader((prev) => !prev)
+     
       if (codes.includes(value)) {
+        setIsShowLoader((prev) => !prev)
         return true;
       } else {
         console.log(1);
@@ -40,6 +43,7 @@ export const Modal = ({ onClose }) => {
         setTimeout(() => {
           setIsShowError(false);
         }, 1000);
+        setIsShowLoader((prev) => !prev)
         return false;
       }
     } catch(error) {
@@ -70,6 +74,7 @@ export const Modal = ({ onClose }) => {
         value={value}
         maxLength={6}
       />
+      {isShowLoader &&  <div class={styles.loader}></div>}
       <button className={styles.btn_start} onClick={startHandler}>
         Почати
       </button>
