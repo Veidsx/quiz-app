@@ -13,7 +13,6 @@ function Question({
   setNumberAlt,
   onDelete,
 }) {
-  const [num, setNum] = useState(number);
 
   const onEdit = (e) => {
     setIsShowModal((prev) => !prev);
@@ -27,13 +26,13 @@ function Question({
       Запитання {number}
       <div>
         <img
-          src="/img/x-circle-svgrepo-com(1).svg"
+          src="https://quiz-server-kkjt.onrender.com/icons/delete.svg"
           alt={number}
           className={style.newQuestion}
           onClick={onDelete}
         />
         <img
-          src="/img/edit-svgrepo-com(3).svg"
+          src="https://quiz-server-kkjt.onrender.com/icons/edit.svg"
           alt={number}
           className={style.newQuestion}
           onClick={onEdit}
@@ -237,7 +236,7 @@ export const CreateQuiz = () => {
           })}
           <div className={style.add_question} onClick={addQuestion}>
             <img
-              src="/img/plus-circle-svgrepo-com(1).svg"
+              src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
               alt=""
               className={style.newQuestion}
             />
