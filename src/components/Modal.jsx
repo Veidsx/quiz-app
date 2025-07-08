@@ -25,19 +25,21 @@ export const Modal = ({ onClose }) => {
     let response = await fetch(urlGet);
     let data = await response.json();
     console.log(data);
+    setIsShowLoader(true)
     return data;
   };
   let [isShowLoader, setIsShowLoader] = useState(false)
+
   const catchErrors = async () => {
+
     try {
       let codes = await fetchCodes(urlGet);
-      setIsShowLoader((prev) => !prev)
+      
      
       if (codes.includes(value)) {
-        setIsShowLoader((prev) => !prev)
+        setIsShowLoader(false)
         return true;
       } else {
-        console.log(1);
         setTextError("Такого коду не існує");
         setIsShowError(true);
         setTimeout(() => {
@@ -57,6 +59,7 @@ export const Modal = ({ onClose }) => {
     }
   };
   const startHandler = async (e) => {
+    setIsShowLoader(true)
     const isValid = await catchErrors();
     if (!isValid) return;
 
