@@ -1,0 +1,81 @@
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+    .checkboxWrapper input[type=checkbox] {
+      --active: #366a35;
+      --active-inner: #fff;
+      --focus: 2px rgba(110, 172, 91, 0.3);
+      --border: #bbe1bd;
+      --border-hover: #3d6b43;
+      --background: #fff;
+      --disabled: #F6F8FF;
+      --disabled-inner: #E1E6F9;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      height: 21px;
+      width: 21px;
+      outline: none;
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
+      margin: 0;
+			margin-top: 10px;
+      cursor: pointer;
+      border-radius: 7px;
+      border: 1px solid var(--bc, var(--border));
+      background: var(--b, var(--background));
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+    }
+
+    .checkboxWrapper input[type=checkbox]:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 5px;
+      height: 9px;
+      border: 2px solid var(--active-inner);
+      border-top: 0;
+      border-left: 0;
+      top: 4px;
+      left: 7px;
+      opacity: 0;
+      transform: rotate(20deg);
+      transition: transform 0.3s ease, opacity 0.2s;
+    }
+
+    .checkboxWrapper input[type=checkbox]:checked {
+      --b: var(--active);
+      --bc: var(--active);
+    }
+
+    .checkboxWrapper input[type=checkbox]:checked:after {
+      opacity: 1;
+      transform: rotate(43deg);
+    }
+
+    .checkboxWrapper input[type=checkbox]:disabled {
+      --b: var(--disabled);
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+
+    .checkboxWrapper input[type=checkbox]:disabled:checked {
+      --b: var(--disabled-inner);
+      --bc: var(--border);
+    }
+
+    .checkboxWrapper input[type=checkbox]:hover:not(:checked):not(:disabled) {
+      --bc: var(--border-hover);
+    }
+
+    .checkboxWrapper input[type=checkbox]:focus {
+      box-shadow: 0 0 0 var(--focus);
+    }
+  }
+
+  .checkboxWrapper * {
+    box-sizing: inherit;
+  }
+
+  .checkboxWrapper *:before,
+  .checkboxWrapper *:after {
+    box-sizing: inherit;
+  }

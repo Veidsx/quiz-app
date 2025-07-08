@@ -15,7 +15,7 @@ export const Layout = () => {
   const createNewQuiz = () => {};
 
   return (
-    <div>
+    <div className={styles.bg}>
       <header className={styles.header}>
         <h1 className={styles.title}>Quiz App</h1>
       </header>

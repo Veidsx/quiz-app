@@ -30,16 +30,27 @@ export const Modal = ({ onClose }) => {
   };
   let [isShowLoader, setIsShowLoader] = useState(false)
 
-  const catchErrors = async () => {
-
+  const catchErrors = async (e) => {
+    
     try {
+      if(value === '') {
+        setTextError("Такого коду не існує");
+        setIsShowError(true);
+        setTimeout(() => {
+          setIsShowError(false);
+        }, 1000);
+        setIsShowLoader(false)
+        return false;
+    }
       let codes = await fetchCodes(urlGet);
       
      
       if (codes.includes(value)) {
+        e.target.disabled = false
         setIsShowLoader(false)
         return true;
       } else {
+        e.target.disabled = false
         setTextError("Такого коду не існує");
         setIsShowError(true);
         setTimeout(() => {
@@ -49,6 +60,7 @@ export const Modal = ({ onClose }) => {
         return false;
       }
     } catch(error) {
+      e.target.disabled = false
       console.error("❌ Помилка при перевірці коду:", error);
       setTextError("Помилка з'єднання із сервером");
       setIsShowError(true);
@@ -60,7 +72,8 @@ export const Modal = ({ onClose }) => {
   };
   const startHandler = async (e) => {
     setIsShowLoader(true)
-    const isValid = await catchErrors();
+    e.target.disabled = true
+    const isValid = await catchErrors(e);
     if (!isValid) return;
 
     navigate("/test");
@@ -77,7 +90,7 @@ export const Modal = ({ onClose }) => {
         value={value}
         maxLength={6}
       />
-      {isShowLoader &&  <div class={styles.loader}></div>}
+      {isShowLoader &&  <div className={styles.loader}></div>}
       <button className={styles.btn_start} onClick={startHandler}>
         Почати
       </button>

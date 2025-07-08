@@ -1,4 +1,5 @@
 import style from "./css/CreateQuiz.module.css";
+import checkbox from "./css/CheckBox.module.css";
 import { useEffect, useState } from "react";
 
 function Variant({ index, value, fDel, onChange, isCorrect, changeCorrect }) {
@@ -12,13 +13,15 @@ function Variant({ index, value, fDel, onChange, isCorrect, changeCorrect }) {
         onChange={(e) => onChange(index, e.target.value)}
         value={value}
       />
-      <label>
+
+      <span className={checkbox.checkboxWrapper}>
         <input
           type="checkbox"
           checked={isCorrect}
           onChange={(e) => changeCorrect(index, e.target.checked)}
         />
-      </label>
+      </span>
+
       {index >= 2 && (
         <img
           src="https://quiz-server-kkjt.onrender.com/icons/delete.svg"
@@ -44,7 +47,6 @@ export const Modal = ({
   numberQuestion,
   editQuestion,
   plusNumberQuestion,
-  numberAlt
 }) => {
   let [variants, updateVariants] = useState([
     { value: "", isCorrect: false },
@@ -77,7 +79,7 @@ export const Modal = ({
   useEffect(() => {
     if (editQuestion) {
       setValueTextArea(editQuestion.title);
-      updateVariants(editQuestion.variants);     
+      updateVariants(editQuestion.variants);
       setIsEditQuestion(true);
     }
   }, [editQuestion]);
@@ -109,7 +111,7 @@ export const Modal = ({
       showError();
       return false;
     }
-    
+
     return true;
   };
 
@@ -119,7 +121,7 @@ export const Modal = ({
   };
   const updateQuestion = () => {
     if (!catchErrors()) return;
-    
+
     const question = {
       numberQuestion,
       title: value_textarea,
@@ -130,8 +132,8 @@ export const Modal = ({
   };
   const createQuestion = () => {
     if (!catchErrors()) return;
-    plusNumberQuestion()
-    console.log(numberQuestion)
+    plusNumberQuestion();
+    console.log(numberQuestion);
     const question = {
       numberQuestion,
       title: value_textarea,
@@ -171,7 +173,7 @@ export const Modal = ({
         })}
       </ul>
 
-      <button onClick={addVariant}>Додати варіант відповіді</button>
+      <button onClick={addVariant} className={style.add_question_btn}>Додати варіант відповіді</button>
       <div className={style.btns}>
         <button onClick={onClose}>Назад</button>
         {isEditQuestion ? (

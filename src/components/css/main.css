@@ -1,3 +1,14 @@
+:root {
+	--text-color-header:rgb(92, 138, 113);
+	--btn-select-color:rgb(92, 138, 113);
+	--active-btn-select-color:rgb(64, 95, 78);
+	--body-bg:#afabab;
+	--element-bg:#333;
+}
+
 #root {
 	height: 100vh;
+	position: absolute;
+	width: 100%;
+	background-color: var(--body-bg);
 }

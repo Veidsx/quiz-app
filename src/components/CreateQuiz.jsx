@@ -13,7 +13,6 @@ function Question({
   setNumberAlt,
   onDelete,
 }) {
-
   const onEdit = (e) => {
     setIsShowModal((prev) => !prev);
     setIsEdit(true);
@@ -46,7 +45,7 @@ export const CreateQuiz = () => {
   function generateCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
-  
+
   let [questions, setQuestions] = useState([]);
   let [numberQuestion, setNumberQuestion] = useState(1);
   let [numberAlt, setNumberAlt] = useState(0);
@@ -184,20 +183,21 @@ export const CreateQuiz = () => {
     setIsShowModal((isShow) => !isShow);
   };
   const url = "https://quiz-server-kkjt.onrender.com/save";
-  
-  const saveQuiz = () => {
 
-    let quiz = JSON.parse(localStorage.getItem(`quiz-${localStorage.getItem("code-create")}`))
+  const saveQuiz = () => {
+    let quiz = JSON.parse(
+      localStorage.getItem(`quiz-${localStorage.getItem("code-create")}`)
+    );
     if (quiz) {
       fetch(url, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(quiz), 
+        body: JSON.stringify(quiz),
       });
     }
-    localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`)
+    localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
   };
   const deleteQuiz = () => {
     localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
@@ -209,50 +209,59 @@ export const CreateQuiz = () => {
         <h1 className={style.title}>Quiz App</h1>
       </header>
       <div className={style.main}>
-        <div className="c">
-          <NavLink to="/" className={style.save} onClick={saveQuiz}>
-            Зберегти
-          </NavLink>
-          <NavLink to="/" className={style.back} onClick={deleteQuiz}>
-            Назад
-          </NavLink>
-        </div>
-        <ul>
-          {questions.map((question) => {
-            return (
-              <Question
-                number={question.numberQuestion}
-                key={question.numberQuestion}
-                title={question.title}
-                variants={question.variants}
-                onEdit={onEdit}
-                setIsEdit={setIsEdit}
-                setIsShowModal={setIsShowModal}
-                setQuestionEdit={setQuestionEdit}
-                setNumberAlt={setNumberAlt}
-                onDelete={onDelete}
-              />
-            );
-          })}
-          <div className={style.add_question} onClick={addQuestion}>
-            <img
-              src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
-              alt=""
-              className={style.newQuestion}
-            />
-            Додати запитання
+        {!isShowModal && (
+          <div className="c">
+            <NavLink to="/" className={style.save} onClick={saveQuiz}>
+              Зберегти
+            </NavLink>
+            <NavLink to="/" className={style.back} onClick={deleteQuiz}>
+              Назад
+            </NavLink>
           </div>
-          {isShowModal && (
-            <Modal
-              onClose={() => setIsShowModal(false)}
-              onChangeQuestions={onChangeQuestions}
-              numberQuestion={numberQuestion}
-              editQuestion={isEdit && questionEdit}
-              plusNumberQuestion={() => setNumberQuestion((prev) => prev + 1)}
-              numberAlt={numberAlt}
-            />
-          )}
-        </ul>
+        )}
+
+        {!isShowModal && (
+          <ul className={style.questions2}>
+            {questions.map((question) => {
+              return (
+                <Question
+                  number={question.numberQuestion}
+                  key={question.numberQuestion}
+                  title={question.title}
+                  variants={question.variants}
+                  onEdit={onEdit}
+                  setIsEdit={setIsEdit}
+                  setIsShowModal={setIsShowModal}
+                  setQuestionEdit={setQuestionEdit}
+                  setNumberAlt={setNumberAlt}
+                  onDelete={onDelete}
+                />
+              );
+            })}
+            <div className={style.add_question} onClick={addQuestion}>
+              <img
+                src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
+                alt=""
+                className={style.newQuestion}
+              />
+              Додати запитання
+            </div>
+          </ul>
+        )}
+
+        {isShowModal && (
+          <Modal
+            onClose={() => {
+              setIsShowModal(false);
+              setIsEdit(false);
+            }}
+            onChangeQuestions={onChangeQuestions}
+            numberQuestion={numberQuestion}
+            editQuestion={isEdit && questionEdit}
+            plusNumberQuestion={() => setNumberQuestion((prev) => prev + 1)}
+            numberAlt={numberAlt}
+          />
+        )}
       </div>
     </div>
   );
