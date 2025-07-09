@@ -9,7 +9,7 @@
 	<h1>404</h1>
 	<script>
   // Перевіряємо, чи ми вже були перенаправлені
-  if (!location.pathname.startsWith("/quiz-app/index.html")) {
+  if (!location.pathname.startsWith("/quiz-app/")) {
     location.replace("/quiz-app/" + location.search + location.hash);
   }
 </script>
