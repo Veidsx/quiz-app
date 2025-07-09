@@ -10,7 +10,7 @@
 	<script>
   // Перевіряємо, чи ми вже були перенаправлені
   if (!location.pathname.startsWith("/quiz-app/index.html")) {
-    location.replace("/quiz-app/index.html" + location.search + location.hash);
+    location.replace("/quiz-app/" + location.search + location.hash);
   }
 </script>
 </body>
