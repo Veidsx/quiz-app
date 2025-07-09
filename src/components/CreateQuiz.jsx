@@ -22,7 +22,7 @@ function Question({
 
   return (
     <li className={style.question_li}>
-      Запитання {number}
+      {title}
       <div>
         <img
           src="https://quiz-server-kkjt.onrender.com/icons/delete.svg"

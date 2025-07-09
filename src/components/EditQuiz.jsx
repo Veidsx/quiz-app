@@ -27,7 +27,7 @@ function Question({
 
   return (
     <li className={style.question_li}>
-      Запитання {number}
+      {title}
       <div>
         <img
           src="https://quiz-server-kkjt.onrender.com/icons/delete.svg"
@@ -69,20 +69,26 @@ export const EditQuiz = () => {
 
   const updateData = (quiz) => {
     const quizLocal = JSON.parse(localStorage.getItem(`quiz-${code}`));
+    // console.log(quizLocal.questions.length)
     if (quizLocal) {
       setQuiz(quizLocal);
-      setQuestions(quizLocal.questions);
+      setQuestions(quizLocal.questions);  
+      setNumberQuestion(quizLocal.questions.length)
     } else {
       setQuestions(quiz.questions);
+      setNumberQuestion(quiz.questions.length)
     }
     setNumberQuestion((prev) => prev + 1);
   };
   let onDelete = (e) => {
+    console.log(e.target.id)
     const deleteNumber = +e.target.id;
-
+    
     setQuestions((prevQuestions) => {
       let newQuestions = prevQuestions
-        .filter((q) => q.numberQuestion !== deleteNumber)
+        .filter((q) => {
+          console.log(deleteNumber, q.numberQuestion)
+          return q.numberQuestion !== deleteNumber})
         .map((el) => {
           return el.numberQuestion > deleteNumber
             ? { ...el, numberQuestion: el.numberQuestion - 1 }
@@ -220,32 +226,6 @@ export const EditQuiz = () => {
     localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
 
     navigate("/done-quiz");
-    // if (newQuiz) {
-    //   fetch(url, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(newQuiz),
-    //   });
-
-    //   let quizes = JSON.parse(localStorage.getItem("quizes"));
-
-    //   if (quizes) {
-    //     localStorage.setItem("quizes", JSON.stringify(filtered));
-    //   } else {
-    //     localStorage.setItem("quizes", JSON.stringify([newQuiz]));
-    //   }
-    //   localStorage.setItem("code-for-info", quiz.code);
-    //   localStorage.removeItem("author");
-    //   localStorage.removeItem("title");
-    //   navigate("/done-quiz");
-    // } else {
-    //   localStorage.removeItem("author");
-    //   localStorage.removeItem("title");
-    //   navigate("/");
-    // }
-    // localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
   };
   const deleteQuiz = () => {
     localStorage.removeItem("author");
