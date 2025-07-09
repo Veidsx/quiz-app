@@ -41,6 +41,7 @@ header {
   align-items: center;
   justify-content: center;
   p {
+    color: #000;
     font-size: 30px;
   }
 }
@@ -57,7 +58,7 @@ header {
     flex-grow: 1;
     flex-shrink: 1;
     text-align: center;
-    height: 63vh;
+    height: 62vh;
     display: flex;
     align-items: center;
     justify-content: center;

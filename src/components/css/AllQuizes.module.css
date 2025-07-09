@@ -7,7 +7,7 @@
 }
 
 header {
-  height: 80px;
+  height: 100px;
   background-color: var(--element-bg);
   position: absolute;
   top: 0;
@@ -25,9 +25,9 @@ header {
 .tests {
   width: 100%;
   height: 100vh;
-  display: flex;  
+  display: flex;
   gap: 50px 150px;
-  align-content:flex-start;
+  align-content: flex-start;
   justify-content: flex-start;
   padding: 0 14%;
   flex-wrap: wrap;
@@ -44,23 +44,57 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
 .toTest {
   margin-top: auto;
   position: relative;
   top: 30px;
-	text-decoration: none;
-	color: black;
-	padding: 15px;
-	background-color: var(--active-btn-select-color);
-	margin-bottom: 15px;
-	border-radius: 10px;
+  text-decoration: none;
+  color: black;
+  padding: 15px;
+  background-color: var(--active-btn-select-color);
+  margin-bottom: 15px;
+  border-radius: 10px;
   transition: 0.2s;
 }
 
 .toTest:hover {
-  background-color: rgb(48, 69, 58) ;
+  background-color: rgb(48, 69, 58);
+}
+.div_search {
+  z-index: 999;
+  width: 100%;
+  height: 0vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  margin-top: 10px;
+  button {
+    margin-top: -50px;
+    color: black;
+    background-color: var(--active-btn-select-color);
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: rgb(48, 69, 58);
+  }
+}
+.search {
+  margin-top: -50px;
+  height: 30px;
+  width: 200px;
+}
+.searchNot {
+  position: absolute;
+  top: 500px;
+  left: 600px;
 }
 .center_loader {
   display: flex;
@@ -70,19 +104,21 @@ header {
   height: 100vh;
 }
 .loader {
-	position: absolute;
+  position: absolute;
   width: 50px;
   padding: 8px;
   aspect-ratio: 1;
   border-radius: 50%;
   background: #25b09b;
-  --_m: 
-    conic-gradient(#0000 10%,#000),
-    linear-gradient(#000 0 0) content-box;
+  --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
   -webkit-mask: var(--_m);
-          mask: var(--_m);
+  mask: var(--_m);
   -webkit-mask-composite: source-out;
-          mask-composite: subtract;
+  mask-composite: subtract;
   animation: l3 1s infinite linear;
 }
-@keyframes l3 {to{transform: rotate(1turn)}}
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
+  }
+}
