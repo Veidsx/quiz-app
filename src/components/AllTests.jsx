@@ -26,7 +26,7 @@ export const AllTests = () => {
     }
 
     let search_result = quizesRender.filter((quiz) =>
-      quiz.title.replace(/\s/g, "").includes(value)
+      quiz.title.replace(/\s/g, "").toLowerCase().includes(value.toLowerCase())
     );
     if(search_result.toString() === [].toString()){
       setSearchNotDefined(true)
