@@ -12,7 +12,15 @@ export const Result = () => {
   return (
     <div>
       <header className={style.header}>
-        <NavLink className={style.title} to={"/"}>
+        <NavLink
+          className={style.title}
+          onClick={() => {
+            localStorage.removeItem("result")
+            localStorage.removeItem("author")
+            localStorage.removeItem("title")
+          }}
+          to={"/"}
+        >
           Quiz App
         </NavLink>
       </header>
@@ -44,9 +52,13 @@ export const Result = () => {
               ></span>
             </div>
           </div>
-        <NavLink to="/" className={style.backHome}>
-          Повернутись на головний екран
-        </NavLink>
+          <NavLink
+            to="/"
+            className={style.backHome}
+            onClick={localStorage.removeItem("result")}
+          >
+            Повернутись на головний екран
+          </NavLink>
         </div>
       </div>
     </div>

@@ -1,0 +1,61 @@
+:root {
+  --text-color-header: rgb(92, 138, 113);
+  --btn-select-color: rgb(92, 138, 113);
+  --active-btn-select-color: rgb(64, 95, 78);
+  --body-bg: #afabab;
+  --element-bg: #333;
+}
+
+header {
+  height: 80px;
+  background-color: var(--element-bg);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+
+.title {
+  color: var(--text-color-header);
+  text-align: center;
+  font-size: 40px;
+  text-decoration: none;
+}
+.center_quizes {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+	align-items: center;
+  justify-content: center;
+}
+.quizes {
+  display: flex;
+  justify-content: center;
+	align-items:start;
+	gap: 20px;
+  width: 900px;
+  height: 600px;
+	flex-wrap: wrap;
+}
+
+.quiz {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 300px;
+	height: 150px;
+	background-color: var(--element-bg);
+	border-radius: 10px;
+}
+.btns {
+	margin-top: auto;
+	margin-bottom: 15px;
+}
+.btns button {
+	padding: 5px;
+	background-color: var(--text-color-header);
+	border: none;
+	margin-right: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+}

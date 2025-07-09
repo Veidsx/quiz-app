@@ -8,7 +8,7 @@ export const QuizCreatePage = () => {
     setTimeout(() => {
       e.target.textContent = 'Копіювати посилання 📋'
     }, 1000)
-    navigator.clipboard.writeText(url)
+    navigator.clipboard.writeText(`${window.location.origin}${url}`)
   }
   return (
     <div>

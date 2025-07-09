@@ -79,6 +79,7 @@ export const Modal = ({
   useEffect(() => {
     if (editQuestion) {
       setValueTextArea(editQuestion.title);
+      console.log(editQuestion);
       updateVariants(editQuestion.variants);
       setIsEditQuestion(true);
     }
@@ -91,7 +92,7 @@ export const Modal = ({
   const onChangeTextArea = (e) => {
     setValueTextArea(e.target.value);
   };
-  const catchErrors = () => {
+  const catchErrors = (arr) => {
     if (value_textarea.trim() === "") {
       setTextError("Заповніть поле запитання");
       showError();
@@ -111,16 +112,39 @@ export const Modal = ({
       showError();
       return false;
     }
-    const variant1 = variants[0];
-    for (let i = 1; i < variants.length; i++) {
-      if (variant1.value === variants[i].value) {
-        setTextError("Відповіді мають бути різні");
-        showError();
-        return false;
-      }
+
+    const hasDuplicates = (arr) => {
+      const values = arr.map((v) => v.value.trim().toLowerCase());
+      return new Set(values).size !== values.length;
+    };
+
+    if (hasDuplicates(arr)) {
+      setTextError("Відповіді мають бути різні");
+      showError();
+      return false;
     }
 
     return true;
+  };
+
+  const isQuestionChanged = () => {
+    if (!editQuestion) return true;
+
+    const originalTitle = editQuestion.title.trim();
+    const currentTitle = value_textarea.trim();
+
+    if (originalTitle !== currentTitle) return true;
+
+    if (editQuestion.variants.length !== variants.length) return true;
+
+    for (let i = 0; i < variants.length; i++) {
+      const a = editQuestion.variants[i];
+      const b = variants[i];
+      if (a.value.trim() !== b.value.trim() || a.isCorrect !== b.isCorrect) {
+        return true;
+      }
+    }
+    return false;
   };
 
   const showError = () => {
@@ -128,8 +152,14 @@ export const Modal = ({
     setTimeout(() => setIsShowModalError(false), 1000);
   };
   const updateQuestion = () => {
-    if (!catchErrors()) return;
+    console.log(variants);
+    if (!catchErrors(variants)) return;
 
+    if (!isQuestionChanged()) {
+      setTextError("Жодних змін не внесено");
+      showError();
+      return;
+    }
     const question = {
       numberQuestion,
       title: value_textarea,
@@ -139,7 +169,7 @@ export const Modal = ({
     onClose();
   };
   const createQuestion = () => {
-    if (!catchErrors()) return;
+    if (!catchErrors(variants)) return;
     plusNumberQuestion();
     console.log(numberQuestion);
     const question = {
