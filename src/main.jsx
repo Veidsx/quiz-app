@@ -9,7 +9,7 @@ import { QuizCreatePage } from './components/DoneQuizPage';
 import { YourQuizes } from './components/YourQuizes';
 import { EditQuiz } from './components/EditQuiz';
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter basename="/quiz-app">
+  <BrowserRouter basename="/quiz-app/">
     <Routes>
       <Route path="/" element={<Layout />}/>
       <Route path='/create-quiz' element={<CreateQuiz/>}/>
