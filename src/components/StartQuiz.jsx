@@ -1,7 +1,7 @@
 import style from "./css/StartQuiz.module.css";
 import { useState, useEffect } from "react";
 import { Result } from "./Result";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 
 export const StartQuiz = () => {
   let code = localStorage.getItem("code-for-start");
@@ -11,23 +11,52 @@ export const StartQuiz = () => {
   let [numQuestion, setNumQuestion] = useState(1);
   let [isShowResult, setIsShowResult] = useState(false);
   let [correctAnswers, setCorrectAnswers] = useState(0);
+  let [quiz, setQuiz] = useState("");
+  let [isShowLoader, setIsShowLoader] = useState(false);
+  let [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
-    const url = `https://quiz-server-kkjt.onrender.com/get/${code}`;
-     const fetchQuiz = async(url) => {
-      let response = await fetch(url);
-      let data = await response.json();
-      let quiz = data;
+    setIsShowLoader(true);
+    const fetchQuiz = async (url) => {
+      let response = await fetch(url).catch((error) => {
+        setIsShowLoader(false);
+      });
+      let data = await response.json().catch((error) => {
+        setIsShowLoader(false);
+      });
+      setQuiz(data);
+      localStorage.setItem('title', data.title)
+      localStorage.setItem('author', data.author)
       changeQuestion(quiz);
+      setIsShowLoader(false);
+    };
+    let url = "";
+    if (searchParams.has("code")) {
+      url = `https://quiz-server-kkjt.onrender.com/get/${searchParams.get(
+        "code"
+      )}`;
+    } else {
+      url = `https://quiz-server-kkjt.onrender.com/get/${code}`;
     }
+
     fetchQuiz(url);
-  }, [numQuestion]);
+  }, []);
+  useEffect(() => {
+    changeQuestion(quiz);
+  }, [numQuestion, quiz]);
 
-  let changeQuestion = (quiz) => {
-    setTitle(quiz.questions[numQuestion - 1].title);
-    setVariants(quiz.questions[numQuestion - 1].variants);
-    setQuizLenght(quiz.questions.length)
+  let changeQuestion = () => {
+    if (!searchParams.has("code") && quiz) {
+      const params = new URLSearchParams();
+      params.set("code", quiz.code);
+      setSearchParams(params);
+    }
+    if (quiz) {
+      setTitle(quiz.questions[numQuestion - 1].title);
+      setVariants(quiz.questions[numQuestion - 1].variants);
+      setQuizLenght(quiz.questions.length);
+    }
   };
-
 
   const getRandomColor = () => {
     const r = Math.floor(Math.random() * 156 + 50);
@@ -50,6 +79,7 @@ export const StartQuiz = () => {
         "result",
         JSON.stringify([quiz_length, nextCorrect])
       );
+      localStorage.removeItem("code-for-start");
       navigate("/result");
     } else {
       setNumQuestion((prev) => prev + 1);
@@ -58,7 +88,7 @@ export const StartQuiz = () => {
   return (
     <div>
       <header className={style.header}>
-        <h1 className={style.title}>Quiz App</h1>
+        <NavLink to='/' className={style.title}>Quiz App</NavLink>
         {!isShowResult && (
           <p>
             {numQuestion}/{quiz_length}
@@ -83,6 +113,11 @@ export const StartQuiz = () => {
               );
             })}
           </div>
+          {isShowLoader && (
+            <div className={style.center_loader}>
+              <div className={style.loader}></div>
+            </div>
+          )}
         </div>
       )}
       {isShowResult && (

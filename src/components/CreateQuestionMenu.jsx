@@ -111,6 +111,14 @@ export const Modal = ({
       showError();
       return false;
     }
+    const variant1 = variants[0];
+    for (let i = 1; i < variants.length; i++) {
+      if (variant1.value === variants[i].value) {
+        setTextError("Відповіді мають бути різні");
+        showError();
+        return false;
+      }
+    }
 
     return true;
   };
@@ -173,7 +181,9 @@ export const Modal = ({
         })}
       </ul>
 
-      <button onClick={addVariant} className={style.add_question_btn}>Додати варіант відповіді</button>
+      <button onClick={addVariant} className={style.add_question_btn}>
+        Додати варіант відповіді
+      </button>
       <div className={style.btns}>
         <button onClick={onClose}>Назад</button>
         {isEditQuestion ? (

@@ -1,6 +1,6 @@
 import style from "./css/CreateQuiz.module.css";
 import { Modal } from "./CreateQuestionMenu";
-import { useSearchParams, NavLink } from "react-router-dom";
+import { useSearchParams, NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function Question({
@@ -62,6 +62,8 @@ export const CreateQuiz = () => {
         });
       const quiz = {
         code: localStorage.getItem("code-create"),
+        author:localStorage.getItem('author'),
+        title:localStorage.getItem('title'),
         questions: newQuestions,
       };
       localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
@@ -103,6 +105,8 @@ export const CreateQuiz = () => {
 
         const quiz = {
           code: localStorage.getItem("code-create"),
+          author:localStorage.getItem('author'),
+          title:localStorage.getItem('title'),
           questions: updatedQuestion,
         };
 
@@ -116,6 +120,8 @@ export const CreateQuiz = () => {
 
         const quiz = {
           code: localStorage.getItem("code-create"),
+          author:localStorage.getItem('author'),
+          title:localStorage.getItem('title'),
           questions: updatedQuestions,
         };
         localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
@@ -184,10 +190,12 @@ export const CreateQuiz = () => {
   };
   const url = "https://quiz-server-kkjt.onrender.com/save";
 
+  let navigate = useNavigate()
   const saveQuiz = () => {
     let quiz = JSON.parse(
       localStorage.getItem(`quiz-${localStorage.getItem("code-create")}`)
     );
+    console.log(quiz)
     if (quiz) {
       fetch(url, {
         method: "POST",
@@ -196,12 +204,25 @@ export const CreateQuiz = () => {
         },
         body: JSON.stringify(quiz),
       });
+      
+      localStorage.setItem('code-for-info', quiz.code)
+      localStorage.removeItem('author')
+      localStorage.removeItem('title')
+      navigate('/done-quiz')
+    } else {
+      localStorage.removeItem('author')
+      localStorage.removeItem('title')
+      navigate('/')
     }
     localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
+    
   };
   const deleteQuiz = () => {
+    localStorage.removeItem('author')
+    localStorage.removeItem('title')
     localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
     localStorage.removeItem(`code-create`);
+    navigate('/')
   };
   return (
     <div className={style.container}>
@@ -211,12 +232,12 @@ export const CreateQuiz = () => {
       <div className={style.main}>
         {!isShowModal && (
           <div className="c">
-            <NavLink to="/" className={style.save} onClick={saveQuiz}>
+            <a className={style.save} onClick={saveQuiz}>
               Зберегти
-            </NavLink>
-            <NavLink to="/" className={style.back} onClick={deleteQuiz}>
+            </a>
+            <a className={style.back} onClick={deleteQuiz}>
               Назад
-            </NavLink>
+            </a>
           </div>
         )}
 

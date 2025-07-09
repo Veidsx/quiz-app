@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CreateQuiz } from './components/CreateQuiz'
 import { StartQuiz } from './components/StartQuiz';
 import { Result } from './components/Result';
+import { QuizCreatePage } from './components/DoneQuizPage';
+
 createRoot(document.getElementById('root')).render(
   <BrowserRouter basename="/quiz-app/">
     <Routes>
@@ -12,6 +14,9 @@ createRoot(document.getElementById('root')).render(
       <Route path='/create-quiz' element={<CreateQuiz/>}/>
       <Route path='/test' element={<StartQuiz/>}/>
       <Route path='/result' element={<Result/>}/>
+      <Route path='/done-quiz' element={<QuizCreatePage/>}/>
+
+      
     </Routes>
   </BrowserRouter>
 )

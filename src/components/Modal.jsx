@@ -29,28 +29,30 @@ export const Modal = ({ onClose }) => {
     return data;
   };
   let [isShowLoader, setIsShowLoader] = useState(false)
+  let [isDisabled, setIsDisabled] = useState(false)
 
   const catchErrors = async (e) => {
     
     try {
-      if(value === '') {
+      if(value === '' || value.length < 6) {
         setTextError("Такого коду не існує");
         setIsShowError(true);
         setTimeout(() => {
           setIsShowError(false);
         }, 1000);
         setIsShowLoader(false)
+        setIsDisabled(false)
         return false;
     }
       let codes = await fetchCodes(urlGet);
       
      
       if (codes.includes(value)) {
-        e.target.disabled = false
+        setIsDisabled(false)
         setIsShowLoader(false)
         return true;
       } else {
-        e.target.disabled = false
+        setIsDisabled(false)
         setTextError("Такого коду не існує");
         setIsShowError(true);
         setTimeout(() => {
@@ -72,11 +74,11 @@ export const Modal = ({ onClose }) => {
   };
   const startHandler = async (e) => {
     setIsShowLoader(true)
-    e.target.disabled = true
+    setIsDisabled(true)
     const isValid = await catchErrors(e);
     if (!isValid) return;
 
-    navigate("/test");
+    navigate(`/test?code=${value}`);
 
     localStorage.setItem("code-for-start", value);
   };
@@ -91,7 +93,7 @@ export const Modal = ({ onClose }) => {
         maxLength={6}
       />
       {isShowLoader &&  <div className={styles.loader}></div>}
-      <button className={styles.btn_start} onClick={startHandler}>
+      <button className={styles.btn_start} onClick={startHandler} disabled={isDisabled}>
         Почати
       </button>
       <button className={styles.btn_back} onClick={onClose}>
