@@ -39,8 +39,8 @@ jobs:
         run: npm ci
       - name: Build
         run: | 
-        npm run build
-        cp dist/index.html dist/404.html
+          npm run build
+          cp dist/index.html dist/404.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
