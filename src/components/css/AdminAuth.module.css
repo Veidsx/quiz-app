@@ -1,3 +1,26 @@
+:root {
+	--text-color-header:rgb(92, 138, 113);
+	--btn-select-color:rgb(92, 138, 113);
+	--active-btn-select-color:rgb(64, 95, 78);
+	--body-bg:#afabab;
+	--element-bg:#333;
+}
+
+header {
+	height: 80px;
+	background-color: var(--element-bg);
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 100%;
+}
+
+.title {
+	color: var(--text-color-header);
+	text-align: center;
+	font-size: 40px;
+}
+
 .auth {
   display: flex;
   width: 100%;

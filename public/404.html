@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>404</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Redirecting...</title>
 </head>
 <body>
-	<h1>404</h1>
-	<script>
-  // Перевіряємо, щоб не було нескінченного редіректу
-  if (!location.href.includes("redirected=true")) {
-    const url = new URL(location.href);
-    url.searchParams.set("redirected", "true");
-    location.replace("/quiz-app/index.html" + url.search + url.hash);
-  }
-</script>
+  <script>
+
+    const path = window.location.pathname
+      .replace(/^\/quiz-app/, '') 
+      .replace(/\/$/, '');        
+
+    location.replace('/quiz-app/index.html#' + path + window.location.search);
+  </script>
 </body>
 </html>
