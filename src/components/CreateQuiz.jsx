@@ -10,14 +10,14 @@ function Question({
   setIsShowModal,
   setIsEdit,
   setQuestionEdit,
-  setNumberAlt,
+  setId,
   onDelete,
 }) {
   const onEdit = (e) => {
     setIsShowModal((prev) => !prev);
     setIsEdit(true);
     setQuestionEdit({ numberQuestion: number, title, variants: variants });
-    setNumberAlt(e.target.alt);
+    setId(e.target.id);
   };
 
   return (
@@ -25,12 +25,14 @@ function Question({
       {title}
       <div>
         <img
+          id={number}
           src="https://quiz-server-kkjt.onrender.com/icons/delete.svg"
           alt={number}
           className={style.newQuestion}
           onClick={onDelete}
         />
         <img
+          id={number}
           src="https://quiz-server-kkjt.onrender.com/icons/edit.svg"
           alt={number}
           className={style.newQuestion}
@@ -49,7 +51,7 @@ export const CreateQuiz = () => {
 
   let [questions, setQuestions] = useState([]);
   let [numberQuestion, setNumberQuestion] = useState(1);
-  let [numberAlt, setNumberAlt] = useState(0);
+  let [id, setId] = useState(0);
   let onDelete = (e) => {
     const deleteNumber = +e.target.alt;
 
@@ -260,7 +262,7 @@ export const CreateQuiz = () => {
                   setIsEdit={setIsEdit}
                   setIsShowModal={setIsShowModal}
                   setQuestionEdit={setQuestionEdit}
-                  setNumberAlt={setNumberAlt}
+                  setId={setId}
                   onDelete={onDelete}
                 />
               );
@@ -286,7 +288,7 @@ export const CreateQuiz = () => {
             numberQuestion={numberQuestion}
             editQuestion={isEdit && questionEdit}
             plusNumberQuestion={() => setNumberQuestion((prev) => prev + 1)}
-            numberAlt={numberAlt}
+            numberAlt={id}
           />
         )}
       </div>
