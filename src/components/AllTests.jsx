@@ -5,11 +5,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 export const AllTests = () => {
   let url = "https://quiz-server-kkjt.onrender.com/all";
   const urlA = `test?code=`;
+  let [isShowLoader, setIsShowLoader] = useState(false);
   let [quizes, setQuizes] = useState([]);
   useEffect(() => {
+    setIsShowLoader(true)
+    
     const fetchTests = async (url) => {
       let response = await fetch(url);
       let data = await response.json();
+      setIsShowLoader(false)
       setQuizes(data);
     };
     fetchTests(url);
@@ -25,7 +29,13 @@ export const AllTests = () => {
           Quiz App
         </NavLink>
       </header>
+      {isShowLoader && (
+            <div className={styles.center_loader}>
+              <div className={styles.loader}></div>
+            </div>
+          )}
       <div className={styles.tests}>
+        
         {quizes.map((quiz) => {
           return (
             <div key={quiz.code} className={styles.test}>
