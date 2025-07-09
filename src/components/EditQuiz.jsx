@@ -72,23 +72,24 @@ export const EditQuiz = () => {
     // console.log(quizLocal.questions.length)
     if (quizLocal) {
       setQuiz(quizLocal);
-      setQuestions(quizLocal.questions);  
-      setNumberQuestion(quizLocal.questions.length)
+      setQuestions(quizLocal.questions);
+      setNumberQuestion(quizLocal.questions.length);
     } else {
       setQuestions(quiz.questions);
-      setNumberQuestion(quiz.questions.length)
+      setNumberQuestion(quiz.questions.length);
     }
     setNumberQuestion((prev) => prev + 1);
   };
   let onDelete = (e) => {
-    console.log(e.target.id)
+    console.log(e.target.id);
     const deleteNumber = +e.target.id;
-    
+
     setQuestions((prevQuestions) => {
       let newQuestions = prevQuestions
         .filter((q) => {
-          console.log(deleteNumber, q.numberQuestion)
-          return q.numberQuestion !== deleteNumber})
+          console.log(deleteNumber, q.numberQuestion);
+          return q.numberQuestion !== deleteNumber;
+        })
         .map((el) => {
           return el.numberQuestion > deleteNumber
             ? { ...el, numberQuestion: el.numberQuestion - 1 }
@@ -188,7 +189,9 @@ export const EditQuiz = () => {
   const url = `https://quiz-server-kkjt.onrender.com/update/${code}`;
 
   let navigate = useNavigate();
+  const [isShowLoader, setIsShowLoader] = useState(false);
   const saveQuiz = async () => {
+    setIsShowLoader(true)
     let newQuiz = JSON.parse(
       localStorage.getItem(`quiz-${localStorage.getItem("edit-quiz")}`)
     );
@@ -199,10 +202,12 @@ export const EditQuiz = () => {
     const oldQuiz = await res.json();
 
     const isEqual = JSON.stringify(newQuiz) === JSON.stringify(oldQuiz);
-    if (isEqual) {
+
+    if (!isEqual) {
       console.log("❌ Нічого не змінилось");
+      setIsShowLoader(false)
       navigate("/done-quiz");
-      return;
+      return false;
     }
     await fetch(url, {
       method: "PUT",
@@ -211,14 +216,14 @@ export const EditQuiz = () => {
       },
       body: JSON.stringify(newQuiz),
     });
-
+    
     const quizes = JSON.parse(localStorage.getItem("quizes")) || [];
     const updatedQuizes = quizes.map((q) => (q.code === code ? newQuiz : q));
 
     if (!updatedQuizes.find((q) => q.code === code)) {
       updatedQuizes.push(newQuiz);
     }
-		console.log(Array.isArray(quiz.questions));
+    setIsShowLoader(false)
     localStorage.setItem("quizes", JSON.stringify(updatedQuizes));
     localStorage.setItem("code-for-info", quiz.code);
     localStorage.removeItem("author");
@@ -251,7 +256,11 @@ export const EditQuiz = () => {
             </a>
           </div>
         )}
-
+        {isShowLoader && (
+          <div className={style.center_loader}>
+            <div className={style.loader}></div>
+          </div>
+        )}
         {!isShowModal && (
           <ul className={style.questions2}>
             {questions.map((question) => {

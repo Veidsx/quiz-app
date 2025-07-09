@@ -59,3 +59,29 @@ header {
 	border-radius: 10px;
 	cursor: pointer;
 }
+.btns button:hover {
+  background-color: rgb(62, 95, 77);  
+}
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.back {
+  padding: 15px;
+	background-color: var(--text-color-header);
+	border: none;
+	margin-right: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+  color: black;
+  margin-top: 20px;
+  transition: 0.2s;
+}
+.back:hover {
+  background-color: rgb(62, 95, 77);  
+}

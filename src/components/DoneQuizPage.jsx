@@ -25,7 +25,7 @@ export const QuizCreatePage = () => {
             <p>
               Або за посиланням 
               {
-                <a href={url} className={style.url}>
+                <a href={url} className={style.url} target='_blank'>
                   {' ' + `${window.location.origin}${url}`}
                 </a>
               }

@@ -8,8 +8,14 @@ export const YourQuizes = () => {
 
   return (
     <div>
+      <header className={style.header}>
+        <NavLink to='/' className={style.title}>Quiz App</NavLink>
+      </header>
       {quizes === null && (
-        <div></div>
+        <div className={style.error}>
+          <h1>Дружочок, в тебе ще нема тестів</h1>
+          <NavLink to='/' className={style.back}>Перейти на головну сторінку</NavLink>
+        </div>
       )}
       {quizes !== null && (
         <div>
