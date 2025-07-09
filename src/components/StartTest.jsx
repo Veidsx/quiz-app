@@ -52,6 +52,7 @@ export const StartTest = () => {
       setSearchParams(params);
     }
     if (quiz) {
+      console.log(quiz)
       setTitle(quiz.questions[numQuestion - 1].title);
       setVariants(quiz.questions[numQuestion - 1].variants);
       setQuizLenght(quiz.questions.length);

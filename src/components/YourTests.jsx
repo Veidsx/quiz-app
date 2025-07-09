@@ -47,7 +47,7 @@ export const YourTests = () => {
                       <button
                         onClick={() => {
                           localStorage.setItem("edit-quiz", quiz.code);
-                          navigate("/edit-quiz");
+                          navigate("/edit-test");
                         }}
                       >
                         Редагувати

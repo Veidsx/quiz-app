@@ -9,6 +9,7 @@ import { TestCreatePage } from './components/DoneTestPage';
 import { YourTests } from './components/YourTests';
 import { EditTest } from './components/EditTest';
 import { AllTests } from './components/AllTests'
+import { AdminAuth } from './components/AdminAuth'
 createRoot(document.getElementById('root')).render(
   <BrowserRouter basename="/quiz-app/">
     <Routes>
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')).render(
       <Route path='/your-tests' element={<YourTests/>}/>
       <Route path='/edit-test' element={<EditTest/>}/>
       <Route path='/all-tests' element={<AllTests/>}/>
+      <Route path='/admin' element={<AdminAuth/>}/>
     </Routes>
   </BrowserRouter>
 )

@@ -206,7 +206,7 @@ export const EditTest = () => {
     if (!isEqual) {
       console.log("❌ Нічого не змінилось");
       setIsShowLoader(false)
-      navigate("/done-quiz");
+      navigate("/done-test");
       return false;
     }
     await fetch(url, {
@@ -230,7 +230,7 @@ export const EditTest = () => {
     localStorage.removeItem("title");
     localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
 
-    navigate("/done-quiz");
+    navigate("/done-test");
   };
   const deleteQuiz = () => {
     localStorage.removeItem("author");
