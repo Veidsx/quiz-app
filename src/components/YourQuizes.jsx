@@ -6,14 +6,13 @@ export const YourQuizes = () => {
   const [isShow, setIsShow] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {
-    if(quizes[0] === undefined){
+    if(quizes === null || quizes[0] === undefined){
       setIsShow(false)
     } else {
       setIsShow(true)
     }
-  }, [quizes])
+  }, [quizes, isShow])
   const deleteQuiz = async (e) => {
-    
     const url = `https://quiz-server-kkjt.onrender.com/delete/${e.target.id}`
     fetch(url, {
       method:'DELETE'
@@ -22,6 +21,7 @@ export const YourQuizes = () => {
     let filtered = quizes.filter((quiz) => quiz.code !== e.target.id)
     localStorage.setItem('quizes', JSON.stringify(filtered))
     quizes = JSON.parse(localStorage.getItem('quizes'))
+    location.reload()
   }
   return (
     <div>
@@ -37,7 +37,7 @@ export const YourQuizes = () => {
       {isShow && (
           <div className={style.center_quizes}>
             <div className={style.quizes}>
-              {quizes.map((quiz) => {
+              { isShow && quizes.map((quiz) => {
                 return (
                   <div key={crypto.randomUUID()} className={style.quiz}>
                     <p>{quiz.title}</p>
