@@ -1,27 +1,27 @@
 import { useEffect, useState } from 'react'
 import style from "./css/YourQuizes.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
-export const YourQuizes = () => {
-  let quizes = JSON.parse(localStorage.getItem("quizes"));
+export const YourTests = () => {
+  const [quizes, setQuizes] = useState([])
   const [isShow, setIsShow] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {
-    if(quizes === null || quizes[0] === undefined){
-      setIsShow(false)
-    } else {
-      setIsShow(true)
-    }
-  }, [quizes, isShow])
+    const storedQuizes = JSON.parse(localStorage.getItem("quizes")) || [];
+    setQuizes(storedQuizes);
+    setIsShow(storedQuizes.length > 0);
+  }, []);
+
   const deleteQuiz = async (e) => {
-    const url = `https://quiz-server-kkjt.onrender.com/delete/${e.target.id}`
+    const quizId = e.target.id;
+    const url = `https://quiz-server-kkjt.onrender.com/delete/${quizId}`
     fetch(url, {
       method:'DELETE'
     })
     
     let filtered = quizes.filter((quiz) => quiz.code !== e.target.id)
     localStorage.setItem('quizes', JSON.stringify(filtered))
-    quizes = JSON.parse(localStorage.getItem('quizes'))
-    location.reload()
+    setQuizes(filtered)
+    setIsShow(filtered.length > 0);
   }
   return (
     <div>
@@ -37,7 +37,7 @@ export const YourQuizes = () => {
       {isShow && (
           <div className={style.center_quizes}>
             <div className={style.quizes}>
-              { isShow && quizes.map((quiz) => {
+              {quizes.map((quiz) => {
                 return (
                   <div key={crypto.randomUUID()} className={style.quiz}>
                     <p>{quiz.title}</p>

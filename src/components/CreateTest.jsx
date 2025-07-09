@@ -43,7 +43,7 @@ function Question({
   );
 }
 
-export const CreateQuiz = () => {
+export const CreateTest = () => {
 
   function generateCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -217,7 +217,7 @@ export const CreateQuiz = () => {
       localStorage.setItem("code-for-info", quiz.code);
       localStorage.removeItem("author");
       localStorage.removeItem("title");
-      navigate("/done-quiz");
+      navigate("/done-test");
     } else {
       localStorage.removeItem("author");
       localStorage.removeItem("title");

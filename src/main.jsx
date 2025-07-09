@@ -2,22 +2,24 @@ import { createRoot } from 'react-dom/client'
 import './components/css/main.css'
 import { Layout } from './components/Layout'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { CreateQuiz } from './components/CreateQuiz'
-import { StartQuiz } from './components/StartQuiz';
+import { CreateTest } from './components/CreateTest'
+import { StartTest } from './components/StartTest';
 import { Result } from './components/Result';
-import { QuizCreatePage } from './components/DoneQuizPage';
-import { YourQuizes } from './components/YourQuizes';
-import { EditQuiz } from './components/EditQuiz';
+import { TestCreatePage } from './components/DoneTestPage';
+import { YourTests } from './components/YourTests';
+import { EditTest } from './components/EditTest';
+import { AllTests } from './components/AllTests'
 createRoot(document.getElementById('root')).render(
   <BrowserRouter basename="/quiz-app/">
     <Routes>
       <Route path="/" element={<Layout />}/>
-      <Route path='/create-quiz' element={<CreateQuiz/>}/>
-      <Route path='/test' element={<StartQuiz/>}/>
+      <Route path='/create-test' element={<CreateTest/>}/>
+      <Route path='/test' element={<StartTest/>}/>
       <Route path='/result' element={<Result/>}/>
-      <Route path='/done-quiz' element={<QuizCreatePage/>}/>
-      <Route path='/your-tests' element={<YourQuizes/>}/>
-      <Route path='/edit-quiz' element={<EditQuiz/>}/>
+      <Route path='/done-test' element={<TestCreatePage/>}/>
+      <Route path='/your-tests' element={<YourTests/>}/>
+      <Route path='/edit-test' element={<EditTest/>}/>
+      <Route path='/all-tests' element={<AllTests/>}/>
     </Routes>
   </BrowserRouter>
 )

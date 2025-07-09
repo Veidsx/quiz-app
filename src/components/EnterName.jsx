@@ -32,7 +32,7 @@ export const EnterName = ({onClose}) => {
 			setIsChangePlace(true)
 		} else {
 			localStorage.setItem('title', value)
-			navigate('/create-quiz')
+			navigate('/create-test')
 		}
 	}
   return (

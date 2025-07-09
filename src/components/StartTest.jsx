@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Result } from "./Result";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 
-export const StartQuiz = () => {
+export const StartTest = () => {
   let code = localStorage.getItem("code-for-start");
   let [title, setTitle] = useState("");
   let [variants, setVariants] = useState([]);

@@ -1,6 +1,6 @@
 import style from "./css/DoneQuizPage.module.css";
 import { NavLink } from "react-router-dom";
-export const QuizCreatePage = () => {
+export const TestCreatePage = () => {
   const code = localStorage.getItem("code-for-info");
   const url = `/quiz-app/test?code=${code}`;
   const copyUrlHandler = (e) => {

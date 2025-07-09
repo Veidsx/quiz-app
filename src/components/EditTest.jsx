@@ -46,7 +46,7 @@ function Question({
   );
 }
 
-export const EditQuiz = () => {
+export const EditTest = () => {
   const code = localStorage.getItem("edit-quiz");
   const [quiz, setQuiz] = useState({});
   useEffect(() => {

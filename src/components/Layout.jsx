@@ -38,6 +38,11 @@ export const Layout = () => {
             Ваші тести
           </NavLink>
         )}
+        {!(isShowModal || isShowEnter) && (
+          <NavLink className={styles.btn_create} to='/all-tests'>
+            Всі тести
+          </NavLink>
+        )}
         {isShowModal && <Modal onClose={() => setIsShowModal(false)} />}
         {isShowEnter && <EnterName onClose={() => setIsShowEnter(false)} />}
       </main>
