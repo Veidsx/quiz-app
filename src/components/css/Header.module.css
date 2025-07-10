@@ -50,15 +50,14 @@
 
 .nav_links a {
   background-color: var(--btn-bg-color);
-  padding: 15px 25px;
   color: #ffffff;
   border-radius: 7px;
   font-size: 20px;
+  width: 200px;
   text-align: center;
-  margin-right: 20px;
   text-decoration: none;
   white-space: nowrap;
-	transition: 0.2s;
+  transition: 0.2s;
 }
 
 .nav_links a:hover {
@@ -88,6 +87,9 @@
   .nav_links {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    gap: 20px;
   }
   .active_nav {
     display: block;
@@ -102,7 +104,6 @@
     z-index: 999;
   }
   .nav_links a {
-    font-size: 18px;
     padding: 10px 20px;
   }
   header div:nth-child(1) div div {

@@ -181,28 +181,31 @@
 
 @media (max-width: 600px) {
   .inputSearch {
-    width: 400px;
+    width: 350px;
     height: 50px;
     border-radius: 20px 20px 0px 0px;
     font-size: 30px;
   }
   .results {
-    width: 400px;
+    width: 350px;
     max-height: 500px;
     background-color: var(--element-bg);
     border-radius: 0px 0px 20px 20px;
     padding: 30px;
   }
+  .result {
+    grid-template-columns: none;
+  }
   .block_result p{
     font-size: 15px;
   }
   .form {
-    width: 400px;
+    width: 350px;
     max-height: 500px;
     margin-bottom: 150px;
   }
   .h1 {
-    width: 400px;
+    width: 350px;
     height: 70px;
 
   }
