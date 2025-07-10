@@ -26,28 +26,34 @@ export const Layout = () => {
   const [tests, setTests] = useState([]);
 
   const urlA = `test?code=`;
+
   useEffect(() => {
-    if (sessionStorage.getItem("isFetchSearch")) {
-      setTests(JSON.parse(sessionStorage.getItem("allFetchSearch")));
-      setNewTests(JSON.parse(sessionStorage.getItem("fetchSearch")));
+    const isCached = sessionStorage.getItem("isFetchSearch");
+    if (isCached) {
+      const allTests = JSON.parse(sessionStorage.getItem("fetchSearch"));
+      const shortArr = allTests.slice(0, 4);
+      setTests(allTests);
+      setNewTests(shortArr);
       setIsRender(true);
     } else {
-      const fetchTests = async (url) => {
-        let response = await fetch(url);
-        let data = await response.json();
-        setIsRender(true);
-        setTests(data);
-        sessionStorage.setItem("isFetchSearch", true);
-        sessionStorage.setItem(
-          "allFetchSearch",
-          JSON.stringify(data.slice(0, 4))
-        );
-        sessionStorage.setItem("fetchSearch", JSON.stringify(data));
-      };
-      fetchTests("https://quiz-server-kkjt.onrender.com/all");
+      const fetchTests = async () => {
+        try {
+          let response = await fetch(
+            "https://quiz-server-kkjt.onrender.com/all"
+          );
+          let data = await response.json();
 
-      let shortArr = tests.slice(0, 4);
-      setNewTests(shortArr);
+          setTests(data);
+          setNewTests(data.slice(0, 4));
+          setIsRender(true);
+
+          sessionStorage.setItem("isFetchSearch", true);
+          sessionStorage.setItem("fetchSearch", JSON.stringify(data));
+        } catch (err) {
+          console.error("Помилка при завантаженні:", err);
+        }
+      };
+      fetchTests();
     }
   }, []);
 
@@ -200,6 +206,7 @@ export const Layout = () => {
             <div className={styles.result}>
               {isRender &&
                 newTests.map((el) => {
+                  console.log(el);
                   return (
                     <div key={el.code} className={styles.block_result}>
                       <p>Назва:{el.title}</p>
