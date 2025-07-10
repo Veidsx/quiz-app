@@ -174,7 +174,7 @@ export const Layout = () => {
       <header className={styles.header}>
         <div className={styles.info}>
           <img
-            src="public/logo.png"
+            src="/public/logo.png"
             alt="Logo"
             className={styles.logo}
             width="130px"
