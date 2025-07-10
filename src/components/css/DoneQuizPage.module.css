@@ -1,10 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap");
 
 
-.header {
-  height: 80px;
-  background-color: var(--element-bg);
-}
 
 .title {
   color: var(--text-color-header);
@@ -23,7 +19,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #333;
+  background-color: var(--element-bg);
   width: 900px;
   height: 600px;
 }
@@ -39,9 +35,10 @@
   text-decoration: none;
   color: black;
   padding: 15px;
-  background-color: var(--active-btn-select-color);
+  background-color: var(--btn-bg-color);
   margin-bottom: 15px;
   border-radius: 10px;
+  transition: 0.2s;
 }
 
 a {
@@ -52,9 +49,13 @@ a {
 }
 .btn_copy {
   border: none;
-  background-color: var(--text-color-header);
+  background-color: var(--btn-bg-color);
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
   margin-top: 10px;
+  transition: 0.2s;
+}
+.btn_copy:hover, .backHome:hover {
+    background-color: var(--btn-select-color);
 }

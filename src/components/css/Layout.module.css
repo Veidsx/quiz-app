@@ -1,55 +1,10 @@
-.header {
-  height: 130px;
-  background-color: var(--element-bg);
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  top: 0;
-  right: 0;
-  width: 100%;
-}
-
-.title {
-  color: var(--text-color-header);
-  text-align: center;
-  font-size: 40px;
-}
-.info {
-  gap: 20px;
-  display: flex;
-  align-items: center;
-}
-.btns {
-  display: flex;
-  margin-right: 70px;
-  gap: 20px;
-}
-.btns a {
-  background-color: var(--btn-bg-color);
-  padding: 15px;
-  border: none;
-  color: #fff;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 20px;
-  transition: 0.3s;
-}
-.btns a:hover {
-  background-color: var(--btn-select-color);
-}
-
-.btn_create:hover {
-  background-color: var(--btn-select-color);
-}
-
 .main {
   margin-top: 250px;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  padding: 0px 13%;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 100px;
 }
 
 .inputSearch {
@@ -71,7 +26,7 @@
 }
 
 .results {
-  width: 600px;
+  width: 660px;
   max-height: 500px;
   background-color: var(--element-bg);
   border-radius: 0px 0px 20px 20px;
@@ -82,7 +37,7 @@
   display: grid;
   gap: 20px;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: auto;
 }
 
 .block_result p {
@@ -92,7 +47,7 @@
 .block_result {
   padding: 20px;
   padding-bottom: 15px;
-  background-color: rgb(220, 216, 216);
+  background-color: rgb(216, 220, 219);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -118,12 +73,12 @@
   width: 100%;
 }
 
- .h1 {
+.h1 {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #657185;
-  width: 660px;
+  width: 600px;
   height: 70px;
   border-radius: 20px 20px 0px 0px;
   border-bottom: none;
@@ -221,5 +176,31 @@
 @keyframes l3 {
   to {
     transform: rotate(1turn);
+  }
+}
+
+@media (max-width: 600px) {
+  .inputSearch {
+    width: 550px;
+    height: 50px;
+    border-radius: 20px 20px 0px 0px;
+    font-size: 30px;
+  }
+  .results {
+    width: 550px;
+    max-height: 500px;
+    background-color: var(--element-bg);
+    border-radius: 0px 0px 20px 20px;
+    padding: 30px;
+  }
+  .form {
+    width: 550px;
+    max-height: 500px;
+    margin-bottom: 150px;
+  }
+  .h1 {
+    width: 550px;
+    height: 70px;
+
   }
 }

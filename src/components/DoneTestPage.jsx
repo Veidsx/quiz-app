@@ -4,18 +4,33 @@ export const TestCreatePage = () => {
   const code = localStorage.getItem("code-for-info");
   const url = `/quiz-app/test?code=${code}`;
   const copyUrlHandler = (e) => {
-    e.target.textContent = 'Скопійовано'
+    e.target.textContent = "Скопійовано";
     setTimeout(() => {
-      e.target.textContent = 'Копіювати посилання 📋'
-    }, 1000)
-    navigator.clipboard.writeText(`${window.location.origin}${url}`)
-  }
+      e.target.textContent = "Копіювати посилання 📋";
+    }, 1000);
+    navigator.clipboard.writeText(`${window.location.origin}${url}`);
+  };
   return (
     <div>
-      <header className={style.header}>
-        <NavLink to="/" className={style.title}>
-          Quiz App
-        </NavLink>
+      <header>
+        <div>
+          <img
+            src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+            alt="Logo"
+            width="130px"
+          />
+          <NavLink to="/">Quiz App</NavLink>
+        </div>
+        <div>
+          <NavLink to="/all-tests">Всі тести</NavLink>
+          <NavLink to="/your-tests">Мої тести</NavLink>
+          <NavLink to="/">Почати за кодом</NavLink>
+          <NavLink to="/admin">
+            {sessionStorage.getItem("isAuthenticated")
+              ? "Адмін панель"
+              : "Увійти"}
+          </NavLink>
+        </div>
       </header>
       <div className={style.center}>
         <div className={style.info}>
@@ -23,17 +38,17 @@ export const TestCreatePage = () => {
             <h1>Ваш тест успішно створено</h1>
             <p>Ваш тест доступний за кодом {code}</p>
             <p>
-              Або за посиланням 
+              Або за посиланням
               {
-                <a href={url} className={style.url} target='_blank'>
-                  {' ' + `${window.location.origin}${url}`}
+                <a href={url} className={style.url} target="_blank">
+                  {" " + `${window.location.origin}${url}`}
                 </a>
               }
             </p>
           </div>
-            <button className={style.btn_copy} onClick={copyUrlHandler}>
-              Копіювати посилання 📋
-            </button>
+          <button className={style.btn_copy} onClick={copyUrlHandler}>
+            Копіювати посилання 📋
+          </button>
           <NavLink to="/" className={style.backHome}>
             Повернутись на головний екран
           </NavLink>

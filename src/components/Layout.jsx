@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./css/Layout.module.css";
 
@@ -28,33 +28,22 @@ export const Layout = () => {
   const urlA = `test?code=`;
 
   useEffect(() => {
-    const isCached = sessionStorage.getItem("isFetchSearch");
-    if (isCached) {
-      const allTests = JSON.parse(sessionStorage.getItem("fetchSearch"));
-      const shortArr = allTests.slice(0, 4);
-      setTests(allTests);
-      setNewTests(shortArr);
-      setIsRender(true);
-    } else {
-      const fetchTests = async () => {
-        try {
-          let response = await fetch(
-            "https://quiz-server-kkjt.onrender.com/all"
-          );
-          let data = await response.json();
+    const fetchTests = async () => {
+      try {
+        let response = await fetch("https://quiz-server-kkjt.onrender.com/all");
+        let data = await response.json();
 
-          setTests(data);
-          setNewTests(data.slice(0, 4));
-          setIsRender(true);
+        setTests(data);
+        setNewTests(data.slice(0, 4));
+        setIsRender(true);
 
-          sessionStorage.setItem("isFetchSearch", true);
-          sessionStorage.setItem("fetchSearch", JSON.stringify(data));
-        } catch (err) {
-          console.error("Помилка при завантаженні:", err);
-        }
-      };
-      fetchTests();
-    }
+        sessionStorage.setItem("isFetchSearch", true);
+        sessionStorage.setItem("fetchSearch", JSON.stringify(data));
+      } catch (err) {
+        console.error("Помилка при завантаженні:", err);
+      }
+    };
+    fetchTests();
   }, []);
 
   const changeSearch = (e) => {
@@ -109,7 +98,11 @@ export const Layout = () => {
     } else {
       e.target.textContent = "Створити тест";
     }
+    targetRef.current?.scrollIntoView({ behavior: "smooth" });
     setIsStartForCode((prev) => !prev);
+    if(visibility) {
+      setVisibility((prev) => !prev)
+    }
   };
 
   let fetchCodes = async (urlGet) => {
@@ -167,25 +160,43 @@ export const Layout = () => {
 
     localStorage.setItem("code-for-start", code);
   };
+  
+  const [visibility, setVisibility] = useState(false)
+
+  const changeVisibility = () => {
+    setVisibility((prev) => !prev)
+  }
+  const targetRef = useRef(null);
+
   sessionStorage.setItem("page-loaded", false);
 
   return (
     <div className={styles.bg}>
-      <header className={styles.header}>
-        <div className={styles.info}>
+      <header>
+        <div>
           <img
             src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
             alt="Logo"
-            className={styles.logo}
             width="130px"
           />
-          <h1 className={styles.title}>Quiz App</h1>
+          <h1>Quiz App</h1>
+          <div onClick={changeVisibility}>
+            <div className={visibility ? 'active' : ''}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
         </div>
-        <div className={styles.btns}>
+        <div className={visibility ? 'active' : ''}>
           <NavLink to="/all-tests">Всі тести</NavLink>
           <NavLink to="/your-tests">Мої тести</NavLink>
           <NavLink onClick={startForCode}>Почати за кодом</NavLink>
-          <NavLink to="/admin">Увійти</NavLink>
+          <NavLink to="/admin">
+            {sessionStorage.getItem("isAuthenticated")
+              ? "Адмін панель"
+              : "Увійти"}
+          </NavLink>
         </div>
       </header>
       <div className={styles.main}>
@@ -206,7 +217,6 @@ export const Layout = () => {
             <div className={styles.result}>
               {isRender &&
                 newTests.map((el) => {
-                  console.log(el);
                   return (
                     <div key={el.code} className={styles.block_result}>
                       <p>Назва:{el.title}</p>
@@ -225,7 +235,7 @@ export const Layout = () => {
           </div>
         </div>
 
-        <div className={styles.createTest}>
+        <div className={styles.createTest} ref={targetRef}>
           <div className={styles.h1}>
             <h1>
               {!isStartForCode ? "Створити тест" : "Почати тест за кодом"}

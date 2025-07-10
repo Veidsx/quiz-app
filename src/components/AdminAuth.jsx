@@ -77,11 +77,22 @@ export const AdminAuth = () => {
   };
   return (
     <div>
-      <header className={styles.header}>
-        <NavLink to="/" className={styles.title}>
-          Quiz App
-        </NavLink>
-      </header>
+      <header>
+              <div>
+                <img
+                  src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+                  alt="Logo"
+                  width="130px"
+                />
+                <NavLink to="/">Quiz App</NavLink>
+              </div>
+              <div>
+                <NavLink to="/all-tests">Всі тести</NavLink>
+                <NavLink to="/your-tests">Мої тести</NavLink>
+                <NavLink to='/'>Почати за кодом</NavLink>
+                <NavLink to="/admin">{sessionStorage.getItem('isAuthenticated') ? 'Адмін панель' : 'Увійти'}</NavLink>
+              </div>
+            </header>
       <div className={styles.auth}>
         {!isLogin && (
           <form className={styles.form} onSubmit={submit}>

@@ -1,21 +1,8 @@
-
-.header {
-  height: 80px;
-  background-color: var(--element-bg);
-}
-
-.title {
-  color: var(--text-color-header);
-  text-align: center;
-}
-
 .main {
   width: 100%;
-  height: calc(100% - 80px);
   background-color: var(--body-bg);
-  position: absolute;
-  left: 0;
-  top: 80px;
+
+  margin-top:130px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,7 +71,6 @@
   width: 926px;
   background-color: var(--element-bg);
   * {
-    margin-left: 110px;
     font-family: "Karla", sans-serif;
   }
   h1 {
@@ -197,8 +183,7 @@
   border: 0;
   border-radius: 10px;
   margin-right: 10px;
-  position: relative;
-  top: 50px;
+  margin-top: 200px;
   height: 50px;
   text-decoration: none;
   color: black;

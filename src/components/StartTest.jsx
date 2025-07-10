@@ -88,13 +88,26 @@ export const StartTest = () => {
   };
   return (
     <div>
-      <header className={style.header}>
-        <NavLink to='/' className={style.title}>Quiz App</NavLink>
-        {!isShowResult && (
+      <header>
+        <div>
+          <img
+            src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+            alt="Logo"
+            width="130px"
+          />
+          <NavLink to="/">Quiz App</NavLink>
+          {!isShowResult && (
           <p>
             {numQuestion}/{quiz_length}
           </p>
         )}
+        </div>
+        <div>
+          <NavLink to="/all-tests">Всі тести</NavLink>
+          <NavLink to="/your-tests">Мої тести</NavLink>
+          <NavLink to='/'>Почати за кодом</NavLink>
+          <NavLink to="/admin">{sessionStorage.getItem('isAuthenticated') ? 'Адмін панель' : 'Увійти'}</NavLink>
+        </div>
       </header>
       {!isShowResult && (
         <div className={style.container}>

@@ -11,18 +11,34 @@ export const Result = () => {
 
   return (
     <div>
-      <header className={style.header}>
-        <NavLink
-          className={style.title}
-          onClick={() => {
-            localStorage.removeItem("result")
-            localStorage.removeItem("author")
-            localStorage.removeItem("title")
-          }}
-          to={"/"}
-        >
-          Quiz App
-        </NavLink>
+      <header>
+        <div>
+          <img
+            src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+            alt="Logo"
+            width="130px"
+          />
+          <NavLink
+            to="/"
+            onClick={() => {
+              localStorage.removeItem("result");
+              localStorage.removeItem("author");
+              localStorage.removeItem("title");
+            }}
+          >
+            Quiz App
+          </NavLink>
+        </div>
+        <div>
+          <NavLink to="/all-tests">Всі тести</NavLink>
+          <NavLink to="/your-tests">Мої тести</NavLink>
+          <NavLink to="/">Почати за кодом</NavLink>
+          <NavLink to="/admin">
+            {sessionStorage.getItem("isAuthenticated")
+              ? "Адмін панель"
+              : "Увійти"}
+          </NavLink>
+        </div>
       </header>
       <div className={style.center_result}>
         <div className={style.result}>
@@ -55,7 +71,11 @@ export const Result = () => {
           <NavLink
             to="/"
             className={style.backHome}
-            onClick={localStorage.removeItem("result")}
+            onClick={() => {
+            localStorage.removeItem("result")
+            localStorage.removeItem("author")
+            localStorage.removeItem("title")
+          }}
           >
             Повернутись на головний екран
           </NavLink>

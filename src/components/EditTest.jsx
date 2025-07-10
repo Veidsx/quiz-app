@@ -49,6 +49,7 @@ function Question({
 export const EditTest = () => {
   const code = localStorage.getItem("edit-quiz");
   const [quiz, setQuiz] = useState({});
+  
   useEffect(() => {
     const urlFetch = `https://quiz-server-kkjt.onrender.com/get/${code}`;
 
@@ -60,7 +61,7 @@ export const EditTest = () => {
     };
     fetchQuiz(urlFetch);
   }, []);
-
+  
   const params = new URLSearchParams();
   params.set("code", code);
   let [questions, setQuestions] = useState([]);
@@ -69,7 +70,7 @@ export const EditTest = () => {
 
   const updateData = (quiz) => {
     const quizLocal = JSON.parse(localStorage.getItem(`quiz-${code}`));
-    // console.log(quizLocal.questions.length)
+
     if (quizLocal) {
       setQuiz(quizLocal);
       setQuestions(quizLocal.questions);
@@ -242,9 +243,22 @@ export const EditTest = () => {
 
   return (
     <div className={style.container}>
-      <header className={style.header}>
-        <h1 className={style.title}>Quiz App</h1>
-      </header>
+      <header>
+              <div>
+                <img
+                  src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+                  alt="Logo"
+                  width="130px"
+                />
+                <NavLink to="/">Quiz App</NavLink>
+              </div>
+              <div>
+                <NavLink to="/all-tests">Всі тести</NavLink>
+                <NavLink to="/your-tests">Мої тести</NavLink>
+                <NavLink to='/'>Почати за кодом</NavLink>
+                <NavLink to="/admin">{sessionStorage.getItem('isAuthenticated') ? 'Admin Panel' : 'Увійти'}</NavLink>
+              </div>
+            </header>
       <div className={style.main}>
         {!isShowModal && (
           <div className="c">

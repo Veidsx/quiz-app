@@ -234,9 +234,22 @@ export const CreateTest = () => {
   };
   return (
     <div className={style.container}>
-      <header className={style.header}>
-        <h1 className={style.title}>Quiz App</h1>
-      </header>
+      <header>
+              <div>
+                <img
+                  src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+                  alt="Logo"
+                  width="130px"
+                />
+                <NavLink to="/">Quiz App</NavLink>
+              </div>
+              <div>
+                <NavLink to="/all-tests">Всі тести</NavLink>
+                <NavLink to="/your-tests">Мої тести</NavLink>
+                <NavLink onClick=''>Почати за кодом</NavLink>
+                <NavLink to="/admin">{sessionStorage.getItem('isAuthenticated') ? 'Адмін панель' : 'Увійти'}</NavLink>
+              </div>
+            </header>
       <div className={style.main}>
         {!isShowModal && (
           <div className="c">

@@ -1,20 +1,3 @@
-
-
-header {
-  height: 80px;
-  background-color: var(--element-bg);
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-}
-
-.title {
-  color: var(--text-color-header);
-  text-align: center;
-  font-size: 40px;
-  text-decoration: none;
-}
 .center_quizes {
   width: 100%;
   height: 100vh;
@@ -23,21 +6,21 @@ header {
   justify-content: center;
 }
 .quizes {
-  display: flex;
-  justify-content: center;
-	align-items:start;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-rows: 1fr 1fr;
 	gap: 20px;
-  width: 900px;
+  width: 80%;
   height: 600px;
-	flex-wrap: wrap;
 }
 
 .quiz {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+  text-align: center;
 	width: 300px;
-	height: 150px;
+  max-height: 200px;
 	background-color: var(--element-bg);
 	border-radius: 10px;
 }
@@ -46,15 +29,16 @@ header {
 	margin-bottom: 15px;
 }
 .btns button {
-	padding: 5px;
-	background-color: var(--text-color-header);
+	padding: 10px;
+	background-color: var(--btn-bg-color);
 	border: none;
 	margin-right: 10px;
 	border-radius: 10px;
 	cursor: pointer;
+  transition: 0.2s;
 }
 .btns button:hover {
-  background-color: rgb(62, 95, 77);  
+  background-color: var(--btn-select-color);  
 }
 .error {
   display: flex;
