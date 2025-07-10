@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./css/Layout.module.css";
+import style from "./css/Header.module.css";
 
 function ModalError({ textError }) {
   return (
@@ -100,8 +101,8 @@ export const Layout = () => {
     }
     targetRef.current?.scrollIntoView({ behavior: "smooth" });
     setIsStartForCode((prev) => !prev);
-    if(visibility) {
-      setVisibility((prev) => !prev)
+    if (visibility) {
+      setVisibility((prev) => !prev);
     }
   };
 
@@ -160,43 +161,50 @@ export const Layout = () => {
 
     localStorage.setItem("code-for-start", code);
   };
-  
-  const [visibility, setVisibility] = useState(false)
+
+  const [visibility, setVisibility] = useState(false);
 
   const changeVisibility = () => {
-    setVisibility((prev) => !prev)
-  }
+    setVisibility((prev) => !prev);
+  };
   const targetRef = useRef(null);
 
   sessionStorage.setItem("page-loaded", false);
 
   return (
     <div className={styles.bg}>
-      <header>
-        <div>
-          <img
-            src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
-            alt="Logo"
-            width="130px"
-          />
-          <h1>Quiz App</h1>
-          <div onClick={changeVisibility}>
-            <div className={visibility ? 'active' : ''}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
+      <header className={style.header}>
+        <div className={style.container}>
+          <div className={style.left}>
+            <img
+              src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+              alt="Logo"
+              width="130px"
+            />
+            <h1 className={style.title}>Quiz App</h1>
+          </div>
+
+          <div
+            onClick={changeVisibility}
+            className={`${style.burger_menu} ${visibility ? style.active : ""}`}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
           </div>
         </div>
-        <div className={visibility ? 'active' : ''}>
-          <NavLink to="/all-tests">Всі тести</NavLink>
-          <NavLink to="/your-tests">Мої тести</NavLink>
-          <NavLink onClick={startForCode}>Почати за кодом</NavLink>
-          <NavLink to="/admin">
-            {sessionStorage.getItem("isAuthenticated")
-              ? "Адмін панель"
-              : "Увійти"}
-          </NavLink>
+
+        <div className={`${style.nav} ${visibility ? style.active_nav : ""}`}>
+          <div className={style.nav_links}>
+            <NavLink to="/all-tests">Всі тести</NavLink>
+            <NavLink to="/your-tests">Мої тести</NavLink>
+            <NavLink onClick={startForCode}>Почати за кодом</NavLink>
+            <NavLink to="/admin">
+              {sessionStorage.getItem("isAuthenticated")
+                ? "Адмін панель"
+                : "Увійти"}
+            </NavLink>
+          </div>
         </div>
       </header>
       <div className={styles.main}>

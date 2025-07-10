@@ -1,0 +1,119 @@
+.header {
+  height: 130px;
+  background-color: var(--element-bg);
+  position: relative; /* для позиціювання .nav */
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 100%;
+}
+
+.header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  color: var(--text-color-header);
+  text-align: center;
+  font-size: 40px;
+  margin-left: 10px;
+}
+
+.burger_menu {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.burger_menu span {
+  height: 4px;
+  width: 25px;
+  background-color: rgb(0, 0, 0);
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
+.nav {
+  display: none;
+}
+
+.nav_links {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav_links a {
+  background-color: var(--btn-bg-color);
+  padding: 15px 25px;
+  color: #ffffff;
+  border-radius: 7px;
+  font-size: 20px;
+  text-align: center;
+  margin: 10px 0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav_links a:hover {
+  background-color: var(--btn-select-color);
+}
+
+.active_nav {
+  display: flex !important;
+  position: absolute;
+  top: 450%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  background-color: var(--text-color-header);
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 999;
+}
+
+/* Мобільна адаптація */
+@media (max-width: 600px) {
+  .header {
+    height: 75px;
+  }
+  .header img {
+    width: 75px;
+  }
+  .header {
+    justify-content: space-between;
+  }
+  .title {
+    font-size: 30px;
+  }
+
+  .burger_menu {
+    display: flex;
+  }
+
+  .nav_links a {
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+  header div:nth-child(1) div div {
+    display: flex;
+  }
+  header .burger_menu.active span:nth-child(1) {
+    display: none;
+  }
+  header .burger_menu.active span:nth-child(2) {
+    transform: rotate(45deg);
+  }
+  header .burger_menu.active span:nth-child(3) {
+    position: relative;
+    top: -12px;
+    transform: rotate(-45deg);
+  }
+}
