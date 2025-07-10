@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styles from "./css/AdminAuth.module.css";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 export const AdminAuth = () => {
   const [login, setLogin] = useState("");
-  const [pass, setPass] = useState("");
+  const [userPassword, setPass] = useState("");
   const [error, setError] = useState(null);
   const [quizzes, setQuizzes] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
@@ -16,76 +16,58 @@ export const AdminAuth = () => {
     setPass(e.target.value);
   };
 
-  function base64EncodeUnicode(str) {
-    return btoa(
-      encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
-        String.fromCharCode(parseInt(p1, 16))
-      )
-    );
-  }
   useEffect(() => {
     let isAuth = sessionStorage.getItem("isAuthenticated");
-    let token = sessionStorage.getItem("authToken");
+
     if (isAuth) {
       setIsShowLoader(true);
-      fetch("https://quiz-server-kkjt.onrender.com/all", {
-        method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      })
-        .then((res) => {
-          if (res.status === 401) throw new Error("Unauthorized");
-          if (!res.ok) throw new Error("Помилка сервера");
-          return res.json();
-        })
-        .then((data) => {
-          setIsShowLoader(false);
-          setIsLogin(true);
-          setQuizzes(data);
-        })
-        .catch((err) => {
-          setError(err.message);
-          setIsLogin(false);
-          console.error("Помилка доступу:", err.message);
-        });
+      async function fetchData() {
+        let response = await fetch("https://quiz-server-kkjt.onrender.com/all");
+        let data = await response.json();
+        setQuizzes(data);
+        setIsLogin(true);
+        setIsShowLoader(false);
+      }
+      fetchData()
     }
   }, []);
-  const submit = (e) => {
+  const submit = async (e) => {
     setIsShowLoader(true);
     e.preventDefault();
     setError(null);
     setQuizzes(null);
 
-    const encoded = base64EncodeUnicode(`${login}:${pass}`);
+    const response = await fetch(
+      "https://quiz-server-kkjt.onrender.com/auth-check",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ login: login, password: userPassword }),
+      }
+    );
 
-    fetch("https://quiz-server-kkjt.onrender.com/all", {
-      method: "GET",
-      headers: {
-        Authorization: `Basic ${encoded}`,
-      },
-    })
-      .then((res) => {
-        if (res.status === 401) throw new Error("Unauthorized");
-        if (!res.ok) throw new Error("Помилка сервера");
-        return res.json();
-      })
-      .then((data) => {
-        sessionStorage.setItem("isAuthenticated", "true");
-        sessionStorage.setItem("authToken", `Basic ${encoded}`);
-        setIsShowLoader(false);
-        setIsLogin(true);
-        setQuizzes(data);
-      })
-      .catch((err) => {
-        setError(err.message);
-        sessionStorage.removeItem("isAuthenticated", "true");
-        sessionStorage.removeItem("authToken", `Basic ${encoded}`);
-        setIsLogin(false);
-        console.error("Помилка доступу:", err.message);
-      });
+    const data = await response.json();
+
+    if (data.authenticated) {
+      const response2 = await fetch(
+        "https://quiz-server-kkjt.onrender.com/all"
+      );
+      const data2 = await response2.json();
+      setQuizzes(data2);
+      sessionStorage.setItem('isAuthenticated', true)
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+
+    setIsShowLoader(false);
   };
   const delHandler = (e) => {
+    if(sessionStorage.getItem('allFetchSearch')){
+      const tests = JSON.parse(sessionStorage.getItem('allFetchSearch'))
+      let newQuizzes = tests.filter((el) => el.code !== e.target.id);
+      sessionStorage.setItem('allFetchSearch', newQuizzes)
+    }
     let urlDel = `https://quiz-server-kkjt.onrender.com/delete/${e.target.id}`;
     let newQuizzes = quizzes.filter((el) => el.code !== e.target.id);
     setQuizzes(newQuizzes);
@@ -96,7 +78,9 @@ export const AdminAuth = () => {
   return (
     <div>
       <header className={styles.header}>
-        <NavLink to='/' className={styles.title}>Quiz App</NavLink>
+        <NavLink to="/" className={styles.title}>
+          Quiz App
+        </NavLink>
       </header>
       <div className={styles.auth}>
         {!isLogin && (
@@ -112,7 +96,7 @@ export const AdminAuth = () => {
             <input
               type="password"
               placeholder="Пароль"
-              value={pass}
+              value={userPassword}
               onChange={changeInputPass}
               required
             />

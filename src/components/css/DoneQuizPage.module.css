@@ -1,14 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap");
 
-:root {
-  --text-color-header: rgb(92, 138, 113);
-  --btn-select-color: rgb(92, 138, 113);
-  --active-btn-select-color: rgb(64, 95, 78);
-  --body-bg: #afabab;
-  --element-bg: #333;
-}
 
-header {
+.header {
   height: 80px;
   background-color: var(--element-bg);
 }
@@ -16,52 +9,52 @@ header {
 .title {
   color: var(--text-color-header);
   text-align: center;
-	font-size: 40px;
-	text-decoration: none;
+  font-size: 40px;
+  text-decoration: none;
 }
 .center {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100vh;
-	
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 .info {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	background-color: #333;
-	width: 900px;
-	height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  width: 900px;
+  height: 600px;
 }
 .title2 {
-	h1, p {
-		color: var(--text-color-header);
-		text-align: center;
-	}
+  h1,
+  p {
+    color: var(--text-color-header);
+    text-align: center;
+  }
 }
 .backHome {
   margin-top: auto;
-	text-decoration: none;
-	color: black;
-	padding: 15px;
-	background-color: var(--active-btn-select-color);
-	margin-bottom: 15px;
-	border-radius: 10px;
+  text-decoration: none;
+  color: black;
+  padding: 15px;
+  background-color: var(--active-btn-select-color);
+  margin-bottom: 15px;
+  border-radius: 10px;
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 .url {
-	color: var(--text-color-header);
+  color: var(--text-color-header);
 }
 .btn_copy {
-	border: none;
-	background-color: var(--text-color-header);
-	padding: 10px;
-	border-radius: 10px;
-	cursor: pointer;
-	margin-top: 10px;
+  border: none;
+  background-color: var(--text-color-header);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
 }

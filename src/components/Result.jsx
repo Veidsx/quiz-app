@@ -29,7 +29,7 @@ export const Result = () => {
           <h1 className={style.title2}>{localStorage.getItem("title")}</h1>
           <p className={style.author}>Автор:{localStorage.getItem("author")}</p>
           <div className={style.bottom}>
-            <p className={style.mark}>Оцінка:{mark}</p>
+            <p className={style.mark}>Оцінка:{Math.round(mark)}</p>
             <p>
               Правильні відповіді:{correctAnswers} / {length}
             </p>
