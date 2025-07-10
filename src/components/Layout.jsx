@@ -192,8 +192,6 @@ export const Layout = () => {
             <span></span>
             <span></span>
           </div>
-        </div>
-
         <div className={`${style.nav} ${visibility ? style.active_nav : ""}`}>
           <div className={style.nav_links}>
             <NavLink to="/all-tests">Всі тести</NavLink>
@@ -206,6 +204,8 @@ export const Layout = () => {
             </NavLink>
           </div>
         </div>
+        </div>
+
       </header>
       <div className={styles.main}>
         <div className={styles.search}>

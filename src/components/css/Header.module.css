@@ -1,7 +1,6 @@
 .header {
   height: 130px;
   background-color: var(--element-bg);
-  position: relative; /* для позиціювання .nav */
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -42,12 +41,11 @@
 }
 
 .nav {
-  display: none;
+  display: block;
 }
 
 .nav_links {
   display: flex;
-  flex-direction: column;
 }
 
 .nav_links a {
@@ -57,26 +55,14 @@
   border-radius: 7px;
   font-size: 20px;
   text-align: center;
-  margin: 10px 0;
+  margin-right: 20px;
   text-decoration: none;
   white-space: nowrap;
+	transition: 0.2s;
 }
 
 .nav_links a:hover {
   background-color: var(--btn-select-color);
-}
-
-.active_nav {
-  display: flex !important;
-  position: absolute;
-  top: 450%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  flex-direction: column;
-  background-color: var(--text-color-header);
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 999;
 }
 
 /* Мобільна адаптація */
@@ -93,11 +79,28 @@
   .title {
     font-size: 30px;
   }
-
+  .nav {
+    display: none;
+  }
   .burger_menu {
     display: flex;
   }
-
+  .nav_links {
+    display: flex;
+    flex-direction: column;
+  }
+  .active_nav {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    background-color: var(--text-color-header);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 999;
+  }
   .nav_links a {
     font-size: 18px;
     padding: 10px 20px;

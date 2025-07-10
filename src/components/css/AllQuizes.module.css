@@ -21,7 +21,7 @@
   border-radius: 10px;
   text-align: center;
   width: 300px;
-  max-height: 200px;
+  max-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,17 +46,14 @@
   background-color: rgb(48, 69, 58);
 }
 .div_search {
-  width: 87%;
-  height: 17vh;
+  width: 70%;
+  height: 0vh;
   display: flex;
-  position: absolute;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  margin-top: 10px;
 }
 .div_search button {
-  margin-top: -50px;
+  margin-top: -125px;
   color: white;
   background-color: var(--btn-bg-color);
   border-radius: 10px;
@@ -71,10 +68,9 @@
 }
 .search {
   padding: 10px;
-  margin-top: -50px;
+  margin-top: -120px;
   border: none;
   font-size: 25px;
-  height: 30px;
   width: 300px;
   margin-right: 20px;
 }

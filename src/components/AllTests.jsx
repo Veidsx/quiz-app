@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./css/AllQuizes.module.css";
+import style from "./css/Header.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 
 export const AllTests = () => {
@@ -16,11 +17,7 @@ export const AllTests = () => {
   };
   const searchHandler = () => {
     if (value === "") {
-      setPlace("Введіть назву тесту");
-      setTimeout(() => {
-        setPlace("Пошук");
-      }, 1000);
-      return false;
+      
     } else {
       setValue("");
     }
@@ -51,26 +48,43 @@ export const AllTests = () => {
   const goTest = (e) => {
     navigate(`${urlA}${e.target.id}`);
   };
+  const [visibility, setVisibility] = useState(false);
+
+  const changeVisibility = () => {
+    setVisibility((prev) => !prev);
+  };
   return (
     <div>
-      <header>
-        <div>
-          <img
-            src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
-            alt="Logo"
-            width="130px"
-          />
-          <NavLink to="/">Quiz App</NavLink>
-        </div>
-        <div>
-          <NavLink to="/all-tests">Всі тести</NavLink>
-          <NavLink to="/your-tests">Мої тести</NavLink>
-          <NavLink to="/">Почати за кодом</NavLink>
-          <NavLink to="/admin">
-            {sessionStorage.getItem("isAuthenticated")
-              ? "Адмін панель"
-              : "Увійти"}
-          </NavLink>
+      <header className={style.header}>
+        <div className={style.container}>
+          <div className={style.left}>
+            <img
+              src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+              alt="Logo"
+              width="130px"
+            />
+            <NavLink to="/" className={style.title}>Quiz App</NavLink>
+          </div>
+          <div
+            onClick={changeVisibility}
+            className={`${style.burger_menu} ${visibility ? style.active : ""}`}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div className={`${style.nav} ${visibility ? style.active_nav : ""}`}>
+            <div className={style.nav_links}>
+              <NavLink to="/all-tests">Всі тести</NavLink>
+              <NavLink to="/your-tests">Мої тести</NavLink>
+              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink to="/admin">
+                {sessionStorage.getItem("isAuthenticated")
+                  ? "Адмін панель"
+                  : "Увійти"}
+              </NavLink>
+            </div>
+          </div>
         </div>
       </header>
       <div className={styles.div_search}>

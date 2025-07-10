@@ -1,4 +1,5 @@
-import style from "./css/StartQuiz.module.css";
+import styles from "./css/StartQuiz.module.css";
+import style from "./css/Header.module.css";
 import { useState, useEffect } from "react";
 import { Result } from "./Result";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
@@ -25,8 +26,8 @@ export const StartTest = () => {
         setIsShowLoader(false);
       });
       setQuiz(data);
-      localStorage.setItem('title', data.title)
-      localStorage.setItem('author', data.author)
+      localStorage.setItem("title", data.title);
+      localStorage.setItem("author", data.author);
       changeQuestion(quiz);
       setIsShowLoader(false);
     };
@@ -52,7 +53,7 @@ export const StartTest = () => {
       setSearchParams(params);
     }
     if (quiz) {
-      console.log(quiz)
+      console.log(quiz);
       setTitle(quiz.questions[numQuestion - 1].title);
       setVariants(quiz.questions[numQuestion - 1].variants);
       setQuizLenght(quiz.questions.length);
@@ -86,35 +87,56 @@ export const StartTest = () => {
       setNumQuestion((prev) => prev + 1);
     }
   };
+  const [visibility, setVisibility] = useState(false);
+
+  const changeVisibility = () => {
+    setVisibility((prev) => !prev);
+  };
   return (
     <div>
-      <header>
-        <div>
-          <img
-            src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
-            alt="Logo"
-            width="130px"
-          />
-          <NavLink to="/">Quiz App</NavLink>
-          {!isShowResult && (
-          <p>
-            {numQuestion}/{quiz_length}
-          </p>
-        )}
-        </div>
-        <div>
-          <NavLink to="/all-tests">Всі тести</NavLink>
-          <NavLink to="/your-tests">Мої тести</NavLink>
-          <NavLink to='/'>Почати за кодом</NavLink>
-          <NavLink to="/admin">{sessionStorage.getItem('isAuthenticated') ? 'Адмін панель' : 'Увійти'}</NavLink>
+      <header className={style.header}>
+        <div className={style.container}>
+          <div className={style.left}>
+            <img
+              src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+              alt="Logo"
+              width="130px"
+            />
+            <NavLink to="/" className={style.title}>Quiz App</NavLink>
+            {!isShowResult && (
+              <p>
+                {numQuestion}/{quiz_length}
+              </p>
+            )}
+          </div>
+          <div
+            onClick={changeVisibility}
+            className={`${style.burger_menu} ${visibility ? style.active : ""}`}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div className={`${style.nav} ${visibility ? style.active_nav : ""}`}>
+            <div className={style.nav_links}>
+              <NavLink to="/all-tests">Всі тести</NavLink>
+              <NavLink to="/your-tests">Мої тести</NavLink>
+              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink to="/admin">
+                {sessionStorage.getItem("isAuthenticated")
+                  ? "Адмін панель"
+                  : "Увійти"}
+              </NavLink>
+            </div>
+          </div>
         </div>
       </header>
       {!isShowResult && (
-        <div className={style.container}>
-          <div className={style.title_div}>
+        <div className={styles.container}>
+          <div className={styles.title_div}>
             <p>{title}</p>
           </div>
-          <div className={style.variants}>
+          <div className={styles.variants}>
             {variants.map((el) => {
               return (
                 <div
@@ -128,8 +150,8 @@ export const StartTest = () => {
             })}
           </div>
           {isShowLoader && (
-            <div className={style.center_loader}>
-              <div className={style.loader}></div>
+            <div className={styles.center_loader}>
+              <div className={styles.loader}></div>
             </div>
           )}
         </div>

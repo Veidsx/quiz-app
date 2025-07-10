@@ -13,8 +13,6 @@ header p {
 }
 
 .title_div {
-  top: 130px;
-  position: relative;
   width: 100%;
   background-color: rgb(179, 202, 169);
   height: 35vh;
@@ -36,8 +34,6 @@ header p {
 }
 
 .variants {
-  position: relative;
-  top: 130px;
   display: flex;
   width: 100%;
 }

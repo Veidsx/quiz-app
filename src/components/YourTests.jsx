@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import style from "./css/YourQuizes.module.css";
+import styles from "./css/YourQuizes.module.css";
+import style from "./css/Header.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 export const YourTests = () => {
   const [quizes, setQuizes] = useState([]);
@@ -34,36 +35,57 @@ export const YourTests = () => {
     setQuizes(filtered);
     setIsShow(filtered.length > 0);
   };
+  const [visibility, setVisibility] = useState(false);
+
+  const changeVisibility = () => {
+    setVisibility((prev) => !prev);
+  };
   return (
     <div>
-      <header>
-              <div>
-                <img
-                  src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
-                  alt="Logo"
-                  width="130px"
-                />
-                <NavLink to="/">Quiz App</NavLink>
-              </div>
-              <div>
-                <NavLink to="/all-tests">Всі тести</NavLink>
-                <NavLink to="/your-tests">Мої тести</NavLink>
-                <NavLink to='/'>Почати за кодом</NavLink>
-                <NavLink to="/admin">{sessionStorage.getItem('isAuthenticated') ? 'Admin Panel' : 'Увійти'}</NavLink>
-              </div>
-            </header>
+       <header className={style.header}>
+        <div className={style.container}>
+          <div className={style.left}>
+            <img
+              src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+              alt="Logo"
+              width="130px"
+            />
+            <NavLink to="/" className={style.title}>Quiz App</NavLink>
+          </div>
+          <div
+            onClick={changeVisibility}
+            className={`${style.burger_menu} ${visibility ? style.active : ""}`}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div className={`${style.nav} ${visibility ? style.active_nav : ""}`}>
+            <div className={style.nav_links}>
+              <NavLink to="/all-tests">Всі тести</NavLink>
+              <NavLink to="/your-tests">Мої тести</NavLink>
+              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink to="/admin">
+                {sessionStorage.getItem("isAuthenticated")
+                  ? "Адмін панель"
+                  : "Увійти"}
+              </NavLink>
+            </div>
+          </div>
+        </div>
+      </header>
       {!isShow && (
-        <div className={style.error}>
+        <div className={styles.error}>
           <h1>Дружочок, в тебе ще нема тестів</h1>
-          <NavLink to="/" className={style.back}>
+          <NavLink to="/" className={styles.back}>
             Перейти на головну сторінку
           </NavLink>
         </div>
       )}
       {isShow && (
-        <div className={style.center_quizes}>
+        <div className={styles.center_quizes}>
           {isDone && (
-            <div className={style.quizes}>
+            <div className={styles.quizes}>
               {quizes.map((quiz) => {
                 const isDeleted = !codes.includes(quiz.code);
 
@@ -75,11 +97,11 @@ export const YourTests = () => {
                   }
                 } 
                 return (
-                  <div key={crypto.randomUUID()} className={style.quiz}>
+                  <div key={crypto.randomUUID()} className={styles.quiz}>
                     <p>Назва: {quiz.title}</p>
                     <p>{!isDeleted && "Код: " + quiz.code}</p>    
                     <p>{isDeleted && 'Цей тест був видалений адміном'}</p>
-                    <div className={style.btns}>
+                    <div className={styles.btns}>
                       {!isDeleted && (
                         <button
                           onClick={() => {

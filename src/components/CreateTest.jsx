@@ -1,4 +1,5 @@
-import style from "./css/CreateQuiz.module.css";
+import styles from "./css/CreateQuiz.module.css";
+import style from "./css/Header.module.css";
 import { Modal } from "./CreateQuestionMenu";
 import { useSearchParams, NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -21,21 +22,21 @@ function Question({
   };
 
   return (
-    <li className={style.question_li}>
+    <li className={styles.question_li}>
       {title}
       <div>
         <img
           id={number}
           src="https://quiz-server-kkjt.onrender.com/icons/delete.svg"
           alt={number}
-          className={style.newQuestion}
+          className={styles.newQuestion}
           onClick={onDelete}
         />
         <img
           id={number}
           src="https://quiz-server-kkjt.onrender.com/icons/edit.svg"
           alt={number}
-          className={style.newQuestion}
+          className={styles.newQuestion}
           onClick={onEdit}
         />
       </div>
@@ -44,7 +45,6 @@ function Question({
 }
 
 export const CreateTest = () => {
-
   function generateCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
@@ -232,38 +232,59 @@ export const CreateTest = () => {
     localStorage.removeItem(`code-create`);
     navigate("/");
   };
+  const [visibility, setVisibility] = useState(false);
+
+  const changeVisibility = () => {
+    setVisibility((prev) => !prev);
+  };
   return (
-    <div className={style.container}>
-      <header>
-              <div>
-                <img
-                  src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
-                  alt="Logo"
-                  width="130px"
-                />
-                <NavLink to="/">Quiz App</NavLink>
-              </div>
-              <div>
-                <NavLink to="/all-tests">Всі тести</NavLink>
-                <NavLink to="/your-tests">Мої тести</NavLink>
-                <NavLink onClick=''>Почати за кодом</NavLink>
-                <NavLink to="/admin">{sessionStorage.getItem('isAuthenticated') ? 'Адмін панель' : 'Увійти'}</NavLink>
-              </div>
-            </header>
-      <div className={style.main}>
+    <div className={styles.container}>
+      <header className={style.header}>
+        <div className={style.container}>
+          <div className={style.left}>
+            <img
+              src="https://quiz-server-kkjt.onrender.com/icons/logo.png"
+              alt="Logo"
+              width="130px"
+            />
+            <NavLink to="/" className={style.title}>Quiz App</NavLink>
+          </div>
+          <div
+            onClick={changeVisibility}
+            className={`${style.burger_menu} ${visibility ? style.active : ""}`}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div className={`${style.nav} ${visibility ? style.active_nav : ""}`}>
+            <div className={style.nav_links}>
+              <NavLink to="/all-tests">Всі тести</NavLink>
+              <NavLink to="/your-tests">Мої тести</NavLink>
+              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink to="/admin">
+                {sessionStorage.getItem("isAuthenticated")
+                  ? "Адмін панель"
+                  : "Увійти"}
+              </NavLink>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div className={styles.main}>
         {!isShowModal && (
           <div className="c">
-            <a className={style.save} onClick={saveQuiz}>
+            <a className={styles.save} onClick={saveQuiz}>
               Зберегти
             </a>
-            <a className={style.back} onClick={deleteQuiz}>
+            <a className={styles.back} onClick={deleteQuiz}>
               Назад
             </a>
           </div>
         )}
 
         {!isShowModal && (
-          <ul className={style.questions2}>
+          <ul className={styles.questions2}>
             {questions.map((question) => {
               return (
                 <Question
@@ -280,11 +301,11 @@ export const CreateTest = () => {
                 />
               );
             })}
-            <div className={style.add_question} onClick={addQuestion}>
+            <div className={styles.add_question} onClick={addQuestion}>
               <img
                 src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
                 alt=""
-                className={style.newQuestion}
+                className={styles.newQuestion}
               />
               Додати запитання
             </div>
