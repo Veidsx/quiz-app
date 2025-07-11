@@ -80,3 +80,11 @@
   .checkboxWrapper *:after {
     box-sizing: inherit;
   }
+
+  @media (max-width: 600px) {
+
+  .checkboxWrapper input[type=checkbox]{
+    margin-left: 10px;
+  }
+  
+}
