@@ -50,14 +50,23 @@ export const Modal = ({
   editQuestion,
   plusNumberQuestion,
 }) => {
-  console.log(editQuestion);
   let [variants, updateVariants] = useState([
     { value: "", isCorrect: false },
     { value: "", isCorrect: false },
   ]);
+
   let [heigth, setHeigth] = useState(600);
   const [mode, setMode] = useState('solo');
-  
+
+  useEffect(() => {
+    if (editQuestion) {
+      setMode(editQuestion.mode);
+      setValueTextArea(editQuestion.title);
+      updateVariants(editQuestion.variants.map((v) => ({ ...v })));
+      setIsEditQuestion(true);
+    }
+  }, [editQuestion]);
+
   const addVariant = () => {
     updateVariants((prev) => [...prev, { value: "", isCorrect: false }]);
     setHeigth((prev) => prev + 40);
@@ -74,7 +83,7 @@ export const Modal = ({
   };
 
   const changeCorrect = (index, e) => {
-    if (mode === 'solo') {
+    if (mode === "solo") {
       updateVariants((prev) => {
         const newVariants = [...prev];
         const isCorrect = newVariants[index].isCorrect;
@@ -84,35 +93,22 @@ export const Modal = ({
         } else {
           newVariants.forEach((v) => (v.isCorrect = false));
           newVariants[index].isCorrect = true;
+          console.log(newVariants);
         }
 
         return newVariants;
       });
-    } else if (mode === 'multiply') {
+    } else if (mode === "multiply") {
       updateVariants((prev) => {
         const newVariants = [...prev];
-        const isCorrect = newVariants[index].isCorrect;
-
-        if (isCorrect) {
-          newVariants[index].isCorrect = false;
-        } else {
-          newVariants[index].isCorrect = true;
-        }
+        console.log(newVariants);
+        newVariants[index].isCorrect = !newVariants[index].isCorrect;
 
         return newVariants;
       });
     }
   };
   const [isEditQuestion, setIsEditQuestion] = useState(false);
-
-  useEffect(() => {
-    if (editQuestion) {
-      setMode(editQuestion.mode)
-      setValueTextArea(editQuestion.title);
-      updateVariants(editQuestion.variants);
-      setIsEditQuestion(true);
-    }
-  }, [editQuestion]);
 
   const [value_textarea, setValueTextArea] = useState("");
   const [isShowModalError, setIsShowModalError] = useState(false);
@@ -137,14 +133,14 @@ export const Modal = ({
     }
 
     const hasCorrect = variants.some((v) => v.isCorrect);
-    
+
     if (!hasCorrect) {
       setTextError("Виберіть 1 правильну відповідь");
       showError();
       return false;
     }
-
-    if (editQuestion.mode === 'solo') {
+    console.log(editQuestion.mode);
+    if (mode === "solo") {
       const hasManyCorrect = variants.filter((v) => v.isCorrect);
 
       if (hasManyCorrect.length > 1) {
@@ -173,24 +169,45 @@ export const Modal = ({
 
     const originalTitle = editQuestion.title.trim();
     const currentTitle = value_textarea.trim();
-
     if (originalTitle !== currentTitle) return true;
 
     if (editQuestion.variants.length !== variants.length) return true;
 
     for (let i = 0; i < variants.length; i++) {
-      const a = editQuestion.variants[i];
-      const b = variants[i];
-      if (a.value.trim() !== b.value.trim() || a.isCorrect !== b.isCorrect) {
+      const originalVariant = editQuestion.variants[i];
+      const currentVariant = variants[i];
+
+      if (
+        originalVariant.value.trim() !== currentVariant.value.trim() ||
+        originalVariant.isCorrect !== currentVariant.isCorrect
+      ) {
         return true;
       }
     }
+
+    if (editQuestion.mode !== mode) return true;
+
     return false;
   };
 
   const showError = () => {
     setIsShowModalError(true);
     setTimeout(() => setIsShowModalError(false), 1000);
+  };
+
+  const createQuestion = () => {
+    if (!catchErrors(variants)) return;
+
+    plusNumberQuestion();
+
+    const question = {
+      numberQuestion,
+      title: value_textarea,
+      mode: mode,
+      variants: variants,
+    };
+    onChangeQuestions(question, false);
+    onClose();
   };
   const updateQuestion = () => {
     if (!catchErrors(variants)) return;
@@ -211,19 +228,6 @@ export const Modal = ({
     onChangeQuestions(question, true);
     onClose();
   };
-  const createQuestion = () => {
-    if (!catchErrors(variants)) return;
-    plusNumberQuestion();
-
-    const question = {
-      numberQuestion,
-      title: value_textarea,
-      mode: mode,
-      variants: variants,
-    };
-    onChangeQuestions(question, false);
-    onClose();
-  };
   return (
     <div className={style.modal} style={{ height: `${heigth}` }}>
       {isShowModalError && <ModalError textError={textError} />}
@@ -238,13 +242,12 @@ export const Modal = ({
       ></textarea>
       <p>Вкажіть варіанти відповідей</p>
       <div className={radio.radioWrapper}>
-        {console.log(editQuestion.mode)}
         <input
           type="radio"
           name="ra"
           id="1"
-          onClick={() => setMode('multiply')}
-          defaultChecked={editQuestion.mode === "multiply"}
+          onChange={() => setMode("multiply")}
+          checked={mode === "multiply"}
         />
         <label htmlFor="multiply">Декілька правильних відповідей</label>
         <br />
@@ -252,8 +255,8 @@ export const Modal = ({
           type="radio"
           name="ra"
           id="2"
-          defaultChecked={editQuestion.mode === "code"}
-          onClick={() => setMode('solo')}
+          checked={mode === "solo"}
+          onChange={() => setMode("solo")}
         />
         <label htmlFor="solo">Одна правильна відповідь</label>
       </div>

@@ -1,20 +1,9 @@
-.main {
-  width: 100%;
-  background-color: var(--body-bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 35vh;
-}
+.main,
 .mainModal {
   width: 100%;
-  background-color: var(--body-bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 75vh;
+  max-width: 900px;  /* Обмежуємо максимальну ширину до 900px */
+  margin: 0 auto;    /* Центруємо по горизонталі */
+  padding: 0 20px;   /* Відступи з боків для зручності */
 }
 
 .question_li {
@@ -23,13 +12,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 900px;
+  width: 100%;
+  max-width: 900px; /* Максимальна ширина */
   border: 3px solid black;
-  padding: 10px;
+  padding: 20px;
   background-color: var(--element-bg);
   transition: 0.2s all;
   cursor: pointer;
+  box-sizing: border-box;
+  margin-bottom: 15px; 
 }
+
 .question_li::after {
   content: "";
   display: block;
@@ -46,12 +39,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 900px;
+  width: 100%;
+  max-width: 900px; /* Максимальна ширина 900px */
   border: 3px dashed black;
   padding: 10px;
   background-color: var(--element-bg);
   transition: 0.2s all;
   cursor: pointer;
+  box-sizing: border-box;
+}
+
+.add_question:hover {
+  background-color: #d0cece;
 }
 
 .newQuestion {
@@ -60,22 +59,25 @@
   margin-right: 10px;
 }
 
-.add_question:hover {
-  background-color: #d0cece;
-}
 .list {
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-top: 150px;
+  padding-top: 100px;
+  z-index: 0;
 }
-.list .btnsT {
+
+.btnsT {
+  position: sticky;
+  top: 0; /* Додаємо top, щоб кнопки не перекривали контент */
+  width: 100%;
   display: flex;
   justify-content: center;
-  position: relative;
-  top: 40px;
+  margin-top: 20px; /* Для відступу від хедера */
+  z-index: 1000;
 }
-.list .btnsT a {
+
+.btnsT a {
   padding: 15px;
   background-color: var(--btn-bg-color);
   border: 0;
@@ -89,9 +91,11 @@
   cursor: pointer;
   font-weight: 700;
 }
-.list .btnsT a:hover {
+
+.btnsT a:hover {
   background-color: var(--btn-select-color);
 }
+
 .modal {
   position: absolute;
   display: flex;
@@ -101,11 +105,13 @@
   background-color: var(--element-bg);
   border-radius: 10px;
 }
+
 .modal h1 {
   color: var(--text-color-header);
   font-size: 25px;
   margin-top: 20px;
 }
+
 .modal textarea {
   resize: none;
   width: 500px;
@@ -115,6 +121,7 @@
   border: none;
   padding: 5px;
 }
+
 .questions {
   display: flex;
   flex-direction: column;
@@ -122,9 +129,8 @@
   margin-bottom: 10px;
   list-style: none;
 }
+
 .questions2 {
-  position: relative;
-  top: 70px;
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -147,6 +153,7 @@
   margin-top: 20px;
   padding-bottom: 20px;
 }
+
 .btns button {
   margin-left: 0;
   padding: 15px;
@@ -158,9 +165,11 @@
   cursor: pointer;
   transition: 0.2s all;
 }
+
 .btns button:hover {
   background-color: var(--btn-select-color);
 }
+
 .del_variant {
   width: 40px;
   height: 40px;
@@ -174,9 +183,11 @@
   justify-content: center;
   align-items: center;
 }
+
 .errorModal p {
   color: var(--text-color-header);
 }
+
 .modal2 {
   margin-left: 0;
   display: flex;
@@ -188,6 +199,7 @@
   background-color: var(--text-color-header);
   border-radius: 20px;
 }
+
 .modal2 p {
   margin-left: 0;
   font-size: 20px;
@@ -225,8 +237,35 @@
   mask-composite: subtract;
   animation: l3 1s infinite linear;
 }
+
 @keyframes l3 {
   to {
     transform: rotate(1turn);
+  }
+}
+
+@media (max-width: 768px) {
+  .question_li, .add_question {
+    width: 100%; /* Задаємо ширину 100% на мобільних пристроях */
+    max-width: none; /* Вимикаємо обмеження ширини */
+    padding: 10px;
+  }
+
+  .main, .mainModal {
+    width: 100%;
+    padding: 20px; /* Меньше відступів для малих екранів */
+  }
+
+  .btnsT a {
+    font-size: 12px; /* Зменшуємо шрифт кнопок на малих екранах */
+    padding: 10px;
+  }
+
+  .modal textarea {
+    width: 100%; /* Ширина textarea на маленьких екранах */
+  }
+
+  .variant {
+    width: 100%; /* Ширина варіантів 100% на маленьких екранах */
   }
 }

@@ -1,6 +1,6 @@
 import styles from "./css/StartQuiz.module.css";
 import style from "./css/Header.module.css";
-import { useState } from 'react'
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 export const Result = () => {
   let length = JSON.parse(localStorage.getItem("result"))[0];
@@ -17,7 +17,7 @@ export const Result = () => {
   };
   return (
     <div>
-       <header className={style.header}>
+      <header className={style.header}>
         <div className={style.container}>
           <div className={style.left}>
             <img
@@ -26,17 +26,17 @@ export const Result = () => {
               width="130px"
             />
             <NavLink
-            to="/"
-            onClick={() => {
-              localStorage.removeItem("result");
-              localStorage.removeItem("author");
-              localStorage.removeItem("title");
-              localStorage.removeItem("form_status");
-            }}
-            className={style.title}
-          >
-            Quiz App
-          </NavLink>
+              to="/"
+              onClick={() => {
+                localStorage.removeItem("result");
+                localStorage.removeItem("author");
+                localStorage.removeItem("title");
+                localStorage.removeItem("form_status");
+              }}
+              className={style.title}
+            >
+              Quiz App
+            </NavLink>
           </div>
           <div
             onClick={changeVisibility}
@@ -54,7 +54,8 @@ export const Result = () => {
                 to="/"
                 onClick={() => {
                   localStorage.setItem("form_status", "startCode");
-                }}>
+                }}
+              >
                 Почати за кодом
               </NavLink>
               <NavLink to="/admin">
@@ -69,11 +70,17 @@ export const Result = () => {
       <div className={styles.center_result}>
         <div className={styles.result}>
           <h1 className={styles.title2}>{localStorage.getItem("title")}</h1>
-          <p className={styles.author}>Автор:{localStorage.getItem("author")}</p>
+          <p className={styles.author}>
+            Автор:{localStorage.getItem("author")}
+          </p>
           <div className={styles.bottom}>
             <p className={styles.mark}>Оцінка:{Math.round(mark)}</p>
             <p>
-              Правильні відповіді:{correctAnswers.toFixed(2)} / {length}
+              Правильні відповіді:
+              {correctAnswers.length > 2
+                ? correctAnswers.toFixed(2)
+                : correctAnswers}{" "}
+              / {length}
             </p>
             <div className={styles.bar}>
               <span
@@ -98,10 +105,10 @@ export const Result = () => {
             to="/"
             className={styles.backHome}
             onClick={() => {
-            localStorage.removeItem("result")
-            localStorage.removeItem("author")
-            localStorage.removeItem("title")
-          }}
+              localStorage.removeItem("result");
+              localStorage.removeItem("author");
+              localStorage.removeItem("title");
+            }}
           >
             Повернутись на головний екран
           </NavLink>

@@ -15,12 +15,16 @@ function Question({
   setId,
   mode,
 }) {
-  
   const onEdit = (e) => {
     setIsShowModal((prev) => !prev);
     setIsEdit(true);
     setId(e.target.id);
-    setQuestionEdit({ numberQuestion: number, title, mode, variants: variants });
+    setQuestionEdit({
+      numberQuestion: number,
+      title,
+      mode,
+      variants: variants,
+    });
   };
 
   return (
@@ -126,7 +130,7 @@ export const EditTest = () => {
           {
             numberQuestion: +id,
             title: question.title,
-            mode:question.mode,
+            mode: question.mode,
             variants: variants,
           },
         ];
@@ -309,7 +313,7 @@ export const EditTest = () => {
       <div className={styles.main}>
         {isShowModalError && <ModalError textError={textError} />}
         {!isShowModal && (
-          <div className={styles.list}>
+          <div className={style.containerList}>
             <div className={styles.btnsT}>
               <a className={styles.save} onClick={saveQuiz}>
                 Зберегти
@@ -318,33 +322,35 @@ export const EditTest = () => {
                 Назад
               </a>
             </div>
-            <ul className={styles.questions2}>
-              {questions.map((question) => {
-                return (
-                  <Question
-                    number={question.numberQuestion}
-                    key={question.numberQuestion}
-                    title={question.title}
-                    variants={question.variants}
-                    mode={question.mode}
-                    onEdit={onEdit}
-                    setIsEdit={setIsEdit}
-                    setIsShowModal={setIsShowModal}
-                    setQuestionEdit={setQuestionEdit}
-                    setId={setId}
-                    onDelete={onDelete}
+            <div className={styles.list}>
+              <ul className={styles.questions2}>
+                {questions.map((question) => {
+                  return (
+                    <Question
+                      number={question.numberQuestion}
+                      key={question.numberQuestion}
+                      title={question.title}
+                      variants={question.variants}
+                      mode={question.mode}
+                      onEdit={onEdit}
+                      setIsEdit={setIsEdit}
+                      setIsShowModal={setIsShowModal}
+                      setQuestionEdit={setQuestionEdit}
+                      setId={setId}
+                      onDelete={onDelete}
+                    />
+                  );
+                })}
+                <div className={styles.add_question} onClick={addQuestion}>
+                  <img
+                    src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
+                    alt=""
+                    className={styles.newQuestion}
                   />
-                );
-              })}
-              <div className={styles.add_question} onClick={addQuestion}>
-                <img
-                  src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
-                  alt=""
-                  className={styles.newQuestion}
-                />
-                Додати запитання
-              </div>
-            </ul>
+                  Додати запитання
+                </div>
+              </ul>
+            </div>
           </div>
         )}
 

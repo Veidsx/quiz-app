@@ -18,7 +18,12 @@ function Question({
   const onEdit = (e) => {
     setIsShowModal((prev) => !prev);
     setIsEdit(true);
-    setQuestionEdit({ numberQuestion: number, title, mode, variants: variants });
+    setQuestionEdit({
+      numberQuestion: number,
+      title,
+      mode,
+      variants: variants,
+    });
     setId(e.target.id);
   };
 
@@ -57,10 +62,13 @@ export const CreateTest = () => {
   function generateCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
-
   let [questions, setQuestions] = useState([]);
   let [numberQuestion, setNumberQuestion] = useState(1);
   let [id, setId] = useState(0);
+  
+  useEffect(() => {
+    console.log('number question:' + numberQuestion)
+  }, [numberQuestion])
 
   let onDelete = (e) => {
     const deleteNumber = +e.target.alt;
@@ -128,10 +136,10 @@ export const CreateTest = () => {
         return quiz.questions;
       });
     } else {
-
+      
       setQuestions((prevQuestions) => {
         const updatedQuestions = [...prevQuestions, question];
-        console.log(updatedQuestions)
+        console.log(updatedQuestions);
         const quiz = {
           code: localStorage.getItem("code-create"),
           author: localStorage.getItem("author"),
@@ -151,7 +159,7 @@ export const CreateTest = () => {
       params.set("code", localStorage.getItem("code-create"));
       setSearchParams(params);
     }
-
+    
     function setUrl() {
       const params = new URLSearchParams();
 
@@ -177,8 +185,9 @@ export const CreateTest = () => {
       if (localStorage.getItem("code-create") === JSON.parse(saved).code) {
         try {
           const parsed = JSON.parse(saved);
-
+          
           setQuestions(parsed.questions || []);
+          // setNumberQuestion(questions.length)
         } catch (e) {
           throw new Error(e.message);
         }
@@ -292,7 +301,8 @@ export const CreateTest = () => {
                 to="/"
                 onClick={() => {
                   localStorage.setItem("form_status", "startCode");
-                }}>
+                }}
+              >
                 Почати за кодом
               </NavLink>
               <NavLink to="/admin">
@@ -304,17 +314,17 @@ export const CreateTest = () => {
           </div>
         </div>
       </header>
+      <div className={styles.btnsT}>
+        <a className={styles.save} onClick={saveQuiz}>
+          Зберегти
+        </a>
+        <a className={styles.back} onClick={deleteQuiz}>
+          Назад
+        </a>
+      </div>
       <div className={isShowModal ? styles.mainModal : styles.main}>
         {!isShowModal && (
           <div className={styles.list}>
-            <div className={styles.btnsT}>
-              <a className={styles.save} onClick={saveQuiz}>
-                Зберегти
-              </a>
-              <a className={styles.back} onClick={deleteQuiz}>
-                Назад
-              </a>
-            </div>
             <ul className={styles.questions2}>
               {questions.map((question) => {
                 return (
