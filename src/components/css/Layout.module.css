@@ -193,10 +193,14 @@
     border-radius: 0px 0px 20px 20px;
     padding: 30px;
   }
-  .result {
+  .block_result:nth-child(3),
+  .block_result:nth-child(4) {
+    display: none;
+  }
+   .result {
     grid-template-columns: none;
   }
-  .block_result p{
+  .block_result p {
     font-size: 15px;
   }
   .form {
@@ -207,6 +211,5 @@
   .h1 {
     width: 350px;
     height: 70px;
-
   }
 }
