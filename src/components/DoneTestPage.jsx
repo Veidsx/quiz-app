@@ -1,6 +1,8 @@
 import styles from "./css/DoneQuizPage.module.css";
 import style from "./css/Header.module.css";
 import { NavLink } from "react-router-dom";
+import { useState } from 'react';
+
 export const TestCreatePage = () => {
   const code = localStorage.getItem("code-for-info");
   const url = `/quiz-app/test?code=${code}`;
@@ -26,7 +28,15 @@ export const TestCreatePage = () => {
               alt="Logo"
               width="130px"
             />
-            <NavLink to="/" className={style.title}>Quiz App</NavLink>
+            <NavLink
+              to="/"
+              className={style.title}
+              onClick={() => {
+                localStorage.removeItem("form_status");
+              }}
+            >
+              Quiz App
+            </NavLink>
           </div>
           <div
             onClick={changeVisibility}
@@ -40,7 +50,13 @@ export const TestCreatePage = () => {
             <div className={style.nav_links}>
               <NavLink to="/all-tests">Всі тести</NavLink>
               <NavLink to="/your-tests">Мої тести</NavLink>
-              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink
+                to="/"
+                onClick={() => {
+                  localStorage.setItem("form_status", "startCode");
+                }}>
+                Почати за кодом
+              </NavLink>
               <NavLink to="/admin">
                 {sessionStorage.getItem("isAuthenticated")
                   ? "Адмін панель"

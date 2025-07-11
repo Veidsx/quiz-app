@@ -1,5 +1,6 @@
 import styles from "./css/StartQuiz.module.css";
 import style from "./css/Header.module.css";
+import { useState } from 'react'
 import { NavLink } from "react-router-dom";
 export const Result = () => {
   let length = JSON.parse(localStorage.getItem("result"))[0];
@@ -30,6 +31,7 @@ export const Result = () => {
               localStorage.removeItem("result");
               localStorage.removeItem("author");
               localStorage.removeItem("title");
+              localStorage.removeItem("form_status");
             }}
             className={style.title}
           >
@@ -48,7 +50,13 @@ export const Result = () => {
             <div className={style.nav_links}>
               <NavLink to="/all-tests">Всі тести</NavLink>
               <NavLink to="/your-tests">Мої тести</NavLink>
-              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink
+                to="/"
+                onClick={() => {
+                  localStorage.setItem("form_status", "startCode");
+                }}>
+                Почати за кодом
+              </NavLink>
               <NavLink to="/admin">
                 {sessionStorage.getItem("isAuthenticated")
                   ? "Адмін панель"
@@ -65,7 +73,7 @@ export const Result = () => {
           <div className={styles.bottom}>
             <p className={styles.mark}>Оцінка:{Math.round(mark)}</p>
             <p>
-              Правильні відповіді:{correctAnswers} / {length}
+              Правильні відповіді:{correctAnswers.toFixed(2)} / {length}
             </p>
             <div className={styles.bar}>
               <span

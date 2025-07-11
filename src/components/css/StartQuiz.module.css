@@ -38,7 +38,7 @@ header p {
   width: 100%;
 }
 
-.variants div {
+.variants .variant {
   flex-grow: 1;
   flex-shrink: 1;
   text-align: center;
@@ -50,7 +50,7 @@ header p {
   cursor: pointer;
   transition: 0.1s;
 }
-.variants div:hover {
+.variants .variant:hover {
   border: 3px solid black;
   border-top: none;
 }
@@ -115,6 +115,27 @@ p {
   margin-bottom: 15px;
   border-radius: 10px;
 }
+.variant {
+  position: relative;
+}
+
+.input {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.btn_save {
+  height: 51px;
+  background-color: var(--btn-bg-color);
+  border: none;
+  color: #fff;
+  font-size: 30px;
+  transition: 0.2s;
+}
+.btn_save:hover {
+  background-color: var(--btn-select-color);
+}
+
 .loader {
   position: absolute;
   width: 50px;

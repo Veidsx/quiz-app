@@ -17,7 +17,6 @@ export const AllTests = () => {
   };
   const searchHandler = () => {
     if (value === "") {
-      
     } else {
       setValue("");
     }
@@ -63,7 +62,15 @@ export const AllTests = () => {
               alt="Logo"
               width="130px"
             />
-            <NavLink to="/" className={style.title}>Quiz App</NavLink>
+            <NavLink
+              to="/"
+              className={style.title}
+              onClick={() => {
+                localStorage.removeItem("form_status");
+              }}
+            >
+              Quiz App
+            </NavLink>
           </div>
           <div
             onClick={changeVisibility}
@@ -77,7 +84,13 @@ export const AllTests = () => {
             <div className={style.nav_links}>
               <NavLink to="/all-tests">Всі тести</NavLink>
               <NavLink to="/your-tests">Мої тести</NavLink>
-              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink
+                to="/"
+                onClick={() => {
+                  localStorage.setItem("form_status", "startCode");
+                }}>
+                Почати за кодом
+              </NavLink>
               <NavLink to="/admin">
                 {sessionStorage.getItem("isAuthenticated")
                   ? "Адмін панель"

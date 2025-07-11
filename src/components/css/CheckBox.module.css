@@ -15,8 +15,9 @@
       outline: none;
       display: inline-block;
       vertical-align: top;
-      position: relative;
+      position: absolute;
       margin: 0;
+      margin-left: 30px;
 			margin-top: 10px;
       cursor: pointer;
       border-radius: 7px;

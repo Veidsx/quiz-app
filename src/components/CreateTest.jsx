@@ -44,6 +44,14 @@ function Question({
   );
 }
 
+function ModalError({ textError }) {
+  return (
+    <div className={styles.modal2}>
+      <p>{textError}</p>
+    </div>
+  );
+}
+
 export const CreateTest = () => {
   function generateCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -81,16 +89,16 @@ export const CreateTest = () => {
         const nextQuestions = [];
         const previousQuestions = [];
         prevQuestions.forEach((element) => {
-          if (element.numberQuestion > numberAlt) {
+          if (element.numberQuestion > id) {
             nextQuestions.push(element);
-          } else if (element.numberQuestion < numberAlt) {
+          } else if (element.numberQuestion < id) {
             previousQuestions.unshift(element);
           }
         });
 
         const updatedQuestion = [
           {
-            numberQuestion: +numberAlt,
+            numberQuestion: +id,
             title: question.title,
             variants: variants,
           },
@@ -192,13 +200,21 @@ export const CreateTest = () => {
     setIsShowModal((isShow) => !isShow);
   };
   const url = "https://quiz-server-kkjt.onrender.com/save";
-
+  const [isShowModalError, setIsShowModalError] = useState(false);
+  const [textError, setTextError] = useState("");
   let navigate = useNavigate();
   const saveQuiz = () => {
     let quiz = JSON.parse(
       localStorage.getItem(`quiz-${localStorage.getItem("code-create")}`)
     );
-    console.log(quiz);
+    if (quiz === null) {
+      setTextError("Створіть хочаб 1 запитання");
+      setIsShowModalError(true);
+      setTimeout(() => {
+        setIsShowModalError(false);
+      }, 1000);
+      return;
+    }
     if (quiz) {
       fetch(url, {
         method: "POST",
@@ -247,7 +263,15 @@ export const CreateTest = () => {
               alt="Logo"
               width="130px"
             />
-            <NavLink to="/" className={style.title}>Quiz App</NavLink>
+            <NavLink
+              to="/"
+              className={style.title}
+              onClick={() => {
+                localStorage.removeItem("form_status");
+              }}
+            >
+              Quiz App
+            </NavLink>
           </div>
           <div
             onClick={changeVisibility}
@@ -261,7 +285,13 @@ export const CreateTest = () => {
             <div className={style.nav_links}>
               <NavLink to="/all-tests">Всі тести</NavLink>
               <NavLink to="/your-tests">Мої тести</NavLink>
-              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink
+                to="/"
+                onClick={() => {
+                  localStorage.setItem("form_status", "startCode");
+                }}>
+                Почати за кодом
+              </NavLink>
               <NavLink to="/admin">
                 {sessionStorage.getItem("isAuthenticated")
                   ? "Адмін панель"
@@ -271,47 +301,46 @@ export const CreateTest = () => {
           </div>
         </div>
       </header>
-      <div className={styles.main}>
+      <div className={isShowModal ? styles.mainModal : styles.main}>
         {!isShowModal && (
-          <div className="c">
-            <a className={styles.save} onClick={saveQuiz}>
-              Зберегти
-            </a>
-            <a className={styles.back} onClick={deleteQuiz}>
-              Назад
-            </a>
+          <div className={styles.list}>
+            <div className={styles.btnsT}>
+              <a className={styles.save} onClick={saveQuiz}>
+                Зберегти
+              </a>
+              <a className={styles.back} onClick={deleteQuiz}>
+                Назад
+              </a>
+            </div>
+            <ul className={styles.questions2}>
+              {questions.map((question) => {
+                return (
+                  <Question
+                    number={question.numberQuestion}
+                    key={question.numberQuestion}
+                    title={question.title}
+                    variants={question.variants}
+                    onEdit={onEdit}
+                    setIsEdit={setIsEdit}
+                    setIsShowModal={setIsShowModal}
+                    setQuestionEdit={setQuestionEdit}
+                    setId={setId}
+                    onDelete={onDelete}
+                  />
+                );
+              })}
+              <div className={styles.add_question} onClick={addQuestion}>
+                <img
+                  src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
+                  alt=""
+                  className={styles.newQuestion}
+                />
+                Додати запитання
+              </div>
+            </ul>
           </div>
         )}
-
-        {!isShowModal && (
-          <ul className={styles.questions2}>
-            {questions.map((question) => {
-              return (
-                <Question
-                  number={question.numberQuestion}
-                  key={question.numberQuestion}
-                  title={question.title}
-                  variants={question.variants}
-                  onEdit={onEdit}
-                  setIsEdit={setIsEdit}
-                  setIsShowModal={setIsShowModal}
-                  setQuestionEdit={setQuestionEdit}
-                  setId={setId}
-                  onDelete={onDelete}
-                />
-              );
-            })}
-            <div className={styles.add_question} onClick={addQuestion}>
-              <img
-                src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
-                alt=""
-                className={styles.newQuestion}
-              />
-              Додати запитання
-            </div>
-          </ul>
-        )}
-
+        {isShowModalError && <ModalError textError={textError} />}
         {isShowModal && (
           <Modal
             onClose={() => {

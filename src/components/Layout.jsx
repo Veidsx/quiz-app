@@ -29,6 +29,11 @@ export const Layout = () => {
   const urlA = `test?code=`;
 
   useEffect(() => {
+    setIsShowLoader(true);
+    if (localStorage.getItem("form_status") === "startCode") {
+      targetRef.current?.scrollIntoView({ behavior: "smooth" });
+      setIsStartForCode((prev) => !prev);
+    }
     const fetchTests = async () => {
       try {
         let response = await fetch("https://quiz-server-kkjt.onrender.com/all");
@@ -37,7 +42,7 @@ export const Layout = () => {
         setTests(data);
         setNewTests(data.slice(0, 4));
         setIsRender(true);
-
+        setIsShowLoader(false);
         sessionStorage.setItem("isFetchSearch", true);
         sessionStorage.setItem("fetchSearch", JSON.stringify(data));
       } catch (err) {
@@ -93,12 +98,14 @@ export const Layout = () => {
       navigate("/create-test");
     }
   };
+
   const startForCode = (e) => {
     if (isStartForCode) {
       e.target.textContent = "Почати за кодом";
     } else {
       e.target.textContent = "Створити тест";
     }
+    
     targetRef.current?.scrollIntoView({ behavior: "smooth" });
     setIsStartForCode((prev) => !prev);
     if (visibility) {
@@ -107,9 +114,9 @@ export const Layout = () => {
   };
 
   let fetchCodes = async (urlGet) => {
+    setIsShowLoader(true);
     let response = await fetch(urlGet);
     let data = await response.json();
-    setIsShowLoader(true);
     return data;
   };
 
@@ -192,20 +199,19 @@ export const Layout = () => {
             <span></span>
             <span></span>
           </div>
-        <div className={`${style.nav} ${visibility ? style.active_nav : ""}`}>
-          <div className={style.nav_links}>
-            <NavLink to="/all-tests">Всі тести</NavLink>
-            <NavLink to="/your-tests">Мої тести</NavLink>
-            <NavLink onClick={startForCode}>Почати за кодом</NavLink>
-            <NavLink to="/admin">
-              {sessionStorage.getItem("isAuthenticated")
-                ? "Адмін панель"
-                : "Увійти"}
-            </NavLink>
+          <div className={`${style.nav} ${visibility ? style.active_nav : ""}`}>
+            <div className={style.nav_links}>
+              <NavLink to="/all-tests">Всі тести</NavLink>
+              <NavLink to="/your-tests">Мої тести</NavLink>
+              <NavLink onClick={startForCode}>{!isStartForCode ? 'Почати за кодом' : 'Створити тест'}</NavLink>
+              <NavLink to="/admin">
+                {sessionStorage.getItem("isAuthenticated")
+                  ? "Адмін панель"
+                  : "Увійти"}
+              </NavLink>
+            </div>
           </div>
         </div>
-        </div>
-
       </header>
       <div className={styles.main}>
         <div className={styles.search}>

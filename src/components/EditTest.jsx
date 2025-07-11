@@ -46,11 +46,17 @@ function Question({
     </li>
   );
 }
-
+function ModalError({ textError }) {
+  return (
+    <div className={styles.modal2}>
+      <p>{textError}</p>
+    </div>
+  );
+}
 export const EditTest = () => {
   const code = localStorage.getItem("edit-quiz");
   const [quiz, setQuiz] = useState({});
-  
+
   useEffect(() => {
     const urlFetch = `https://quiz-server-kkjt.onrender.com/get/${code}`;
 
@@ -62,7 +68,7 @@ export const EditTest = () => {
     };
     fetchQuiz(urlFetch);
   }, []);
-  
+
   const params = new URLSearchParams();
   params.set("code", code);
   let [questions, setQuestions] = useState([]);
@@ -192,8 +198,12 @@ export const EditTest = () => {
 
   let navigate = useNavigate();
   const [isShowLoader, setIsShowLoader] = useState(false);
+
+  const [isShowModalError, setIsShowModalError] = useState(false);
+  const [textError, setTextError] = useState("");
+
   const saveQuiz = async () => {
-    setIsShowLoader(true)
+    setIsShowLoader(true);
     let newQuiz = JSON.parse(
       localStorage.getItem(`quiz-${localStorage.getItem("edit-quiz")}`)
     );
@@ -206,9 +216,12 @@ export const EditTest = () => {
     const isEqual = JSON.stringify(newQuiz) === JSON.stringify(oldQuiz);
 
     if (!isEqual) {
-      console.log("❌ Нічого не змінилось");
-      setIsShowLoader(false)
-      navigate("/done-test");
+      setTextError("❌ Нічого не змінилось");
+      setIsShowModalError(true);
+      setTimeout(() => {
+        setIsShowModalError(false);
+      }, 1000);
+      setIsShowLoader(false);
       return false;
     }
     await fetch(url, {
@@ -218,14 +231,14 @@ export const EditTest = () => {
       },
       body: JSON.stringify(newQuiz),
     });
-    
+
     const quizes = JSON.parse(localStorage.getItem("quizes")) || [];
     const updatedQuizes = quizes.map((q) => (q.code === code ? newQuiz : q));
 
     if (!updatedQuizes.find((q) => q.code === code)) {
       updatedQuizes.push(newQuiz);
     }
-    setIsShowLoader(false)
+    setIsShowLoader(false);
     localStorage.setItem("quizes", JSON.stringify(updatedQuizes));
     localStorage.setItem("code-for-info", quiz.code);
     localStorage.removeItem("author");
@@ -248,7 +261,7 @@ export const EditTest = () => {
   };
   return (
     <div className={style.container}>
-       <header className={style.header}>
+      <header className={style.header}>
         <div className={style.container}>
           <div className={style.left}>
             <img
@@ -256,7 +269,15 @@ export const EditTest = () => {
               alt="Logo"
               width="130px"
             />
-            <NavLink to="/" className={style.title}>Quiz App</NavLink>
+            <NavLink
+              to="/"
+              className={style.title}
+              onClick={() => {
+                localStorage.removeItem("form_status");
+              }}
+            >
+              Quiz App
+            </NavLink>
           </div>
           <div
             onClick={changeVisibility}
@@ -270,7 +291,14 @@ export const EditTest = () => {
             <div className={style.nav_links}>
               <NavLink to="/all-tests">Всі тести</NavLink>
               <NavLink to="/your-tests">Мої тести</NavLink>
-              <NavLink to="/">Почати за кодом</NavLink>
+              <NavLink
+                to="/"
+                onClick={() => {
+                  localStorage.setItem("form_status", "startCode");
+                }}
+              >
+                Почати за кодом
+              </NavLink>
               <NavLink to="/admin">
                 {sessionStorage.getItem("isAuthenticated")
                   ? "Адмін панель"
@@ -281,50 +309,50 @@ export const EditTest = () => {
         </div>
       </header>
       <div className={styles.main}>
+        {isShowModalError && <ModalError textError={textError} />}
         {!isShowModal && (
-          <div className="c">
-            <a className={styles.save} onClick={saveQuiz}>
-              Оновити тест
-            </a>
-            <a className={styles.back} onClick={deleteQuiz}>
-              Назад
-            </a>
+          <div className={styles.list}>
+            <div className={styles.btnsT}>
+              <a className={styles.save} onClick={saveQuiz}>
+                Зберегти
+              </a>
+              <a className={styles.back} onClick={deleteQuiz}>
+                Назад
+              </a>
+            </div>
+            <ul className={styles.questions2}>
+              {questions.map((question) => {
+                return (
+                  <Question
+                    number={question.numberQuestion}
+                    key={question.numberQuestion}
+                    title={question.title}
+                    variants={question.variants}
+                    onEdit={onEdit}
+                    setIsEdit={setIsEdit}
+                    setIsShowModal={setIsShowModal}
+                    setQuestionEdit={setQuestionEdit}
+                    setId={setId}
+                    onDelete={onDelete}
+                  />
+                );
+              })}
+              <div className={styles.add_question} onClick={addQuestion}>
+                <img
+                  src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
+                  alt=""
+                  className={styles.newQuestion}
+                />
+                Додати запитання
+              </div>
+            </ul>
           </div>
         )}
+
         {isShowLoader && (
           <div className={styles.center_loader}>
             <div className={styles.loader}></div>
           </div>
-        )}
-        {!isShowModal && (
-          <ul className={styles.questions2}>
-            {questions.map((question) => {
-              return (
-                <Question
-                  number={question.numberQuestion}
-                  key={question.numberQuestion}
-                  title={question.title}
-                  variants={question.variants}
-                  onEdit={onEdit}
-                  setIsEdit={setIsEdit}
-                  setIsShowModal={setIsShowModal}
-                  setQuestionEdit={setQuestionEdit}
-                  onDelete={onDelete}
-                  setId={setId}
-                  setQuestions={setQuestions}
-                  code={code}
-                />
-              );
-            })}
-            <div className={styles.add_question} onClick={addQuestion}>
-              <img
-                src="https://quiz-server-kkjt.onrender.com/icons/add.svg"
-                alt=""
-                className={styles.newQuestion}
-              />
-              Додати запитання
-            </div>
-          </ul>
         )}
 
         {isShowModal && (

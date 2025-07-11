@@ -1,5 +1,6 @@
 import style from "./css/CreateQuiz.module.css";
 import checkbox from "./css/CheckBox.module.css";
+import radio from "./css/Radio.module.css";
 import { useEffect, useState } from "react";
 
 function Variant({ index, value, fDel, onChange, isCorrect, changeCorrect }) {
@@ -18,7 +19,8 @@ function Variant({ index, value, fDel, onChange, isCorrect, changeCorrect }) {
         <input
           type="checkbox"
           checked={isCorrect}
-          onChange={(e) => changeCorrect(index, e.target.checked)}
+          id={index}
+          onChange={(e) => changeCorrect(index, e)}
         />
       </span>
 
@@ -53,6 +55,7 @@ export const Modal = ({
     { value: "", isCorrect: false },
   ]);
   let [heigth, setHeigth] = useState(600);
+  const [mode, setMode] = useState(2);
 
   const addVariant = () => {
     updateVariants((prev) => [...prev, { value: "", isCorrect: false }]);
@@ -69,17 +72,42 @@ export const Modal = ({
     setHeigth((prev) => prev - 40);
   };
 
-  const changeCorrect = (index) => {
-    updateVariants((prev) =>
-      prev.map((v, i) => ({ ...v, isCorrect: i === index }))
-    );
+  const changeCorrect = (index, e) => {
+    if (mode === 2) {
+      
+      updateVariants((prev) => {
+        const newVariants = [...prev];
+        const isCorrect = newVariants[index].isCorrect;
+
+        if (isCorrect) {
+          newVariants[index].isCorrect = false;
+        } else {
+          newVariants.forEach((v) => (v.isCorrect = false));
+          newVariants[index].isCorrect = true;
+        }
+
+        return newVariants;
+      });
+    } else if (mode === 1) {
+      updateVariants((prev) => {
+        const newVariants = [...prev];
+        const isCorrect = newVariants[index].isCorrect;
+
+        if (isCorrect) {
+          newVariants[index].isCorrect = false;
+        } else {
+          newVariants[index].isCorrect = true;
+        }
+
+        return newVariants;
+      });
+    }
   };
   const [isEditQuestion, setIsEditQuestion] = useState(false);
 
   useEffect(() => {
     if (editQuestion) {
       setValueTextArea(editQuestion.title);
-      console.log(editQuestion);
       updateVariants(editQuestion.variants);
       setIsEditQuestion(true);
     }
@@ -92,6 +120,7 @@ export const Modal = ({
   const onChangeTextArea = (e) => {
     setValueTextArea(e.target.value);
   };
+
   const catchErrors = (arr) => {
     if (value_textarea.trim() === "") {
       setTextError("Заповніть поле запитання");
@@ -111,6 +140,15 @@ export const Modal = ({
       setTextError("Виберіть 1 правильну відповідь");
       showError();
       return false;
+    }
+    if(mode === 2){
+      const hasManyCorrect = variants.filter((v) => v.isCorrect);
+  
+      if (hasManyCorrect.length > 1) {
+        setTextError("Виберіть 1 правильну відповідь");
+        showError();
+        return false;
+      }
     }
 
     const hasDuplicates = (arr) => {
@@ -182,9 +220,8 @@ export const Modal = ({
   };
   return (
     <div className={style.modal} style={{ height: `${heigth}` }}>
-      <div className={style.container}>
-        {isShowModalError && <ModalError textError={textError} />}
-      </div>
+      {isShowModalError && <ModalError textError={textError} />}
+
       <h1>Додати запитання</h1>
       <p>Запитання (обов'язкове поле) </p>
       <textarea
@@ -194,7 +231,19 @@ export const Modal = ({
         value={value_textarea}
       ></textarea>
       <p>Вкажіть варіанти відповідей</p>
-
+      <div className={radio.radioWrapper}>
+        <input type="radio" name="ra" id="1" onClick={() => setMode(1)} />
+        <label htmlFor="multiply">Декілька правильних відповідей</label>
+        <br />
+        <input
+          type="radio"
+          name="ra"
+          id="2"
+          defaultChecked
+          onClick={() => setMode(2)}
+        />
+        <label htmlFor="solo">Одна правильна відповідь</label>
+      </div>
       <ul className={style.questions}>
         {variants.map((variant, index) => {
           return (
