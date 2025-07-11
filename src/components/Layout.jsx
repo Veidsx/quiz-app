@@ -65,7 +65,7 @@ export const Layout = () => {
         quiz.title
           .replace(/\s/g, "")
           .toLowerCase()
-          .includes(e.target.value.toLowerCase())
+          .includes(e.target.value.replace(/\s/g, "").toLowerCase())
       );
 
       if (search_result.toString() === [].toString()) {
