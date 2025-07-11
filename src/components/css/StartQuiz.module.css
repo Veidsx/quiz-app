@@ -171,6 +171,7 @@ p {
     height: 30vh;
   }
   .container {
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 75px);
