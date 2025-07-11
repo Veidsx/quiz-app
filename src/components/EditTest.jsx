@@ -13,17 +13,14 @@ function Question({
   setQuestionEdit,
   onDelete,
   setId,
-  setQuestions,
-  code,
+  mode,
 }) {
+  
   const onEdit = (e) => {
-    const quizLocal = JSON.parse(localStorage.getItem(`quiz-${code}`));
-    console.log(quizLocal, number);
     setIsShowModal((prev) => !prev);
     setIsEdit(true);
     setId(e.target.id);
-    setQuestionEdit({ numberQuestion: number, title, variants: variants });
-    setQuestions(quizLocal.questions);
+    setQuestionEdit({ numberQuestion: number, title, mode, variants: variants });
   };
 
   return (
@@ -129,6 +126,7 @@ export const EditTest = () => {
           {
             numberQuestion: +id,
             title: question.title,
+            mode:question.mode,
             variants: variants,
           },
         ];
@@ -215,7 +213,7 @@ export const EditTest = () => {
 
     const isEqual = JSON.stringify(newQuiz) === JSON.stringify(oldQuiz);
 
-    if (!isEqual) {
+    if (isEqual) {
       setTextError("❌ Нічого не змінилось");
       setIsShowModalError(true);
       setTimeout(() => {
@@ -328,6 +326,7 @@ export const EditTest = () => {
                     key={question.numberQuestion}
                     title={question.title}
                     variants={question.variants}
+                    mode={question.mode}
                     onEdit={onEdit}
                     setIsEdit={setIsEdit}
                     setIsShowModal={setIsShowModal}

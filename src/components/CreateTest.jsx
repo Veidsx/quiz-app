@@ -13,11 +13,12 @@ function Question({
   setQuestionEdit,
   setId,
   onDelete,
+  mode,
 }) {
   const onEdit = (e) => {
     setIsShowModal((prev) => !prev);
     setIsEdit(true);
-    setQuestionEdit({ numberQuestion: number, title, variants: variants });
+    setQuestionEdit({ numberQuestion: number, title, mode, variants: variants });
     setId(e.target.id);
   };
 
@@ -60,6 +61,7 @@ export const CreateTest = () => {
   let [questions, setQuestions] = useState([]);
   let [numberQuestion, setNumberQuestion] = useState(1);
   let [id, setId] = useState(0);
+
   let onDelete = (e) => {
     const deleteNumber = +e.target.alt;
 
@@ -95,11 +97,11 @@ export const CreateTest = () => {
             previousQuestions.unshift(element);
           }
         });
-
         const updatedQuestion = [
           {
             numberQuestion: +id,
             title: question.title,
+            mode: question.mode,
             variants: variants,
           },
         ];
@@ -126,9 +128,10 @@ export const CreateTest = () => {
         return quiz.questions;
       });
     } else {
+
       setQuestions((prevQuestions) => {
         const updatedQuestions = [...prevQuestions, question];
-
+        console.log(updatedQuestions)
         const quiz = {
           code: localStorage.getItem("code-create"),
           author: localStorage.getItem("author"),
@@ -326,6 +329,7 @@ export const CreateTest = () => {
                     setQuestionEdit={setQuestionEdit}
                     setId={setId}
                     onDelete={onDelete}
+                    mode={question.mode}
                   />
                 );
               })}

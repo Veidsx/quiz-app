@@ -57,7 +57,8 @@ export const Layout = () => {
 
     if (e.target.value === "") {
       setSearchNotDefined(false);
-      setNewTests(JSON.parse(sessionStorage.getItem("fetchSearch")));
+      let tests = JSON.parse(sessionStorage.getItem("fetchSearch")).slice(0,4)
+      setNewTests(tests);
     } else {
       console.log(tests);
       let search_result = tests.filter((quiz) =>
@@ -151,7 +152,6 @@ export const Layout = () => {
         return false;
       }
     } catch (error) {
-      console.log(error);
       e.target.disabled = false;
       setTextError(error);
       setIsShowError(true);
