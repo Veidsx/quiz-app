@@ -170,8 +170,11 @@ p {
   .title_div {
     height: 30vh;
   }
-  .container {
+  body {
     overflow-y: hidden;
+  }
+  .container {
+    
     display: flex;
     flex-direction: column;
     height: calc(100vh - 75px);
