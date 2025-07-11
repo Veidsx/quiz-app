@@ -125,11 +125,13 @@ p {
   top: 0;
 }
 .btn_save {
+  position: static;
   height: 51px;
   background-color: var(--btn-bg-color);
   border: none;
   color: #fff;
   font-size: 30px;
+  z-index: 999;
   transition: 0.2s;
 }
 .btn_save:hover {
@@ -159,6 +161,10 @@ p {
 @media (max-width:600px) {
   .title_div {
     height: 30vh;
+  }
+  
+  .variants {
+    height: 54vh;
   }
   .title_div p {
     text-align: center;
