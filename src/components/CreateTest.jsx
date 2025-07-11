@@ -65,10 +65,10 @@ export const CreateTest = () => {
   let [questions, setQuestions] = useState([]);
   let [numberQuestion, setNumberQuestion] = useState(1);
   let [id, setId] = useState(0);
-  
+
   useEffect(() => {
-    console.log('number question:' + numberQuestion)
-  }, [numberQuestion])
+    console.log("number question:" + numberQuestion);
+  }, [numberQuestion]);
 
   let onDelete = (e) => {
     const deleteNumber = +e.target.alt;
@@ -136,7 +136,6 @@ export const CreateTest = () => {
         return quiz.questions;
       });
     } else {
-      
       setQuestions((prevQuestions) => {
         const updatedQuestions = [...prevQuestions, question];
         console.log(updatedQuestions);
@@ -159,7 +158,7 @@ export const CreateTest = () => {
       params.set("code", localStorage.getItem("code-create"));
       setSearchParams(params);
     }
-    
+
     function setUrl() {
       const params = new URLSearchParams();
 
@@ -185,7 +184,7 @@ export const CreateTest = () => {
       if (localStorage.getItem("code-create") === JSON.parse(saved).code) {
         try {
           const parsed = JSON.parse(saved);
-          
+
           setQuestions(parsed.questions || []);
           // setNumberQuestion(questions.length)
         } catch (e) {
@@ -314,14 +313,17 @@ export const CreateTest = () => {
           </div>
         </div>
       </header>
-      <div className={styles.btnsT}>
-        <a className={styles.save} onClick={saveQuiz}>
-          Зберегти
-        </a>
-        <a className={styles.back} onClick={deleteQuiz}>
-          Назад
-        </a>
-      </div>
+      {!isShowModal && (
+        <div className={styles.btnsT}>
+          <a className={styles.save} onClick={saveQuiz}>
+            Зберегти
+          </a>
+          <a className={styles.back} onClick={deleteQuiz}>
+            Назад
+          </a>
+        </div>
+      )}
+
       <div className={isShowModal ? styles.mainModal : styles.main}>
         {!isShowModal && (
           <div className={styles.list}>
