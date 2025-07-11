@@ -113,10 +113,10 @@ export const StartTest = () => {
   const handleClick = (e, el) => {
     let nextCorrect = correctAnswers;
     if (isMultiple) {
-      e.target.children[0].children[0].checked =
-        !e.target.children[0].children[0].checked;
+      e.target.children[1].children[0].checked =
+        !e.target.children[1].children[0].checked;
 
-      if (e.target.children[0].children[0].checked) {
+      if (e.target.children[1].children[0].checked) {
         setAnswers((prev) => [...prev, el]);
       } else if (!e.target.checked) {
         setAnswers((prev) => prev.filter((v) => v.value !== el.value));
@@ -228,11 +228,10 @@ export const StartTest = () => {
                   key={el.value}
                   className={styles.variant}
                   style={{
-                    backgroundColor: bgColors[index],
-                    height: isMultiple ? 450 : 495,
+                    backgroundColor: bgColors[index]
                   }}
                 >
-                  {el.value}
+                  <p>{el.value}</p>
                   {isMultiple && (
                     <div className={checkbox.checkboxWrapper}>
                       <input
@@ -248,9 +247,11 @@ export const StartTest = () => {
             })}
           </div>
           {isMultiple && (
-            <button className={`${styles.btn_save}`} onClick={saveMultiple}>
-              Зберегти
-            </button>
+            <div className={styles.containerBtnSave}>
+              <button className={`${styles.btn_save}`} onClick={saveMultiple}>
+                Зберегти
+              </button>
+            </div>
           )}
           {isShowLoader && (
             <div className={styles.center_loader}>
