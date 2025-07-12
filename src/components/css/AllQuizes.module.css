@@ -6,13 +6,13 @@
   justify-content: center;
 }
 .tests {
-  width: 100%;
+  width: 80%;
   height: 600px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-template-rows: 1fr 1fr;
-  gap: 20px;
-  width: 80%;
+  gap: 50px;
+
 }
 .test {
   background-color: var(--element-bg);
@@ -34,16 +34,17 @@
   position: relative;
   top: 30px;
   text-decoration: none;
-  color: black;
+  color: rgb(255, 255, 255);
   padding: 15px;
-  background-color: var(--active-btn-select-color);
+  background-color: var(--btn-bg-color);
   margin-bottom: 15px;
   border-radius: 10px;
   transition: 0.2s;
+  font-weight: 700;
 }
 
 .toTest:hover {
-  background-color: rgb(48, 69, 58);
+  background-color: var(--btn-select-color);
 }
 .div_search {
   width: 70%;
@@ -62,6 +63,7 @@
   transition: 0.2s;
   cursor: pointer;
   font-size: 20px;
+  font-weight: 700;
 }
 .div_search button:hover {
   background-color: rgb(37, 75, 56);
@@ -105,4 +107,23 @@
   to {
     transform: rotate(1turn);
   }
+}
+
+@media (max-width:600px) {
+  .test {
+    width: auto;
+   }
+   .div_search {
+    width: 100%;
+    position: absolute;
+    height: 30vh;
+   }
+   .search {
+    width: 60%;
+    background-color: var(--element-bg);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: -125px;
+   }
+
 }

@@ -30,10 +30,7 @@ export const Layout = () => {
 
   useEffect(() => {
     setIsShowLoader(true);
-    if (localStorage.getItem("form_status") === "startCode") {
-      targetRef.current?.scrollIntoView({ behavior: "smooth" });
-      setIsStartForCode((prev) => !prev);
-    }
+
     const fetchTests = async () => {
       try {
         let response = await fetch("https://quiz-server-kkjt.onrender.com/all");
@@ -43,8 +40,15 @@ export const Layout = () => {
         setNewTests(data.slice(0, 4));
         setIsRender(true);
         setIsShowLoader(false);
+
         sessionStorage.setItem("isFetchSearch", true);
         sessionStorage.setItem("fetchSearch", JSON.stringify(data));
+        if (localStorage.getItem("form_status") === "startCode") {
+          setTimeout(() => {
+            targetRef.current?.scrollIntoView({ behavior: "smooth" });
+          }, 300);
+          setIsStartForCode((prev) => !prev);
+        }
       } catch (err) {
         console.error("Помилка при завантаженні:", err);
       }
@@ -57,7 +61,7 @@ export const Layout = () => {
 
     if (e.target.value === "") {
       setSearchNotDefined(false);
-      let tests = JSON.parse(sessionStorage.getItem("fetchSearch")).slice(0,4)
+      let tests = JSON.parse(sessionStorage.getItem("fetchSearch")).slice(0, 4);
       setNewTests(tests);
     } else {
       console.log(tests);
@@ -101,17 +105,23 @@ export const Layout = () => {
   };
 
   const startForCode = (e) => {
+    e.preventDefault();
     if (isStartForCode) {
       e.target.textContent = "Почати за кодом";
     } else {
       e.target.textContent = "Створити тест";
     }
-    
+
+    if (visibility) {
+      changeVisibility();
+      setTimeout(() => {
+        targetRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+      setIsStartForCode((prev) => !prev);
+      return;
+    }
     targetRef.current?.scrollIntoView({ behavior: "smooth" });
     setIsStartForCode((prev) => !prev);
-    if (visibility) {
-      setVisibility((prev) => !prev);
-    }
   };
 
   let fetchCodes = async (urlGet) => {
@@ -172,14 +182,15 @@ export const Layout = () => {
   const [visibility, setVisibility] = useState(false);
 
   const changeVisibility = () => {
+    window.scrollTo(0, 0);
     setVisibility((prev) => !prev);
   };
-  const targetRef = useRef(null);
+  const targetRef = useRef();
 
   sessionStorage.setItem("page-loaded", false);
 
   return (
-    <div className={styles.bg}>
+    <div className={`${visibility ? style.active_body : ""}`}>
       <header className={style.header}>
         <div className={style.container}>
           <div className={style.left}>
@@ -203,7 +214,9 @@ export const Layout = () => {
             <div className={style.nav_links}>
               <NavLink to="/all-tests">Всі тести</NavLink>
               <NavLink to="/your-tests">Мої тести</NavLink>
-              <NavLink onClick={startForCode}>{!isStartForCode ? 'Почати за кодом' : 'Створити тест'}</NavLink>
+              <NavLink onClick={startForCode}>
+                {!isStartForCode ? "Почати за кодом" : "Створити тест"}
+              </NavLink>
               <NavLink to="/admin">
                 {sessionStorage.getItem("isAuthenticated")
                   ? "Адмін панель"

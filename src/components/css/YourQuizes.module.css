@@ -32,6 +32,8 @@
 	padding: 10px;
 	background-color: var(--btn-bg-color);
 	border: none;
+  color: #ffffff;
+  font-weight: 700;
 	margin-right: 10px;
 	border-radius: 10px;
 	cursor: pointer;
@@ -51,15 +53,20 @@
 
 .back {
   padding: 15px;
-	background-color: var(--text-color-header);
+	background-color: var(--btn-bg-color);
 	border: none;
 	margin-right: 10px;
 	border-radius: 10px;
 	cursor: pointer;
-  color: black;
+  color: rgb(255, 255, 255);
   margin-top: 20px;
   transition: 0.2s;
 }
 .back:hover {
-  background-color: rgb(62, 95, 77);  
+  background-color: var(--btn-select-color);  
+}
+@media (max-width:600px) {
+  .quiz {
+    width: auto;
+  }
 }

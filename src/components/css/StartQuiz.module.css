@@ -88,7 +88,6 @@ p {
   margin-bottom: 10px;
 }
 .bottom {
-  width: 900px;
   height: 600px;
   display: flex;
   justify-content: center;
@@ -110,11 +109,15 @@ p {
 .backHome {
   margin-top: auto;
   text-decoration: none;
-  color: black;
+  color: rgb(255, 255, 255);
   padding: 15px;
-  background-color: var(--active-btn-select-color);
+  background-color: var(--btn-bg-color);
   margin-bottom: 15px;
   border-radius: 10px;
+  transition: 0.2s;
+}
+.backHome:hover{
+  background-color: var(--btn-select-color);
 }
 .variant {
   position: relative;
@@ -175,7 +178,6 @@ p {
     overflow-y: hidden;
   }
   .container {
-    
     display: flex;
     flex-direction: column;
     height: calc(100vh - 75px);
@@ -193,5 +195,12 @@ p {
   .title_div p {
     text-align: center;
     font-size: 20px;
+  }
+  .result {
+    width: 90%;
+  }
+  .title2 {
+    font-size: 30px;
+    text-align: center;
   }
 }

@@ -105,6 +105,16 @@
     border-radius: 10px;
     z-index: 999;
   }
+  .container {
+    /* height: 100vh; */
+  }
+  .active_body {
+    overflow-y: hidden;
+    height: 100vh;
+    z-index: 999;
+    
+  }
+
   .nav_links a {
     padding: 10px 20px;
   }

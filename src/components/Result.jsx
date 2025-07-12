@@ -16,7 +16,7 @@ export const Result = () => {
     setVisibility((prev) => !prev);
   };
   return (
-    <div>
+    <div className={`${visibility ? style.active_body : ""}`}>
       <header className={style.header}>
         <div className={style.container}>
           <div className={style.left}>
@@ -80,7 +80,7 @@ export const Result = () => {
               Правильні відповіді:
               {correctAnswers.length > 1
                 ? correctAnswers.toFixed(1)
-                : correctAnswers}{" "}
+                : correctAnswers}
               / {length}
             </p>
             <div className={styles.bar}>

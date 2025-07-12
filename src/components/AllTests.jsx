@@ -53,7 +53,7 @@ export const AllTests = () => {
     setVisibility((prev) => !prev);
   };
   return (
-    <div>
+    <div className={`${visibility ? style.active_body : ""}`}>
       <header className={style.header}>
         <div className={style.container}>
           <div className={style.left}>
@@ -128,6 +128,7 @@ export const AllTests = () => {
                 <h2>Назва:{quiz.title}</h2>
                 <h2>Автор:{quiz.author}</h2>
                 <h3>Кількість запитань:{quiz.questions.length}</h3>
+                <h3>Код:{quiz.code}</h3>
                 <a
                   className={styles.toTest}
                   onClick={goTest}

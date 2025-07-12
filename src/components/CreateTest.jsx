@@ -265,7 +265,7 @@ export const CreateTest = () => {
     setVisibility((prev) => !prev);
   };
   return (
-    <div className={styles.container}>
+    <div className={`${visibility ? style.active_body : ""}`}>
       <header className={style.header}>
         <div className={style.container}>
           <div className={style.left}>
