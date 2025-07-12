@@ -69,4 +69,7 @@
   .quiz {
     width: auto;
   }
+  .error h1 {
+    text-align: center;
+  }
 }
