@@ -75,10 +75,11 @@ export const Result = () => {
           </p>
           <div className={styles.bottom}>
             <p className={styles.mark}>Оцінка:{Math.round(mark)}</p>
+
             <p>
               Правильні відповіді:
-              {correctAnswers.length > 2
-                ? correctAnswers.toFixed(2)
+              {correctAnswers.length > 1
+                ? correctAnswers.toFixed(1)
                 : correctAnswers}{" "}
               / {length}
             </p>

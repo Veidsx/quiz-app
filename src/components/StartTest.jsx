@@ -17,6 +17,8 @@ export const StartTest = () => {
   let [isShowLoader, setIsShowLoader] = useState(false);
   let [searchParams, setSearchParams] = useSearchParams();
   let [isMultiple, setIsMultiple] = useState(false);
+  let [multipleAnswersCorrect, setMultipleAnswersCorrect] = useState(0);
+  let [isDisabled, setDisabled] = useState(true);
   let [answers, setAnswers] = useState([]);
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -59,9 +61,9 @@ export const StartTest = () => {
       const correct = quiz.questions[numQuestion - 1].variants.filter(
         (v) => v.isCorrect === true
       );
-      const mode_ = quiz.questions[numQuestion - 1].mode
+      const mode_ = quiz.questions[numQuestion - 1].mode;
 
-      if (mode_ === 'multiply') {
+      if (mode_ === "multiply") {
         setIsMultiple(true);
       } else {
         setIsMultiple(false);
@@ -73,10 +75,12 @@ export const StartTest = () => {
   };
   useEffect(() => {
     if (answers.length === 0) {
-      localStorage.setItem(`multiple`, 0);
+      setDisabled(true);
+      setMultipleAnswersCorrect(0);
     }
 
     if (answers.toString() !== [].toString()) {
+      setDisabled(false);
       let allCorrect = quiz.questions[numQuestion - 1].variants.filter(
         (v) => v.isCorrect
       );
@@ -85,15 +89,12 @@ export const StartTest = () => {
       answers.forEach((answer) => {
         if (allCorrect.includes(answer)) {
           b++;
-          localStorage.setItem(`multiple`, b);
+          setMultipleAnswersCorrect(b);
         }
       });
     }
   }, [answers]);
 
-  useEffect(() => {
-    console.log('Correct answers:' + correctAnswers)
-  }, [correctAnswers])
   const changeCheckBox = (e, el) => {
     if (e.target.checked) {
       setAnswers((prev) => [...prev, el]);
@@ -129,37 +130,44 @@ export const StartTest = () => {
       }
     } else {
       if (el.isCorrect) {
+        nextCorrect = 1;
         setCorrectAnswers((prev) => prev + 1);
       }
       if (quiz_length === numQuestion) {
-        goToResult(correctAnswers);
+        goToResult(correctAnswers + nextCorrect);
       } else {
         setNumQuestion((prev) => prev + 1);
       }
     }
   };
-  const goToResult = (nextCorrect) => {
-    setIsShowResult((prev) => !prev);
-    localStorage.setItem("result", JSON.stringify([quiz_length, correctAnswers]));
-    localStorage.removeItem("code-for-start");
-    navigate("/result");
-  };
+ 
   const saveMultiple = (e) => {
+    setAnswers([]);
+    setDisabled(true);
     if (answers.length > 0) {
       let allCorrect = quiz.questions[numQuestion - 1].variants.filter(
         (v) => v.isCorrect
       );
       let valueOneAnswer = +(1 / allCorrect.length).toFixed(2);
-      let correctAnswer = +localStorage.getItem("multiple");
-      let nextCorrect = correctAnswer * valueOneAnswer
+      let correctAnswer = multipleAnswersCorrect;
+      let nextCorrect = correctAnswer * valueOneAnswer;
       setCorrectAnswers((prev) => prev + nextCorrect);
 
       if (quiz_length === numQuestion) {
-        goToResult(correctAnswers);
+        goToResult(correctAnswers + nextCorrect);
       } else {
         setNumQuestion((prev) => prev + 1);
       }
     }
+  };
+   const goToResult = (correctAnswers) => {
+    setIsShowResult((prev) => !prev);
+    localStorage.setItem(
+      "result",
+      JSON.stringify([quiz_length, correctAnswers])
+    );
+    localStorage.removeItem("code-for-start");
+    navigate("/result");
   };
   const [visibility, setVisibility] = useState(false);
 
@@ -233,7 +241,7 @@ export const StartTest = () => {
                   key={el.value}
                   className={styles.variant}
                   style={{
-                    backgroundColor: bgColors[index]
+                    backgroundColor: bgColors[index],
                   }}
                 >
                   <p>{el.value}</p>
@@ -253,7 +261,11 @@ export const StartTest = () => {
           </div>
           {isMultiple && (
             <div className={styles.containerBtnSave}>
-              <button className={`${styles.btn_save}`} onClick={saveMultiple}>
+              <button
+                className={`${styles.btn_save}`}
+                onClick={saveMultiple}
+                disabled={isDisabled}
+              >
                 Зберегти
               </button>
             </div>

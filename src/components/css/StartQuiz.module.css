@@ -60,7 +60,7 @@ header p {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 85vh;
 }
 
 .result {
@@ -141,6 +141,7 @@ p {
   font-size: 30px;
   width: 100%;
   transition: 0.2s;
+  cursor: pointer;
 }
 .btn_save:hover {
   background-color: var(--btn-select-color);
