@@ -59,7 +59,9 @@ export const StartTest = () => {
       const correct = quiz.questions[numQuestion - 1].variants.filter(
         (v) => v.isCorrect === true
       );
-      if (correct.length > 1) {
+      const mode_ = quiz.questions[numQuestion - 1].mode
+
+      if (mode_ === 'multiply') {
         setIsMultiple(true);
       } else {
         setIsMultiple(false);
@@ -88,6 +90,10 @@ export const StartTest = () => {
       });
     }
   }, [answers]);
+
+  useEffect(() => {
+    console.log('Correct answers:' + correctAnswers)
+  }, [correctAnswers])
   const changeCheckBox = (e, el) => {
     if (e.target.checked) {
       setAnswers((prev) => [...prev, el]);
@@ -111,7 +117,7 @@ export const StartTest = () => {
 
   const navigate = useNavigate();
   const handleClick = (e, el) => {
-    let nextCorrect = correctAnswers;
+    let nextCorrect = 0;
     if (isMultiple) {
       e.target.children[1].children[0].checked =
         !e.target.children[1].children[0].checked;
@@ -123,11 +129,10 @@ export const StartTest = () => {
       }
     } else {
       if (el.isCorrect) {
-        nextCorrect = correctAnswers + 1;
-        setCorrectAnswers(nextCorrect);
+        setCorrectAnswers((prev) => prev + 1);
       }
       if (quiz_length === numQuestion) {
-        goToResult(nextCorrect);
+        goToResult(correctAnswers);
       } else {
         setNumQuestion((prev) => prev + 1);
       }
@@ -135,7 +140,7 @@ export const StartTest = () => {
   };
   const goToResult = (nextCorrect) => {
     setIsShowResult((prev) => !prev);
-    localStorage.setItem("result", JSON.stringify([quiz_length, nextCorrect]));
+    localStorage.setItem("result", JSON.stringify([quiz_length, correctAnswers]));
     localStorage.removeItem("code-for-start");
     navigate("/result");
   };
@@ -146,11 +151,11 @@ export const StartTest = () => {
       );
       let valueOneAnswer = +(1 / allCorrect.length).toFixed(2);
       let correctAnswer = +localStorage.getItem("multiple");
-      setCorrectAnswers(correctAnswer * valueOneAnswer);
+      let nextCorrect = correctAnswer * valueOneAnswer
+      setCorrectAnswers((prev) => prev + nextCorrect);
 
       if (quiz_length === numQuestion) {
-        let nextCorrect = correctAnswer * valueOneAnswer;
-        goToResult(nextCorrect);
+        goToResult(correctAnswers);
       } else {
         setNumQuestion((prev) => prev + 1);
       }
