@@ -13,6 +13,7 @@
   --body-bg: rgb(255, 255, 255);
   --element-bg: rgb(230, 230, 230);
   --btn-bg-color: rgb(47, 94, 70);
+  --error-bg:rgb(208, 207, 207);
 }
 
 #root {

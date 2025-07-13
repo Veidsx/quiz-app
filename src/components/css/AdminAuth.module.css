@@ -1,7 +1,7 @@
 .auth {
   display: flex;
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   justify-content: center;
   align-items: center;
 }
@@ -33,8 +33,12 @@
   border: none;
   margin-bottom: 15px;
   border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
 }
-
+.form button:hover {
+  background-color: var(--btn-select-color);
+}
 .form h1 {
   color: var(--text-color-header);
   margin-bottom: 20px;
@@ -98,6 +102,34 @@
 .del:hover {
   background-color: rgb(48, 69, 58);
 }
+.center_error {
+  width: 100%;
+  height: 80vh;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modalError {
+  margin-left: 0;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  justify-content: center;
+  z-index: 999;
+  width: 250px;
+  height: 200px;
+  background-color: var(--error-bg);
+  border-radius: 20px;
+}
+
+.modalError p {
+  font-size: 20px;
+  padding: 10px;
+  text-align: center;
+  color: #000;
+}
+
 .center_loader {
   position: absolute;
   display: flex;
@@ -126,7 +158,7 @@
   }
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
   .flex {
     padding: 0;
     margin-top: 100px;

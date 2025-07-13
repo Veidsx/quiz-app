@@ -20,6 +20,8 @@ export const StartTest = () => {
   let [multipleAnswersCorrect, setMultipleAnswersCorrect] = useState(0);
   let [isDisabled, setDisabled] = useState(true);
   let [answers, setAnswers] = useState([]);
+  let [questions_result, setQuestionsResult] = useState({});
+
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -35,8 +37,6 @@ export const StartTest = () => {
         const data = await response.json();
 
         setQuiz(data);
-        localStorage.setItem("title", data.title);
-        localStorage.setItem("author", data.author);
       } catch (err) {
         console.error("Fetch error:", err);
       } finally {
@@ -118,6 +118,13 @@ export const StartTest = () => {
 
   const navigate = useNavigate();
   const handleClick = (e, el) => {
+    quiz.questions[numQuestion - 1].variants.filter((v) => {
+      if (v.value === el.value) {
+        el.choice = true;
+        return el;
+      }
+    });
+    console.log(quiz);
     let nextCorrect = 0;
     if (isMultiple) {
       e.target.children[1].children[0].checked =
@@ -134,17 +141,19 @@ export const StartTest = () => {
         setCorrectAnswers((prev) => prev + 1);
       }
       if (quiz_length === numQuestion) {
+        localStorage.setItem("quiz-for-result", JSON.stringify(quiz));
         goToResult(correctAnswers + nextCorrect);
       } else {
         setNumQuestion((prev) => prev + 1);
       }
     }
   };
- 
+
   const saveMultiple = (e) => {
     setAnswers([]);
     setDisabled(true);
     if (answers.length > 0) {
+      
       let allCorrect = quiz.questions[numQuestion - 1].variants.filter(
         (v) => v.isCorrect
       );
@@ -154,13 +163,14 @@ export const StartTest = () => {
       setCorrectAnswers((prev) => prev + nextCorrect);
 
       if (quiz_length === numQuestion) {
+        localStorage.setItem("quiz-for-result", JSON.stringify(quiz));
         goToResult(correctAnswers + nextCorrect);
       } else {
         setNumQuestion((prev) => prev + 1);
       }
     }
   };
-   const goToResult = (correctAnswers) => {
+  const goToResult = (correctAnswers) => {
     setIsShowResult((prev) => !prev);
     localStorage.setItem(
       "result",

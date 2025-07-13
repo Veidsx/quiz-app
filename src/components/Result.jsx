@@ -1,11 +1,16 @@
-import styles from "./css/StartQuiz.module.css";
+import styles from "./css/Result.module.css";
 import style from "./css/Header.module.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 export const Result = () => {
   let length = JSON.parse(localStorage.getItem("result"))[0];
   let correctAnswers = JSON.parse(localStorage.getItem("result"))[1];
-  let width = 288 + 140;
+  const [width, setWidth] = useState(0);
+  const divRef = useRef();
+  useEffect(() => {
+    setWidth(parseFloat(getComputedStyle(divRef.current).width));
+  }, []);
+
   let newWidth = width * (correctAnswers / length);
   let mark = (correctAnswers / length) * 12;
 
@@ -15,6 +20,8 @@ export const Result = () => {
   const changeVisibility = () => {
     setVisibility((prev) => !prev);
   };
+  let quiz = JSON.parse(localStorage.getItem("quiz-for-result"));
+
   return (
     <div className={`${visibility ? style.active_body : ""}`}>
       <header className={style.header}>
@@ -29,8 +36,6 @@ export const Result = () => {
               to="/"
               onClick={() => {
                 localStorage.removeItem("result");
-                localStorage.removeItem("author");
-                localStorage.removeItem("title");
                 localStorage.removeItem("form_status");
               }}
               className={style.title}
@@ -69,13 +74,10 @@ export const Result = () => {
       </header>
       <div className={styles.center_result}>
         <div className={styles.result}>
-          <h1 className={styles.title2}>{localStorage.getItem("title")}</h1>
-          <p className={styles.author}>
-            Автор:{localStorage.getItem("author")}
-          </p>
+          <h1 className={styles.title2}>{quiz.title}</h1>
+          <p className={styles.author}>Автор:{quiz.author}</p>
           <div className={styles.bottom}>
             <p className={styles.mark}>Оцінка:{Math.round(mark)}</p>
-
             <p>
               Правильні відповіді:
               {correctAnswers.length > 1
@@ -83,7 +85,7 @@ export const Result = () => {
                 : correctAnswers}
               / {length}
             </p>
-            <div className={styles.bar}>
+            <div className={styles.bar} ref={divRef}>
               <span
                 style={{
                   width: newWidth,
@@ -102,13 +104,36 @@ export const Result = () => {
               ></span>
             </div>
           </div>
+          <div className={styles.questions}>
+            {quiz.questions.map((question) => {
+              return (
+                <div className={styles.question} key={crypto.randomUUID()}>
+                  <h2>
+                    {question.numberQuestion}: {question.title}
+                  </h2>
+                  <div className={styles.variants}>
+                    {quiz.questions[question.numberQuestion - 1].variants.map(
+                      (variant) => {
+                        variant.isCorrect
+                          ? (variant.value += "(Правильна відповідь✅)")
+                          : (variant.value += "❌");
+                        variant.choice
+                          ? (variant.value += "(Ваш вибір)")
+                          : variant.value;
+
+                        return <p key={variant.value}>{variant.value}</p>;
+                      }
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
           <NavLink
             to="/"
             className={styles.backHome}
             onClick={() => {
               localStorage.removeItem("result");
-              localStorage.removeItem("author");
-              localStorage.removeItem("title");
             }}
           >
             Повернутись на головний екран

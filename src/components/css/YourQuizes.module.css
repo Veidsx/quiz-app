@@ -73,3 +73,11 @@
     text-align: center;
   }
 }
+@media (min-width:600px) {
+  .quiz {
+    width: auto;
+  }
+  .error h1 {
+    text-align: center;
+  }
+}

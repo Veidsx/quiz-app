@@ -66,10 +66,6 @@ export const CreateTest = () => {
   let [numberQuestion, setNumberQuestion] = useState(1);
   let [id, setId] = useState(0);
 
-  useEffect(() => {
-    console.log("number question:" + numberQuestion);
-  }, [numberQuestion]);
-
   let onDelete = (e) => {
     const deleteNumber = +e.target.alt;
 
@@ -313,7 +309,7 @@ export const CreateTest = () => {
           </div>
         </div>
       </header>
-      {!isShowModal && (
+      {!(isShowModal || visibility) && (
         <div className={styles.btnsT}>
           <a className={styles.save} onClick={saveQuiz}>
             Зберегти

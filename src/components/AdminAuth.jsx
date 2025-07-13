@@ -3,6 +3,15 @@ import styles from "./css/AdminAuth.module.css";
 import style from "./css/Header.module.css";
 import { NavLink } from "react-router-dom";
 
+function ModalError({ textError }) {
+  return (
+    <div className={styles.center_error}>
+      <div className={styles.modalError}>
+        <p>{textError}</p>
+      </div>
+    </div>
+  );
+}
 export const AdminAuth = () => {
   const [login, setLogin] = useState("");
   const [userPassword, setPass] = useState("");
@@ -10,6 +19,8 @@ export const AdminAuth = () => {
   const [quizzes, setQuizzes] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
   let [isShowLoader, setIsShowLoader] = useState(false);
+  const [isShowModalError, setIsShowModalError] = useState(false);
+  const [textError, setTextError] = useState("");
   const changeInputLogin = (e) => {
     setLogin(e.target.value);
   };
@@ -59,6 +70,11 @@ export const AdminAuth = () => {
       sessionStorage.setItem("isAuthenticated", true);
       setIsLogin(true);
     } else {
+      setTextError("Невірний логін або пароль");
+      setIsShowModalError(true);
+      setTimeout(() => {
+        setIsShowModalError(false);
+      }, 1000);
       setIsLogin(false);
     }
 
@@ -118,7 +134,8 @@ export const AdminAuth = () => {
                 to="/"
                 onClick={() => {
                   localStorage.setItem("form_status", "startCode");
-                }}>
+                }}
+              >
                 Почати за кодом
               </NavLink>
               <NavLink to="/admin">
@@ -130,6 +147,7 @@ export const AdminAuth = () => {
           </div>
         </div>
       </header>
+      {isShowModalError && <ModalError textError={textError} />}
       <div className={styles.auth}>
         {!isLogin && (
           <form className={styles.form} onSubmit={submit}>

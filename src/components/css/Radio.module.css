@@ -107,3 +107,14 @@
     margin-bottom: 10px;
   }
 }
+@media (min-width:600px) {
+  .radioWrapper {
+    display: block;
+  }
+  .radioWrapper label, .radioWrapper input[type="radio"] {
+    margin-top: 10px;
+  }
+  .radioWrapper {
+    margin-bottom: 10px;
+  }
+}

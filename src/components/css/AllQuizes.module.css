@@ -12,7 +12,6 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-template-rows: 1fr 1fr;
   gap: 50px;
-
 }
 .test {
   background-color: var(--element-bg);
@@ -109,21 +108,43 @@
   }
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
   .test {
     width: auto;
-   }
-   .div_search {
+  }
+  .div_search {
     width: 100%;
     position: absolute;
     height: 30vh;
-   }
-   .search {
+  }
+  .search {
     width: 60%;
     background-color: var(--element-bg);
     padding: 15px;
     border-radius: 10px;
     margin-top: -125px;
-   }
-
+  }
+}
+@media (min-width: 600px) {
+  .test {
+    width: auto;
+  }
+  .tests {
+    margin-top: 100px;
+  }
+  .div_search {
+    width: 100%;
+    position: absolute;
+    height: 30vh;
+  }
+  .search {
+    width: 60%;
+    background-color: var(--element-bg);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: -105px;
+  }
+  .div_search button {
+    margin-top: -105px;
+  }
 }

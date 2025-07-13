@@ -59,3 +59,21 @@ a {
 .btn_copy:hover, .backHome:hover {
     background-color: var(--btn-select-color);
 }
+
+@media (max-width:600px) {
+  .info {
+    width: 90%;
+    border-radius: 10px;
+    padding: 10px;
+    height: 500px;
+  }
+}
+
+@media (min-width:600px) {
+  .info {
+    width: 90%;
+    border-radius: 10px;
+    padding: 10px;
+    height: 500px;
+  }
+}

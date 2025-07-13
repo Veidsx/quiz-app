@@ -245,20 +245,26 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .list {
+    width: 100%;
+  }
   .question_li, .add_question {
     width: 100%;
     max-width: none; 
     padding: 10px;
+    font-size: 30px;
   }
 
   .main, .mainModal {
     width: 100%;
     padding: 20px;
+    display: flex;
+    justify-content: center;
   }
 
   .btnsT a {
-    font-size: 12px;
+    font-size: 18px;
     padding: 10px;
   }
 
@@ -268,11 +274,8 @@
   }
   .modal {
     width: 90%;
-
   }
-
   .variant {
     width: 90%;
-
   }
 }
