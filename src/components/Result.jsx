@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 export const Result = () => {
   let length = JSON.parse(localStorage.getItem("result"))[0];
-  let correctAnswers = JSON.parse(localStorage.getItem("result"))[1];
+  let correctAnswers = Math.round(JSON.parse(localStorage.getItem("result"))[1]);
+
   const [width, setWidth] = useState(0);
   const divRef = useRef();
   useEffect(() => {
@@ -37,6 +38,7 @@ export const Result = () => {
               onClick={() => {
                 localStorage.removeItem("result");
                 localStorage.removeItem("form_status");
+                localStorage.removeItem("quiz-for-result")
               }}
               className={style.title}
             >
@@ -134,6 +136,7 @@ export const Result = () => {
             className={styles.backHome}
             onClick={() => {
               localStorage.removeItem("result");
+              localStorage.removeItem("quiz-for-result");
             }}
           >
             Повернутись на головний екран

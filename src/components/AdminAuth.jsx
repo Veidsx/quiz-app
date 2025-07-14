@@ -93,6 +93,11 @@ export const AdminAuth = () => {
       method: "DELETE",
     });
   };
+
+  const Logout = () => {
+    sessionStorage.removeItem('isAuthenticated')
+    location.reload()
+  }
   const [visibility, setVisibility] = useState(false);
 
   const changeVisibility = () => {
@@ -138,9 +143,9 @@ export const AdminAuth = () => {
               >
                 Почати за кодом
               </NavLink>
-              <NavLink to="/admin">
+              <NavLink to="/admin" onClick={Logout}>
                 {sessionStorage.getItem("isAuthenticated")
-                  ? "Адмін панель"
+                  ? "Вийти"
                   : "Увійти"}
               </NavLink>
             </div>

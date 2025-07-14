@@ -238,10 +238,12 @@ export const CreateTest = () => {
       }
 
       localStorage.setItem("code-for-info", quiz.code);
+      localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
       localStorage.removeItem("author");
       localStorage.removeItem("title");
       navigate("/done-test");
     } else {
+      localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
       localStorage.removeItem("author");
       localStorage.removeItem("title");
       navigate("/");

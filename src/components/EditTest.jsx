@@ -126,7 +126,7 @@ export const EditTest = () => {
           (el) => el.numberQuestion < id
         );
 
-        const updatedQuestion = [
+        let updatedQuestion = [
           {
             numberQuestion: +id,
             title: question.title,
@@ -135,16 +135,14 @@ export const EditTest = () => {
           },
         ];
         if (previousQuestions[0] !== null) {
-          previousQuestions.forEach((el) => {
-            updatedQuestion.unshift(el);
-          });
+          updatedQuestion = previousQuestions.concat(updatedQuestion)
+          updatedQuestion.sort((a, b) => a.numberQuestion - b.numberQuestion);
         }
         if (nextQuestions[0] !== null) {
-          nextQuestions.forEach((el) => {
-            updatedQuestion.push(el);
-          });
+          updatedQuestion = nextQuestions.concat(updatedQuestion)
+          updatedQuestion.sort((a, b) => a.numberQuestion - b.numberQuestion);
         }
-
+        console.log(updatedQuestion)
         const newQuiz = {
           code: code,
           author: quiz.author,
@@ -158,6 +156,7 @@ export const EditTest = () => {
       });
     } else {
       setQuestions((prevQuestions) => {
+        console.log(question)
         const updatedQuestions = [...prevQuestions, question];
 
         const newQuiz = {

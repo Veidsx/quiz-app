@@ -20,7 +20,7 @@ export const StartTest = () => {
   let [multipleAnswersCorrect, setMultipleAnswersCorrect] = useState(0);
   let [isDisabled, setDisabled] = useState(true);
   let [answers, setAnswers] = useState([]);
-  let [questions_result, setQuestionsResult] = useState({});
+  let [isShowBtn, setIsShowBtn] = useState(false);
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -35,7 +35,7 @@ export const StartTest = () => {
 
         const response = await fetch(url);
         const data = await response.json();
-
+        console.log(data)
         setQuiz(data);
       } catch (err) {
         console.error("Fetch error:", err);
@@ -58,19 +58,22 @@ export const StartTest = () => {
       setSearchParams(params);
     }
     if (quiz) {
-      const correct = quiz.questions[numQuestion - 1].variants.filter(
-        (v) => v.isCorrect === true
-      );
-      const mode_ = quiz.questions[numQuestion - 1].mode;
-
-      if (mode_ === "multiply") {
-        setIsMultiple(true);
+      console.log(quiz);
+      if (quiz.error) {
+        setTitle("Такого тесту не знайдено");
+        setIsShowBtn(true);
       } else {
-        setIsMultiple(false);
+        const mode_ = quiz.questions[numQuestion - 1].mode;
+
+        if (mode_ === "multiply") {
+          setIsMultiple(true);
+        } else {
+          setIsMultiple(false);
+        }
+        setTitle(quiz.questions[numQuestion - 1].title);
+        setVariants(quiz.questions[numQuestion - 1].variants);
+        setQuizLenght(quiz.questions.length);
       }
-      setTitle(quiz.questions[numQuestion - 1].title);
-      setVariants(quiz.questions[numQuestion - 1].variants);
-      setQuizLenght(quiz.questions.length);
     }
   };
   useEffect(() => {
@@ -153,7 +156,6 @@ export const StartTest = () => {
     setAnswers([]);
     setDisabled(true);
     if (answers.length > 0) {
-      
       let allCorrect = quiz.questions[numQuestion - 1].variants.filter(
         (v) => v.isCorrect
       );
@@ -243,7 +245,13 @@ export const StartTest = () => {
           <div className={styles.title_div}>
             <p>{title}</p>
           </div>
+
           <div className={styles.variants}>
+            {isShowBtn && (
+              <NavLink to="/" className={styles.backBtn}>
+                Повернутись на головний екран{" "}
+              </NavLink>
+            )}
             {variants.map((el, index) => {
               return (
                 <div
