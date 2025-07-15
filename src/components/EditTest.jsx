@@ -1,4 +1,5 @@
 import styles from "./css/CreateQuiz.module.css";
+import checkbox from "./css/CheckBox.module.css";
 import style from "./css/Header.module.css";
 import { Modal } from "./CreateQuestionMenu";
 import { useSearchParams, NavLink, useNavigate } from "react-router-dom";
@@ -135,14 +136,14 @@ export const EditTest = () => {
           },
         ];
         if (previousQuestions[0] !== null) {
-          updatedQuestion = previousQuestions.concat(updatedQuestion)
+          updatedQuestion = previousQuestions.concat(updatedQuestion);
           updatedQuestion.sort((a, b) => a.numberQuestion - b.numberQuestion);
         }
         if (nextQuestions[0] !== null) {
-          updatedQuestion = nextQuestions.concat(updatedQuestion)
+          updatedQuestion = nextQuestions.concat(updatedQuestion);
           updatedQuestion.sort((a, b) => a.numberQuestion - b.numberQuestion);
         }
-        console.log(updatedQuestion)
+        console.log(updatedQuestion);
         const newQuiz = {
           code: code,
           author: quiz.author,
@@ -156,7 +157,7 @@ export const EditTest = () => {
       });
     } else {
       setQuestions((prevQuestions) => {
-        console.log(question)
+        console.log(question);
         const updatedQuestions = [...prevQuestions, question];
 
         const newQuiz = {
@@ -203,12 +204,17 @@ export const EditTest = () => {
   const [isShowModalError, setIsShowModalError] = useState(false);
   const [textError, setTextError] = useState("");
 
+  let coder = JSON.parse(localStorage.getItem("quizes"));
+  let quizLocal = coder.filter(
+    (v) => v.code === localStorage.getItem("edit-quiz")
+  )[0];
+
   const saveQuiz = async () => {
     setIsShowLoader(true);
     let newQuiz = JSON.parse(
       localStorage.getItem(`quiz-${localStorage.getItem("edit-quiz")}`)
     );
-    console.log(newQuiz);
+
     const res = await fetch(
       `https://quiz-server-kkjt.onrender.com/get/${code}`
     );
@@ -225,16 +231,19 @@ export const EditTest = () => {
       setIsShowLoader(false);
       return false;
     }
+
     await fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newQuiz),
+      body: JSON.stringify(quizLocal),
     });
 
     const quizes = JSON.parse(localStorage.getItem("quizes")) || [];
-    const updatedQuizes = quizes.map((q) => (q.code === code ? newQuiz : q));
+    const updatedQuizes = quizes.map((q) =>
+      q.code === localStorage.getItem("code-edit") ? newQuiz : q
+    );
 
     if (!updatedQuizes.find((q) => q.code === code)) {
       updatedQuizes.push(newQuiz);
@@ -259,6 +268,32 @@ export const EditTest = () => {
 
   const changeVisibility = () => {
     setVisibility((prev) => !prev);
+  };
+  
+
+  const [isChecked, setIsChecked] = useState(quizLocal.isRandom || false);
+  useEffect(() => {
+    localStorage.setItem("isChecked", isChecked);
+
+    if (Object.keys(quiz).length !== 0) {
+      const quiz = {
+        code: localStorage.getItem("edit-quiz"),
+        author: quizLocal.author,
+        title: quizLocal.title,
+        isRandom: isChecked,
+        questions: [...questions],
+      };
+      setQuiz(quiz);
+      let quizes = coder.filter(
+        (v) => v.code !== localStorage.getItem("edit-quiz")
+      );
+      console.log(quizes);
+      localStorage.setItem(`quizes`, JSON.stringify([...quizes, quiz]));
+    }
+  }, [isChecked]);
+
+  const changeInput = () => {
+    setIsChecked((prev) => !prev);
   };
   return (
     <div className={`${visibility ? style.active_body : ""}`}>
@@ -311,16 +346,34 @@ export const EditTest = () => {
       </header>
       <div className={styles.main}>
         {isShowModalError && <ModalError textError={textError} />}
+
+        {!(isShowModal || visibility) && (
+          <div className={styles.btnsT}>
+            <a className={styles.save} onClick={saveQuiz}>
+              Зберегти
+            </a>
+            <a className={styles.back} onClick={deleteQuiz}>
+              Назад
+            </a>
+          </div>
+        )}
+        {!isShowModal && (
+          <div
+            className={`${checkbox.checkboxWrapper} ${styles.center_random}`}
+          >
+            <input
+              type="checkbox"
+              id="isRandom"
+              onChange={changeInput}
+              checked={isChecked}
+            />
+            <label htmlFor="isRandom" className={styles.isRandomLabel}>
+              Перемішувати запитання
+            </label>
+          </div>
+        )}
         {!isShowModal && (
           <div className={style.containerList}>
-            <div className={styles.btnsT}>
-              <a className={styles.save} onClick={saveQuiz}>
-                Зберегти
-              </a>
-              <a className={styles.back} onClick={deleteQuiz}>
-                Назад
-              </a>
-            </div>
             <div className={styles.list}>
               <ul className={styles.questions2}>
                 {questions.map((question) => {

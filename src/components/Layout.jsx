@@ -25,7 +25,7 @@ export const Layout = () => {
   const [textError, setTextError] = useState("");
   const [newTests, setNewTests] = useState([]);
   const [tests, setTests] = useState([]);
-
+  console.log('rerender')
   const urlA = `test?code=`;
 
   useEffect(() => {
@@ -64,7 +64,6 @@ export const Layout = () => {
       let tests = JSON.parse(sessionStorage.getItem("fetchSearch")).slice(0, 4);
       setNewTests(tests);
     } else {
-      console.log(tests);
       let search_result = tests.filter((quiz) =>
         quiz.title
           .replace(/\s/g, "")
@@ -83,6 +82,7 @@ export const Layout = () => {
   const changeNickname = (e) => {
     setNickname(e.target.value);
   };
+
   const changeTitle = (e) => {
     setTitle(e.target.value);
   };

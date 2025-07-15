@@ -1,5 +1,6 @@
 import styles from "./css/CreateQuiz.module.css";
 import style from "./css/Header.module.css";
+import checkbox from "./css/CheckBox.module.css";
 import { Modal } from "./CreateQuestionMenu";
 import { useSearchParams, NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -34,14 +35,14 @@ function Question({
         <img
           id={number}
           src="https://quiz-server-kkjt.onrender.com/icons/delete.svg"
-          alt={number}
+          alt={"delete"}
           className={styles.newQuestion}
           onClick={onDelete}
         />
         <img
           id={number}
           src="https://quiz-server-kkjt.onrender.com/icons/edit.svg"
-          alt={number}
+          alt={"edit"}
           className={styles.newQuestion}
           onClick={onEdit}
         />
@@ -65,7 +66,10 @@ export const CreateTest = () => {
   let [questions, setQuestions] = useState([]);
   let [numberQuestion, setNumberQuestion] = useState(1);
   let [id, setId] = useState(0);
-
+  let quizLocal = JSON.parse(
+    localStorage.getItem(`quiz-${localStorage.getItem("code-create")}`)
+  );
+  let [quiz, setQuiz] = useState(quizLocal || {});
   let onDelete = (e) => {
     const deleteNumber = +e.target.alt;
 
@@ -81,8 +85,10 @@ export const CreateTest = () => {
         code: localStorage.getItem("code-create"),
         author: localStorage.getItem("author"),
         title: localStorage.getItem("title"),
+        isRandom: isChecked,
         questions: newQuestions,
       };
+      setQuiz(quiz);
       localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
       return newQuestions;
     });
@@ -92,16 +98,14 @@ export const CreateTest = () => {
     if (isEditQuestion) {
       setQuestions((prevQuestions) => {
         const variants = question.variants;
-        const nextQuestions = [];
-        const previousQuestions = [];
-        prevQuestions.forEach((element) => {
-          if (element.numberQuestion > id) {
-            nextQuestions.push(element);
-          } else if (element.numberQuestion < id) {
-            previousQuestions.unshift(element);
-          }
-        });
-        const updatedQuestion = [
+        const nextQuestions = prevQuestions.filter(
+          (el) => el.numberQuestion > id
+        );
+        const previousQuestions = prevQuestions.filter(
+          (el) => el.numberQuestion < id
+        );
+
+        let updatedQuestion = [
           {
             numberQuestion: +id,
             title: question.title,
@@ -110,23 +114,22 @@ export const CreateTest = () => {
           },
         ];
         if (previousQuestions[0] !== null) {
-          previousQuestions.forEach((el) => {
-            updatedQuestion.unshift(el);
-          });
+          updatedQuestion = previousQuestions.concat(updatedQuestion);
+          updatedQuestion.sort((a, b) => a.numberQuestion - b.numberQuestion);
         }
         if (nextQuestions[0] !== null) {
-          nextQuestions.forEach((el) => {
-            updatedQuestion.push(el);
-          });
+          updatedQuestion = nextQuestions.concat(updatedQuestion);
+          updatedQuestion.sort((a, b) => a.numberQuestion - b.numberQuestion);
         }
 
         const quiz = {
           code: localStorage.getItem("code-create"),
           author: localStorage.getItem("author"),
           title: localStorage.getItem("title"),
+          isRandom: isChecked,
           questions: updatedQuestion,
         };
-
+        setQuiz(quiz);
         localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
         setIsEdit(false);
         return quiz.questions;
@@ -134,13 +137,15 @@ export const CreateTest = () => {
     } else {
       setQuestions((prevQuestions) => {
         const updatedQuestions = [...prevQuestions, question];
-        console.log(updatedQuestions);
+
         const quiz = {
           code: localStorage.getItem("code-create"),
           author: localStorage.getItem("author"),
           title: localStorage.getItem("title"),
+          isRandom: isChecked,
           questions: updatedQuestions,
         };
+        setQuiz(quiz);
         localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
         return updatedQuestions;
       });
@@ -182,7 +187,6 @@ export const CreateTest = () => {
           const parsed = JSON.parse(saved);
 
           setQuestions(parsed.questions || []);
-          // setNumberQuestion(questions.length)
         } catch (e) {
           throw new Error(e.message);
         }
@@ -200,9 +204,7 @@ export const CreateTest = () => {
   const [questionEdit, setQuestionEdit] = useState({});
   const [isEdit, setIsEdit] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
-  const onEdit = (question) => {
-    console.log(question);
-  };
+  const onEdit = (question) => {};
   const addQuestion = () => {
     setIsShowModal((isShow) => !isShow);
   };
@@ -236,13 +238,14 @@ export const CreateTest = () => {
       } else {
         localStorage.setItem("quizes", JSON.stringify([quiz]));
       }
-
+      localStorage.removeItem("isChecked");
       localStorage.setItem("code-for-info", quiz.code);
       localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
       localStorage.removeItem("author");
       localStorage.removeItem("title");
       navigate("/done-test");
     } else {
+      localStorage.removeItem("isChecked");
       localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
       localStorage.removeItem("author");
       localStorage.removeItem("title");
@@ -251,6 +254,7 @@ export const CreateTest = () => {
     localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
   };
   const deleteQuiz = () => {
+    localStorage.removeItem("isChecked");
     localStorage.removeItem("author");
     localStorage.removeItem("title");
     localStorage.removeItem(`quiz-${localStorage.getItem("code-create")}`);
@@ -261,6 +265,29 @@ export const CreateTest = () => {
 
   const changeVisibility = () => {
     setVisibility((prev) => !prev);
+  };
+  const [isChecked, setIsChecked] = useState(
+    JSON.parse(localStorage.getItem("isChecked")) || false
+  );
+
+  useEffect(() => {
+    localStorage.setItem("isChecked", isChecked);
+
+    if (Object.keys(quiz).length !== 0) {
+      const quiz = {
+        code: localStorage.getItem("code-create"),
+        author: localStorage.getItem("author"),
+        title: localStorage.getItem("title"),
+        isRandom: isChecked,
+        questions: [...questions],
+      };
+      setQuiz(quiz);
+      localStorage.setItem(`quiz-${quiz.code}`, JSON.stringify(quiz));
+    }
+  }, [isChecked]);
+
+  const changeInput = () => {
+    setIsChecked((prev) => !prev);
   };
   return (
     <div className={`${visibility ? style.active_body : ""}`}>
@@ -277,6 +304,7 @@ export const CreateTest = () => {
               className={style.title}
               onClick={() => {
                 localStorage.removeItem("form_status");
+                localStorage.removeItem("isChecked");
               }}
             >
               Quiz App
@@ -319,6 +347,20 @@ export const CreateTest = () => {
           <a className={styles.back} onClick={deleteQuiz}>
             Назад
           </a>
+        </div>
+      )}
+      
+      {!isShowModal && (
+        <div className={`${checkbox.checkboxWrapper} ${styles.center_random}`}>
+          <input
+            type="checkbox"
+            id="isRandom"
+            onChange={changeInput}
+            checked={isChecked}
+          />
+          <label htmlFor="isRandom" className={styles.isRandomLabel}>
+            Перемішувати запитання
+          </label>
         </div>
       )}
 

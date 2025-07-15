@@ -107,11 +107,11 @@ export const Result = () => {
             </div>
           </div>
           <div className={styles.questions}>
-            {quiz.questions.map((question) => {
+            {quiz.questions.map((question, index) => {
               return (
                 <div className={styles.question} key={crypto.randomUUID()}>
                   <h2>
-                    {question.numberQuestion}: {question.title}
+                    {index+1}: {question.title}
                   </h2>
                   <div className={styles.variants}>
                     {quiz.questions[question.numberQuestion - 1].variants.map(

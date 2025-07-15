@@ -57,6 +57,7 @@
   width: 50px;
   height: 50px;
   margin-right: 10px;
+  font-size: 16px;
 }
 
 .list {
@@ -209,6 +210,15 @@
   color: #000;
 }
 
+.center_random {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.center_random label {
+  font-size: 20px;
+}
 .add_question_btn {
   padding: 15px;
   background-color: var(--btn-bg-color);

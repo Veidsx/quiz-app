@@ -46,6 +46,15 @@ export const StartTest = () => {
 
     fetchQuiz();
   }, []);
+  useEffect(() => {
+    console.log(quiz)
+    if (quiz.questions !== undefined && quiz.isRandom) {
+      for (let i = quiz.questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [quiz.questions[i], quiz.questions[j]] = [quiz.questions[j], quiz.questions[i]];
+      }
+    }
+  }, [quiz]);
 
   useEffect(() => {
     changeQuestion(quiz);
@@ -58,7 +67,6 @@ export const StartTest = () => {
       setSearchParams(params);
     }
     if (quiz) {
-      console.log(quiz);
       if (quiz.error) {
         setTitle("Такого тесту не знайдено");
         setIsShowBtn(true);

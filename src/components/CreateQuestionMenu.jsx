@@ -17,6 +17,7 @@ function Variant({ index, value, fDel, onChange, isCorrect, changeCorrect }) {
 
       <span className={checkbox.checkboxWrapper}>
         <input
+          style={{ top: 10, marginLeft:20 }}
           type="checkbox"
           checked={isCorrect}
           id={index}
@@ -56,7 +57,7 @@ export const Modal = ({
   ]);
 
   let [heigth, setHeigth] = useState(600);
-  const [mode, setMode] = useState('solo');
+  const [mode, setMode] = useState("solo");
 
   useEffect(() => {
     if (editQuestion) {
